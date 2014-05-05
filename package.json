@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "test",
+    "test": "karma start",
     "postinstall": "cd src && bower install"
   },
   "keywords": [
@@ -30,6 +30,7 @@
     "gulp-watch": "~0.6.4",
     "gulp-uglify": "~0.2.1",
     "gulp-notify": "~1.2.5",
-    "gulp-livereload": "~1.3.1"
+    "gulp-livereload": "~1.3.1",
+    "gulp-ng-html2js": "^0.1.6"
   }
 }
