@@ -18,7 +18,7 @@
                         scope.$watch(getErrors, function(current, previous) {
                             if (current) {
                                 scope.matches = current.filter(function(error) {
-                                    return error.key == key;
+                                    return error.propertyName == key;
                                 });
                             }
                         });
