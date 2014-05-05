@@ -9,7 +9,7 @@ Prefix all directives with o
 Example:
 
 ```
-<div class="form-group" o-validation-message-for="firstName"></div>
+<div o-validation-message-for="firstName"></div>
 ```
 
 Installing
@@ -39,7 +39,30 @@ Project Use
 *****
 
 Directives
+====
+
+oValidateWith
 ----
 
-* oValidateWith
-    * oValidationMessageFor
+* Used as wrapper to map child validation messages to keys bound to error property
+* Child directive __oValidationMessageFor__ maps propertyName of error object in collection
+
+```
+<div o-validate-with errors="ctrl1.errors">
+    <div o-validation-message-for="firstName"></div>
+</div>
+```
+
+__where ctrl1.errors:__
+
+```
+[
+    { propertyName: '', type: 'length', message: 'This is global' },
+    { propertyName: 'firstName', type: 'required', message: 'First Name is required' },
+    { 
+        propertyName: 'lastName', 
+        type: 'length', 
+        message: 'Last Name must be between 2 and 256 characters' 
+    }
+];
+```
