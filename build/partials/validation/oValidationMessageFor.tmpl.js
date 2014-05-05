@@ -5,7 +5,7 @@ try {
   module = angular.module('envoc.directives.partials', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('/oTemplates/oValidationMessageFor.tmpl.html',
+  $templateCache.put('/oTemplates/validation/oValidationMessageFor.tmpl.html',
     '﻿<div>\n' +
     '    <!-- This is where the content of the tag gets replaced -->\n' +
     '    <div ng-transclude></div>\n' +

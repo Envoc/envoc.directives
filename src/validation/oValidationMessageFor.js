@@ -8,7 +8,7 @@
                 return {
                     restrict: 'EA',
                     require: '^oValidateWith',
-                    templateUrl: '/oTemplates/oValidationMessageFor.tmpl.html',
+                    templateUrl: '/oTemplates/validation/oValidationMessageFor.tmpl.html',
                     transclude: true,
                     scope: true,
                     link: function(scope, element, attr, oValidateWithCtrl) {

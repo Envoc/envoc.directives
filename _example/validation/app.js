@@ -1,15 +1,15 @@
 ﻿var app = angular.module('plunker', ['envoc.directives']);
 
 // comment me out to see default template
-app.run([
-    '$templateCache', function ($templateCache) {
-        $templateCache.put('/oTemplates/oValidationMessageFor.tmpl.html',
-            '﻿<div>\n' +
-            '    <div ng-transclude></div>\n' +
-            '    <pre ng-show="matches.length" ng-repeat="error in matches">{{error|json}}</pre>\n' +
-            '</div>');
-    }
-]);
+//app.run([
+//    '$templateCache', function ($templateCache) {
+//        $templateCache.put('/oTemplates/validation/oValidationMessageFor.tmpl.html',
+//            '﻿<div>\n' +
+//            '    <div ng-transclude></div>\n' +
+//            '    <pre ng-show="matches.length" ng-repeat="error in matches">{{error|json}}</pre>\n' +
+//            '</div>');
+//    }
+//]);
 
 app.controller('MainCtrl', function($timeout) {
     var viewModel = this;

@@ -11,24 +11,25 @@ var base = { base: './src/app/' };
 gulp.task('js', function() {
     // main app js file
     gulp.src([
-            './src/partials/**/*.js',
-            './src/app/app.js',
-            './src/app/**/*.js',
-            '!./src/app/**/*.spec.js'
+            './build/partials/**/*.js',
+            './src/app.js',
+            './src/validation/**/*.js',
+            '!./src/app/**/*.spec.js',
+            '!./src/_vendor/**/*.js'
         ], base)
         .pipe(uglify())
         .pipe(concat("oDirectives.min.js"))
-        .pipe(gulp.dest('./dist/app/'));
+        .pipe(gulp.dest('./dist/'));
 });
 
 // templatify
 gulp.task('templatify', function () {
-    gulp.src("./src/partials/*.tmpl.html")
+    gulp.src("./src/**/*.tmpl.html")
     .pipe(ngHtml2Js({
         moduleName: "envoc.directives.partials",
         prefix: "/oTemplates/"
     }))
-    .pipe(gulp.dest("./src/partials"));
+    .pipe(gulp.dest("./build/partials"));
 });
 
 gulp.task('watch', function () {
