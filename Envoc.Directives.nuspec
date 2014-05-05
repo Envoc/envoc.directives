@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>0.00</version>
+    <authors>Envoc</authors>
+    <owners>Envoc</owners>
+    <id>Envoc.Directives</id>
+    <title>Envoc.Directives</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Envoc.Directives</description>
+    <copyright>Copyright Envoc 2014</copyright>
+  </metadata>
+  <files>
+    <file src="dist\app\*.js" target="Assets\js" />
+  </files>
+</package>
