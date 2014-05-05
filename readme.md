@@ -62,7 +62,7 @@ __where ctrl1.errors:__
     { 
         propertyName: 'lastName', 
         type: 'length', 
-        messageerrorMessage: 'Last Name must be between 2 and 256 characters' 
+        errorMessage: 'Last Name must be between 2 and 256 characters' 
     }
 ];
 ```
