@@ -7,7 +7,8 @@ directives that can be reused throught projects.
 Prefix all directives with o
 
 Example:
-<div class="form-group" o-validation-message-for="firstName"></div>
+:::html
+    <div class="form-group" o-validation-message-for="firstName"></div>
 
 Installing
 ----
