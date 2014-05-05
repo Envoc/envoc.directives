@@ -11,6 +11,6 @@
     <copyright>Copyright Envoc 2014</copyright>
   </metadata>
   <files>
-    <file src="dist\app\*.js" target="Assets\js" />
+    <file src="dist\app\*.js" target="Content\Assets\js" />
   </files>
 </package>
