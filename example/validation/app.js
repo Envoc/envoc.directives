@@ -27,7 +27,7 @@ app.controller('MainCtrl', function($timeout) {
                 { propertyName: 'lastName', type: 'length', errorMessage: 'Last Name must be between 2 and 256 characters' }
             ];
 
-            viewModel.action = 'Submitting';
+            viewModel.action = 'Submit';
 
         }, 750);
     };
@@ -35,6 +35,6 @@ app.controller('MainCtrl', function($timeout) {
     init();
 
     function init() {
-        viewModel.action = 'Submitting';
+        viewModel.action = 'Submit';
     }
 });
