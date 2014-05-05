@@ -7,9 +7,10 @@ directives that can be reused throught projects.
 Prefix all directives with o
 
 Example:
-`
+
+```
 <div class="form-group" o-validation-message-for="firstName"></div>
-`
+```
 
 Installing
 ----
@@ -29,6 +30,13 @@ into the template cache.
 `
 gulp
 `
+
+Project Use
+----
+
+`Install-Package Envoc.Directives`
+
+*****
 
 Directives
 ----
