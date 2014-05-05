@@ -57,12 +57,12 @@ __where ctrl1.errors:__
 
 ```
 [
-    { propertyName: '', type: 'length', message: 'This is global' },
-    { propertyName: 'firstName', type: 'required', message: 'First Name is required' },
+    { propertyName: '', type: 'length', errorMessage: 'This is global' },
+    { propertyName: 'firstName', type: 'required', errorMessage: 'First Name is required' },
     { 
         propertyName: 'lastName', 
         type: 'length', 
-        message: 'Last Name must be between 2 and 256 characters' 
+        messageerrorMessage: 'Last Name must be between 2 and 256 characters' 
     }
 ];
 ```
