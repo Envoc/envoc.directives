@@ -3,7 +3,6 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     watch = require('gulp-watch'),
     concat = require('gulp-concat'),
-    notify = require('gulp-notify'),
     ngHtml2Js = require("gulp-ng-html2js");
 
 var base = { base: './src/app/' };
@@ -19,8 +18,7 @@ gulp.task('js', function() {
         ], base)
         .pipe(uglify())
         .pipe(concat("oDirectives.min.js"))
-        .pipe(gulp.dest('./dist/app/'))
-        .pipe(notify({ message: "Javascript is now ugly!" }));
+        .pipe(gulp.dest('./dist/app/'));
 });
 
 // templatify
@@ -43,3 +41,5 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', ['templatify', 'js', 'watch']);
+
+gulp.task('build', ['templatify', 'js']);
