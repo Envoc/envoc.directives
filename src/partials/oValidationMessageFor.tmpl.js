@@ -13,7 +13,7 @@ module.run(['$templateCache', function($templateCache) {
     '    <!-- Errors here -->\n' +
     '    <ul class="list-unstyled" ng-show="matches.length" ng-class="{\'alert alert-danger\': matches.length}">\n' +
     '        <li ng-repeat="error in matches">\n' +
-    '            <span class="field-validation-error">{{error.message}}</span>\n' +
+    '            <span class="field-validation-error">{{error.errorMessage}}</span>\n' +
     '        </li>\n' +
     '    </ul>\n' +
     '</div>');

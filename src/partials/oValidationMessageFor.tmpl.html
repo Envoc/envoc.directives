@@ -5,7 +5,7 @@
     <!-- Errors here -->
     <ul class="list-unstyled" ng-show="matches.length" ng-class="{'alert alert-danger': matches.length}">
         <li ng-repeat="error in matches">
-            <span class="field-validation-error">{{error.message}}</span>
+            <span class="field-validation-error">{{error.errorMessage}}</span>
         </li>
     </ul>
 </div>
