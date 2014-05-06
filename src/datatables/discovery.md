@@ -75,6 +75,13 @@ __oTableCtrl:__
     * Should this be a config object or just enumerable Angular Expression?
     * Thinking config to mimic response similar to datatables response
 * Will contain the main event bus upon which events such as pagination will be routed through
+* Proposed State Properties
+    * DataSrc
+    * DataSrcUrl
+    * SearchText
+    * ColumnSortArray
+    * ColumnFilterArray
+    * Pagination (See pagination below)
 
 oTableRepeat
 ----
@@ -110,7 +117,40 @@ oTablePagination
 
 _look into ui-bootstrap pagination_
 
+* Pagination should track:
+    * CurrentPage
+    * PageSize
+    * TotalRowCount (FilteredRowCount from server response)
+
 oTablePaginationPrevious && oTablePaginationNext
 ----
 
 These just need to emit events that can be caught by oTableCtrl
+
+*****
+
+Server Side Notes
+----
+
+__Response Structure__
+
+* I think actual data needs to be in an Array of Objects for simplicity.
+* Proposed Properties
+    * UnfilteredRowCount
+    * FilteredRowCount
+    * PageData
+
+```javascript
+{
+    UnfilteredRowCount: 100,
+    FilteredRowCount: 1,
+    PageData: [
+        {
+            id: 1,
+            firstName: 'Justin',
+            lastName: 'Obney',
+            position: 'Developer'
+        }
+    ]
+}
+```
