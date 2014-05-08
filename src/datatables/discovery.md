@@ -11,6 +11,7 @@ act as a client-side drop in replacement.
 * Give Envoc designers complete freedom in UI/UX
 
 ### Possible Directives:
+
 * oTable
     * oTableRepeat
         * oTableColumn

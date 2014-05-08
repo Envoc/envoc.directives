@@ -12,13 +12,13 @@
                     transclude: true,
                     scope: true,
                     link: function(scope, element, attr, oValidateWithCtrl) {
-                        var key = attr.oValidationMessageFor;
+                        var key = attr.oValidationMessageFor.toLowerCase();
                         scope.errors = oValidateWithCtrl.errors;
 
                         scope.$watch(getErrors, function(current, previous) {
                             if (current) {
                                 scope.matches = current.filter(function(error) {
-                                    return error.propertyName == key;
+                                    return error.propertyName.toLowerCase() == key;
                                 });
                             }
                         });
