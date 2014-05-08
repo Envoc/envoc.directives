@@ -32,13 +32,13 @@ __Possible Use Cases__
     </select>
     <table>
         <thead>
-            <tr>First Name</tr>
+            <tr o-table-column-sort key="firstName">First Name</tr>
             <tr>Full Name</tr>
             <tr>Job Position</tr>
         </thead>
         <tbody>
             <tr o-table-repeat>
-                <td o-table-column key="firstName" o-table-column-sort></td>
+                <td o-table-column key="firstName"></td>
                 <td o-table-column key="fullName()"></td>
                 <td o-table-column key="jobPosition"></td>
             </tr>
@@ -56,7 +56,7 @@ __Possible Use Cases__
         <option value="is there anything else?"></option>
     </select>
     <div o-table-repeat>
-        <div o-table-column key="firstName" o-table-column-sort></div>
+        <div o-table-column key="firstName"></div>
         <div o-table-column key="fullName()"></div>
     </div>
     <div o-table-column-sort key="firstName">Sort By First Name</div>
@@ -82,11 +82,14 @@ __oTableCtrl:__
     * ColumnSortArray
     * ColumnFilterArray
     * Pagination (See pagination below)
+* Maybe have an overridable `fetchData` method that will be given stateParams and expected to return a promise
 
 oTableRepeat
 ----
 
-Essentially just a `ng-repeat` that will contain `o-table-column` directives
+* Essentially just a `ng-repeat` that will contain `o-table-column` directives
+* Default action is to just repeat using the `key="propName"` notation
+* Maybe not required to allow a more custom actual ng-repeat implimentation in the view
 
 oTableColumn
 ----
@@ -107,7 +110,8 @@ Will set column filter properties of the oTableCtrl
 oTableColumnSort
 ----
 
-Will set column sort properties of the oTableCtrl
+* Will set column sort properties of the oTableCtrl
+* Will add prospective sort-state css-classes: `sortable sort-asc sort-desc`
 
 oTablePagination
 ----
