@@ -10,7 +10,7 @@ act as a client-side drop in replacement.
 * Build on Envoc.Core datatables server code (filtering/sorting/paging)
 * Give Envoc designers complete freedom in UI/UX
 
-__Possible Directives:__
+### Possible Directives:
 * oTable
     * oTableRepeat
         * oTableColumn
@@ -21,7 +21,15 @@ __Possible Directives:__
     * oTablePaginationPrevious (I don't know how I feel about these yet)
     * oTablePaginationNext
 
-__Possible Use Cases__
+### Possible Use Cases
+
+__Default__
+
+```html
+<div o-table config="dataSrc1Config">
+    <div o-table-default fields="id, firstName, lastName, position"></div>
+</div>
+```
 
 ```html
 <div o-table config="dataSrc1Config">
@@ -41,6 +49,12 @@ __Possible Use Cases__
                 <td o-table-column field="firstName"></td>
                 <td o-table-column field="fullName()"></td>
                 <td o-table-column field="jobPosition"></td>
+            </tr>
+            <!-- OR: Usgin ng-repeat -->
+            <tr ng-repeat="row in rows">
+                <td>{{row.firstName}}</td>
+                <td>{{row.fullName()}}</td>
+                <td>{{row.jobPosition}}</td>
             </tr>
         </tbody>
     </table>
@@ -126,7 +140,7 @@ _look into ui-bootstrap pagination_
     * PageSize
     * TotalRowCount (FilteredRowCount from server response)
 
-oTablePaginationPrevious && oTablePaginationNext
+oTablePaginationPrevious & oTablePaginationNext
 ----
 
 These just need to emit events that can be caught by oTableCtrl
@@ -138,8 +152,13 @@ Server Side Notes
 
 __Response Structure__
 
-* I think actual data needs to be in an Array of Objects for simplicity.
-* Proposed Properties
+__Update:__
+*After talking with Matthew, I am going to aim for the current Datatable response,
+to make sure the same server side classes can handle both angular and non-angular
+implementations*
+
+* ~~I think actual data needs to be in an Array of Objects for simplicity.~~
+* Proposed Properties - *Phase 2*
     * UnfilteredRowCount
     * FilteredRowCount
     * PageData
@@ -156,5 +175,34 @@ __Response Structure__
             position: 'Developer'
         }
     ]
+}
+```
+
+__Existing Request Structure__
+```
+TableEcho:10
+Skip:0
+Take:25
+AllSearch:1
+Columns[0].ColumnIndex:1
+Columns[0].SortDirection:asc
+Columns[1].ColumnIndex:2
+Columns[1].SortDirection:asc
+Columns[2].ColumnIndex:3
+Columns[2].SortDirection:desc
+```
+
+__Existing Response Structure__ `class FormattedList`
+
+```
+{
+    "sEcho": 1,
+    "iTotalRecords": 2,
+    "iTotalDisplayRecords": 2,
+    "aaData": [
+        [2, "\/Date(1383171547680)\/", null, "No", 4],
+        [1, "\/Date(1383171098853)\/", "\/Date(1383171394617)\/", "Yes", 1]
+    ],
+    "sColumns": "Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"
 }
 ```
