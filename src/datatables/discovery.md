@@ -26,21 +26,21 @@ __Possible Use Cases__
 ```html
 <div o-table config="dataSrc1Config">
     <input type="text" o-table-filter/>
-    <select o-table-column-filter key="jobPosition">
+    <select o-table-column-filter field="jobPosition">
         <option value="developer"></option>
         <option value="is there anything else?"></option>
     </select>
     <table>
         <thead>
-            <tr o-table-column-sort key="firstName">First Name</tr>
+            <tr o-table-column-sort field="firstName">First Name</tr>
             <tr>Full Name</tr>
             <tr>Job Position</tr>
         </thead>
         <tbody>
             <tr o-table-repeat>
-                <td o-table-column key="firstName"></td>
-                <td o-table-column key="fullName()"></td>
-                <td o-table-column key="jobPosition"></td>
+                <td o-table-column field="firstName"></td>
+                <td o-table-column field="fullName()"></td>
+                <td o-table-column field="jobPosition"></td>
             </tr>
         </tbody>
     </table>
@@ -51,15 +51,15 @@ __Possible Use Cases__
 ```html
 <div o-table config="dataSrc2Config">
     <input type="text" o-table-filter/>
-    <select o-table-column-filter key="jobPosition">
+    <select o-table-column-filter field="jobPosition">
         <option value="developer"></option>
         <option value="is there anything else?"></option>
     </select>
     <div o-table-repeat>
-        <div o-table-column key="firstName"></div>
-        <div o-table-column key="fullName()"></div>
+        <div o-table-column field="firstName"></div>
+        <div o-table-column field="fullName()"></div>
     </div>
-    <div o-table-column-sort key="firstName">Sort By First Name</div>
+    <div o-table-column-sort field="firstName">Sort By First Name</div>
     <div o-table-pagination config="configObj"></div>
 </div>
 ```
@@ -88,7 +88,7 @@ oTableRepeat
 ----
 
 * Essentially just a `ng-repeat` that will contain `o-table-column` directives
-* Default action is to just repeat using the `key="propName"` notation
+* Default action is to just repeat using the `field="propName"` notation
 * Maybe not required to allow a more custom actual ng-repeat implimentation in the view
 
 oTableColumn
