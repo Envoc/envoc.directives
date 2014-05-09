@@ -11,12 +11,13 @@ module.exports = function (config) {
         frameworks: ['jasmine'],
 
         files: [
-            "bower_components/angular/angular.js",
-            "bower_components/angular-mocks/angular-mocks.js",
-            "app/app.js",
-            "app/**/**.js",
-            "app/**/**.html",
-            "app/**/*.spec.js"
+            "_vendor/angular/angular.js",
+            "_vendor/angular-mocks/angular-mocks.js",
+            "app.js",
+            "validation/**/*.js",
+            "datatables/**/*.js",
+            "**/**.html",
+            "**/*.spec.js"
         ],
 
         // list of files to exclude
@@ -54,13 +55,14 @@ module.exports = function (config) {
         browsers: ['PhantomJS'],
 
         preprocessors: {
-            'App/**/*.html': 'ng-html2js'
+            'validation/**/*.html': 'ng-html2js',
+            'datatables/**/*.html': 'ng-html2js'
         },
 
         ngHtml2JsPreprocessor: {
             // setting this option will create only a single module that contains templates
             // from all the files, so you can load them all with module('foo')
-            moduleName: 'ngKarmaTemplates'
+            moduleName: 'envoc.directives.partials'
         },
 
         // If browser does not capture in given timeout [ms], kill it

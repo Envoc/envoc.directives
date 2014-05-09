@@ -33,10 +33,7 @@ gulp.task('templatify', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch([
-            './src/partials/**/*.js',
-            './src/app/**/*.js'
-    ], base, function () {
+    gulp.watch('./src/**/*.js', function () {
         gulp.run('js');
     });
 });
