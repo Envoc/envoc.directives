@@ -7,8 +7,6 @@
             function() {
                 return {
                     restrict: 'EA',
-                    transclude: true,
-                    template: '<div ng-transclude><div>',
                     scope: {
                         errors: "="
                     },
