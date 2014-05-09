@@ -20,14 +20,14 @@
         }));
 
         it('should compile and requires config', function() {
-            element = angular.element('<div o-table config="config"><div o-table-default></div></div>');
+            element = angular.element('<div o-table config="config"></div>');
             expect(compile).toThrow();
 
             scope.config = {
                 dataSrcUrl: '/data/get'
             }
 
-            element = angular.element('<div o-table config="config"><div o-table-default></div></div>');
+            element = angular.element('<div o-table config="config"></div>');
             expect(compile).not.toThrow();
 
             scope.config = {
@@ -37,7 +37,7 @@
                 ]
             }
 
-            element = angular.element('<div o-table config="config"><div o-table-default></div></div>');
+            element = angular.element('<div o-table config="config"></div>');
             expect(compile).not.toThrow();
 
             function compile() {
@@ -53,7 +53,7 @@
             });
 
             it('should post to config url', function() {
-                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default>{{data.iTotalRecords}}</div></div>');
+                element = angular.element('<div o-table config="config" id="childScope"></div>');
                 element = $compile(element)(scope);
 
                 $httpBackend
