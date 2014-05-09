@@ -30,6 +30,16 @@
             element = angular.element('<div o-table config="config"><div o-table-default></div></div>');
             expect(compile).not.toThrow();
 
+            scope.config = {
+                dataSrc: [
+                    {id: 1, name: 'bob'},
+                    {id: 2, name: 'john'}
+                ]
+            }
+
+            element = angular.element('<div o-table config="config"><div o-table-default></div></div>');
+            expect(compile).not.toThrow();
+
             function compile() {
                 element = $compile(element)(scope);
             }
@@ -56,6 +66,11 @@
             });
         });
     });
+
+    // TODO: Write oTableDefault Tests
+    // Cases:
+    //  -- Property not found on data-bound object
+    //  -- Handle triming the list
 
     var httpResponse1 = {
         "sEcho": 1,

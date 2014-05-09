@@ -14,10 +14,11 @@ gulp.task('js', function() {
             './build/partials/**/*.js',
             './src/app.js',
             './src/validation/**/*.js',
-            '!./src/app/**/*.spec.js',
+            './src/datatables/**/*.js',
+            '!./src/**/*.spec.js',
             '!./src/_vendor/**/*.js'
         ], base)
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(concat("oDirectives.min.js"))
         .pipe(gulp.dest('./dist/'));
 });
@@ -34,7 +35,7 @@ gulp.task('templatify', function () {
 
 gulp.task('watch', function () {
     gulp.watch('./src/**/*.js', function () {
-        gulp.run('js');
+        gulp.run('build');
     });
 });
 
