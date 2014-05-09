@@ -10,7 +10,7 @@
             this.init = function(config_) {
                 config = config_;
                 if (!config.dataSrcUrl && !config.dataSrc) {
-                    throw new Error('A data source is required')
+                    throw new Error('A data source is required');
                 }
 
                 config.dataSrcUrl ? this.fetch() : (this.data = config.dataSrc);
@@ -22,7 +22,7 @@
                     .then(dataFetchSuccess, dataFetchError);
 
                 function dataFetchSuccess(resp) {
-                    self.data = resp.data
+                    self.data = resp.data;
                 }
 
                 function dataFetchError() {

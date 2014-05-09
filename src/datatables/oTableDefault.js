@@ -10,8 +10,8 @@
                 restrict: 'EA',
                 scope: {},
                 compile: function compile(tElement, tAttrs, transclude) {
-                    if(!tAttrs.fields){
-                        throw new Error('No filed list included')
+                    if(!tAttrs.fields) {
+                        throw new Error('No filed list included');
                     }
 
                     var theBodyRow = tElement.find('tbody').find('tr');
