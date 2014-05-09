@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('envoc.directives')
+        .module('envoc.directives.validation')
         .directive('oValidationMessageFor', [
             function() {
                 return {
