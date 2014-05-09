@@ -65,12 +65,29 @@
                 // expect(element.text()).toBe(2);
             });
         });
+
+        describe('Directive: oTableDefault', function(){
+            beforeEach(function() {
+                scope.config = {
+                    dataSrc: [{id:1, name:'bob'}]
+                }
+            });
+
+            it('should throw without a field list', function() {
+                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default></div></div>');
+                expect(compile).toThrow();
+
+                function compile(){
+                    element = $compile(element)(scope);
+                    $rootScope.$digest();
+                }
+            });
+        });
     });
 
-    // TODO: Write oTableDefault Tests
-    // Cases:
-    //  -- Property not found on data-bound object
-    //  -- Handle triming the list
+    // TODO: Cases:
+    //  -- [X] Property not found on data-bound object
+    //  -- [ ] Handle triming the list
 
     var httpResponse1 = {
         "sEcho": 1,
