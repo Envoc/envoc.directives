@@ -3,7 +3,7 @@
 
     angular
         .module('envoc.directives.datatables')
-        .controller('oTableController', function($http) {
+        .controller('oTableCtrl', function($http) {
             var config,
                 self = this;
 
@@ -37,7 +37,7 @@
                 scope: {
                     config: '='
                 },
-                controller: 'oTableController',
+                controller: 'oTableCtrl',
                 controllerAs: 'oTableCtrl',
                 compile: function compile(tElement, tAttrs, transclude) {
                     return function postLink(scope, iElement, iAttrs, controller) {
