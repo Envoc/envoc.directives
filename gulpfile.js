@@ -11,6 +11,7 @@ var base = { base: './src/app/' };
 gulp.task('js', function() {
     // main app js file
     gulp.src([
+            //'./src/_vendor/lodash/dist/lodash.js',
             './build/partials/**/*.js',
             './src/app.js',
             './src/validation/**/*.js',
