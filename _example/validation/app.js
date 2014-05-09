@@ -1,4 +1,4 @@
-﻿var app = angular.module('plunker', ['envoc.directives']);
+﻿var app = angular.module('example.validation', ['envoc.directives']);
 
 // comment me out to see default template
 //app.run([

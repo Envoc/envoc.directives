@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html ng-app="example.datatables">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Envoc! Directives</title>
+    <link href="../bootstrap.min.css" rel="stylesheet" />
+    <style>
+        div.dataTables_length label {
+            float: left;
+            text-align: left
+        }
+        div.dataTables_length select {
+            width: 75px
+        }
+        div.dataTables_filter label {
+            float: right
+        }
+        div.dataTables_info {
+            padding-top: 8px
+        }
+        div.dataTables_paginate {
+            float: right;
+            margin: 0
+        }
+
+        thead tr {
+            background: #c2c2c2;
+        }
+    </style>
+    <script src="../../src/_vendor/angular/angular.min.js"></script>
+    <script src="../../dist/oDirectives.min.js"></script>
+    <script src="app.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row" ng-controller="MainCtrl as ctrl1">
+            
+            <div class="col-xs-12" o-table config="ctrl1.config">
+                <div o-table-default fields="id,name,position"></div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
