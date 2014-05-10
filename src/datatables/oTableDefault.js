@@ -30,9 +30,9 @@
                     }
 
                     return function postLink(scope, iElement, iAttrs, controller) {
-
                         ctor();
                         function ctor() {
+                            scope.ctrl = controller;
                             scope.$watch(getOTableData, applyToScope);
                         }
 
