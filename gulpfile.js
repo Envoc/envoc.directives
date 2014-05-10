@@ -11,13 +11,12 @@ var base = { base: './src/app/' };
 gulp.task('js', function() {
     // main app js file
     gulp.src([
-            //'./src/_vendor/lodash/dist/lodash.js',
+            './src/_vendor/ui.bootstrap/src/pagination/pagination.js',
             './build/partials/**/*.js',
             './src/app.js',
             './src/validation/**/*.js',
             './src/datatables/**/*.js',
-            '!./src/**/*.spec.js',
-            '!./src/_vendor/**/*.js'
+            '!./src/**/*.spec.js'
         ], base)
         //.pipe(uglify())
         .pipe(concat("oDirectives.min.js"))
@@ -35,7 +34,7 @@ gulp.task('templatify', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch('./src/**/*.js', function () {
+    gulp.watch('./src/**/*.*', function () {
         gulp.run('build');
     });
 });

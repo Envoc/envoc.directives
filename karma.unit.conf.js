@@ -11,17 +11,16 @@ module.exports = function (config) {
         frameworks: ['jasmine'],
 
         files: [
-            "_vendor/angular/angular.js",
-            "_vendor/angular-mocks/angular-mocks.js",
-            "app.js",
-            "validation/**/*.js",
-            "datatables/**/*.js",
-            "**/**.html",
-            "**/*.spec.js"
+            "src/_vendor/angular/angular.js",
+            "src/_vendor/angular-mocks/angular-mocks.js",
+            "dist/oDirectives.min.js",
+            "src/**/*.spec.js"
         ],
 
         // list of files to exclude
-        exclude: [],
+        exclude: [
+            "src/_vendor/**/*.spec.js"
+        ],
 
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
@@ -54,17 +53,17 @@ module.exports = function (config) {
         // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
         browsers: ['PhantomJS'],
 
-        preprocessors: {
-            'validation/**/*.html': 'ng-html2js',
-            'datatables/**/*.html': 'ng-html2js'
-        },
+        // preprocessors: {
+        //     'validation/**/*.html': 'ng-html2js',
+        //     'datatables/**/*.html': 'ng-html2js'
+        // },
 
-        ngHtml2JsPreprocessor: {
-            // setting this option will create only a single module that contains templates
-            // from all the files, so you can load them all with module('foo')
-            moduleName: 'envoc.directives.partials',
-            prependPrefix: '/oTemplates/'
-        },
+        // ngHtml2JsPreprocessor: {
+        //     // setting this option will create only a single module that contains templates
+        //     // from all the files, so you can load them all with module('foo')
+        //     moduleName: 'envoc.directives.partials',
+        //     prependPrefix: '/oTemplates/'
+        // },
 
         // If browser does not capture in given timeout [ms], kill it
         captureTimeout: 60000,
