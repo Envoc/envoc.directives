@@ -13,6 +13,7 @@ gulp.task('js', function() {
     gulp.src([
             './src/_vendor/ui.bootstrap/src/pagination/pagination.js',
             './build/partials/**/*.js',
+            './build/_vendor/**/*.js',
             './src/app.js',
             './src/validation/**/*.js',
             './src/datatables/**/*.js',
