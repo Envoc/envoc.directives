@@ -1,11 +1,12 @@
+<pre>{{ctrl.state|json}}</pre>
 <div class="dataTables_wrapper form-inline" role="grid">
     <div class="row">
         <div class="span6 pull-left">
             <div class="dataTables_length">
                 <label>
                     Show
-                    <select size="1" aria-controls="user-table">
-                        <option value="10" selected="selected">10</option>
+                    <select size="1" ng-model="ctrl.state.linesPerPage">
+                        <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
@@ -18,41 +19,31 @@
             <div class="dataTables_filter">
                 <label>
                     Search:
-                    <input type="text" aria-controls="user-table">
+                    <input type="text" ng-model="ctrl.state.allSearch">
                 </label>
             </div>
         </div>
     </div>
 
-    <table class="table table-striped dataTable" aria-describedby="user-table_info">
+    <table class="table table-striped dataTable">
         <thead>
             <tr role="row"></tr>
         </thead>
 
         <tbody role="alert" aria-live="polite" aria-relevant="all">
-            <tr ng-repeat="row in rows">
+            <tr ng-repeat="row in ctrl.data">
             </tr>
         </tbody>
     </table>
 
     <div class="row">
         <div class="span6 pull-left">
-            <div class="dataTables_info" id="user-table_info">Showing 1 to 4 of 4 entries</div>
+            <div class="dataTables_info" id="user-table_info">Showing {{ctrl.state.startIdx + 1}} to {{ctrl.state.startIdx + ctrl.state.linesPerPage}} of {{ctrl.state.iTotalRecords}} entries</div>
         </div>
 
         <div class="span6 pull-right">
             <div class="dataTables_paginate paging_bootstrap">
-                <ul class=" pagination">
-                    <li class="prev disabled">
-                        <a href="#">← Previous</a>
-                    </li>
-                    <li class="active">
-                        <a href="#">1</a>
-                    </li>
-                    <li class="next disabled">
-                        <a href="#">Next → </a>
-                    </li>
-                </ul>
+                <pagination total-items="ctrl.state.iTotalDisplayRecords" ng-model="ctrl.state.currentPage"></pagination>
             </div>
         </div>
     </div>
