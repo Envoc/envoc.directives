@@ -25,12 +25,21 @@ gulp.task('js', function() {
 
 // templatify
 gulp.task('templatify', function () {
-    gulp.src("./src/**/*.tmpl.html")
-    .pipe(ngHtml2Js({
-        moduleName: "envoc.directives.partials",
-        prefix: "/oTemplates/"
-    }))
-    .pipe(gulp.dest("./build/partials"));
+    gulp
+        .src("./src/**/*.tmpl.html")
+        .pipe(ngHtml2Js({
+            moduleName: "envoc.directives.partials",
+            prefix: "/oTemplates/"
+        }))
+        .pipe(gulp.dest("./build/partials"));
+
+    gulp
+        .src("./src/_vendor/ui.bootstrap/template/pagination/*.html")
+        .pipe(ngHtml2Js({
+            moduleName: "envoc.directives.partials",
+            prefix: "template/pagination/"
+        }))
+        .pipe(gulp.dest("./build/_vendor/templates"));
 });
 
 gulp.task('watch', function () {

@@ -10,23 +10,28 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="row">\n' +
     '        <div class="span6 pull-left">\n' +
     '            <div class="dataTables_length">\n' +
-    '                <label>Show\n' +
+    '                <label>\n' +
+    '                    Show\n' +
     '                    <select size="1" aria-controls="user-table">\n' +
     '                        <option value="10" selected="selected">10</option>\n' +
     '                        <option value="25">25</option>\n' +
     '                        <option value="50">50</option>\n' +
     '                        <option value="100">100</option>\n' +
-    '                    </select>entries</label>\n' +
+    '                    </select>\n' +
+    '                    entries\n' +
+    '                </label>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '        <div class="span6 pull-right">\n' +
     '            <div class="dataTables_filter">\n' +
-    '                <label>Search:\n' +
+    '                <label>\n' +
+    '                    Search:\n' +
     '                    <input type="text" aria-controls="user-table">\n' +
     '                </label>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
+    '\n' +
     '    <table class="table table-striped dataTable" aria-describedby="user-table_info">\n' +
     '        <thead>\n' +
     '            <tr role="row"></tr>\n' +
@@ -34,16 +39,15 @@ module.run(['$templateCache', function($templateCache) {
     '\n' +
     '        <tbody role="alert" aria-live="polite" aria-relevant="all">\n' +
     '            <tr ng-repeat="row in rows">\n' +
-    '                <td>\n' +
-    '                    {{row}}\n' +
-    '                </td>\n' +
     '            </tr>\n' +
     '        </tbody>\n' +
     '    </table>\n' +
+    '\n' +
     '    <div class="row">\n' +
     '        <div class="span6 pull-left">\n' +
     '            <div class="dataTables_info" id="user-table_info">Showing 1 to 4 of 4 entries</div>\n' +
     '        </div>\n' +
+    '\n' +
     '        <div class="span6 pull-right">\n' +
     '            <div class="dataTables_paginate paging_bootstrap">\n' +
     '                <ul class=" pagination">\n' +
