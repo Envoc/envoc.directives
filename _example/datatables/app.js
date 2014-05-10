@@ -11,8 +11,8 @@ app.controller('MainCtrl', function($timeout) {
     init();
 
     function init() {
-        _.times(20, function(n){
-            viewModel.config.dataSrc.push({ id: n, name: 'john', position: ':{ PM ===>' });
+        _.times(100, function(n){
+            viewModel.config.dataSrc.push({ id: n, name: (n%2==1?'john':'bob'), position: ':{ PM ===>' });
         });
     }
 });
