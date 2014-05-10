@@ -3,9 +3,32 @@
 
     angular
         .module('envoc.directives.datatables')
-        .controller('oTableCtrl', function($http) {
+        .filter('startFrom', function() {
+            return function(input, start) {
+                if (input === undefined) {
+                    return input;
+                } else {
+                    return input.slice(+start);
+                }
+            };
+        })
+        .controller('oTableCtrl', function($scope, $http, $filter) {
             var config,
-                self = this;
+                dataCache = [],
+                self = this,
+                limitTo = $filter('limitTo'),
+                filter = $filter('filter'),
+                startFrom = $filter('startFrom');
+
+            this.state = {
+                currentPage: 1,
+                linesPerPage: 10,
+                iTotalRecords: 0,
+                iTotalDisplayRecords: 0,
+                allSearch: ''
+            };
+
+            this.events = {};
 
             this.init = function(config_) {
                 config = config_;
@@ -13,7 +36,11 @@
                     throw new Error('A data source is required');
                 }
 
-                config.dataSrcUrl ? this.fetch() : (this.data = config.dataSrc);
+                if (config.dataSrcUrl) {
+                    this.fetch()
+                } else {
+                    initClientSide();
+                }
             }
 
             this.fetch = function() {
@@ -28,6 +55,52 @@
                 function dataFetchError() {
                     alert('Error fetching data');
                 }
+            }
+
+            function initClientSide(){
+                dataCache = config.dataSrc;
+                self.state.iTotalRecords = self.state.iTotalDisplayRecords = config.dataSrc.length;
+                calculateVisible();
+                setupWatches();
+            }
+
+            function calculateVisible(){
+                var clone = angular.copy(dataCache);
+
+                if(self.state.allSearch){
+                    clone = filter(clone, self.state.allSearch);
+                    self.state.iTotalDisplayRecords = clone.length;
+                } else {
+                    self.state.iTotalDisplayRecords = dataCache.length;
+                }
+
+                self.state.startIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
+                
+                // handle going off the page
+                while (self.state.startIdx > clone.length){
+                    self.state.currentPage--;
+                    self.state.startIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
+                }
+
+                self.data = limitTo(startFrom(clone, self.state.startIdx), self.state.linesPerPage);
+            }
+
+            function setupWatches(){
+                $scope.$watch(watchCurrentPage, calculateVisible);
+                $scope.$watch(watchLinesPerPage, calculateVisible);
+                $scope.$watch(watchAllSearch, calculateVisible);
+            }
+
+            function watchCurrentPage(){
+                return self.state.currentPage;
+            }
+
+            function watchLinesPerPage(){
+                return self.state.linesPerPage;
+            }
+
+            function watchAllSearch(){
+                return self.state.allSearch;
             }
         })
         .directive('oTable', function() {
