@@ -74,15 +74,16 @@
                     self.state.iTotalDisplayRecords = dataCache.length;
                 }
 
-                self.state.startIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
+                self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
                 
                 // handle going off the page
-                while (self.state.startIdx > clone.length){
+                while (self.state.pageStartIdx > clone.length){
                     self.state.currentPage--;
-                    self.state.startIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
+                    self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
                 }
 
-                self.data = limitTo(startFrom(clone, self.state.startIdx), self.state.linesPerPage);
+                self.data = limitTo(startFrom(clone, self.state.pageStartIdx), self.state.linesPerPage);
+                self.state.pageStopIdx = self.state.pageStartIdx + self.data.length
             }
 
             function setupWatches(){

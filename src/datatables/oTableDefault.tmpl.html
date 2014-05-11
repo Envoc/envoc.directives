@@ -38,7 +38,17 @@
 
     <div class="row">
         <div class="span6 pull-left">
-            <div class="dataTables_info" id="user-table_info">Showing {{ctrl.state.startIdx + 1}} to {{ctrl.state.startIdx + ctrl.data.length}} of {{ctrl.state.iTotalRecords}} entries</div>
+            <div class="dataTables_info" id="user-table_info">
+                Showing
+                {{ctrl.state.pageStartIdx + 1}}
+                to {{ctrl.state.pageStopIdx}}
+                of
+                {{ctrl.state.iTotalDisplayRecords}}
+                entries
+                <span ng-show="ctrl.state.iTotalRecords !== ctrl.state.iTotalDisplayRecords">
+                    (filtered from {{ctrl.state.iTotalRecords}})
+                </span>
+                </div>
         </div>
 
         <div class="span6 pull-right">
