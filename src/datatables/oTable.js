@@ -1,129 +1,172 @@
 (function() {
     'use strict';
 
-    angular
-        .module('envoc.directives.datatables')
-        .filter('startFrom', function() {
-            return function(input, start) {
-                if (input === undefined) {
-                    return input;
-                } else {
-                    return input.slice(+start);
-                }
-            };
-        })
-        .controller('oTableCtrl', function($scope, $http, $filter) {
-            var config,
-                dataCache = [],
-                self = this,
-                limitTo = $filter('limitTo'),
-                filter = $filter('filter'),
-                startFrom = $filter('startFrom');
+    var app = angular.module('envoc.directives.datatables');
 
-            this.state = {
-                currentPage: 1,
-                linesPerPage: 10,
-                iTotalRecords: 0,
-                iTotalDisplayRecords: 0,
-                allSearch: ''
-            };
+    app.filter('startFrom', function() {
+        return function(input, start) {
+            if (input === undefined) {
+                return input;
+            } else {
+                return input.slice(+start);
+            }
+        };
+    });
+    
+    app.controller('oTableCtrl', function($scope, $http, $filter) {
+        var self = this,
+            config = {
+                fetchMethod: defaultFetch
+            },
+            dataCache = [],
+            limitTo = $filter('limitTo'),
+            filter = $filter('filter'),
+            startFrom = $filter('startFrom');
 
-            this.events = {};
+        this.state = {
+            currentPage: 1,
+            linesPerPage: 10,
+            iTotalRecords: 0,
+            iTotalDisplayRecords: 0,
+            allSearch: ''
+        };
 
-            this.init = function(config_) {
-                config = config_;
-                if (!config.dataSrcUrl && !config.dataSrc) {
-                    throw new Error('A data source is required');
-                }
+        this.init = function(config_) {
+            angular.extend(config, config_);
 
-                if (config.dataSrcUrl) {
-                    this.fetch()
-                } else {
-                    initClientSide();
-                }
+            if (!config.dataSrcUrl && !config.dataSrc && !config.fetchMethod) {
+                throw new Error('A data source is required');
             }
 
-            this.fetch = function() {
-                $http
-                    .post(config.dataSrcUrl)
-                    .then(dataFetchSuccess, dataFetchError);
+            if (config.dataSrc) {
+                initClientSide();
+            } else {
+                this.fetch();
+            }
+        }
 
-                function dataFetchSuccess(resp) {
-                    self.data = resp.data;
-                }
+        this.fetch = function() {
+            config
+                .fetchMethod()
+                .then(dataFetchSuccess, dataFetchError);
+        }
 
-                function dataFetchError() {
-                    alert('Error fetching data');
-                }
+        // =================================
+        //          DATA-BINDING
+        // =================================
+
+        function calculateVisible(){
+            var clone = angular.copy(dataCache);
+
+            if(self.state.allSearch){
+                clone = filter(clone, self.state.allSearch);
+                self.state.iTotalDisplayRecords = clone.length;
+            } else {
+                self.state.iTotalDisplayRecords = dataCache.length;
             }
 
-            function initClientSide(){
-                dataCache = config.dataSrc;
-                self.state.iTotalRecords = self.state.iTotalDisplayRecords = config.dataSrc.length;
-                calculateVisible();
-                setupWatches();
-            }
-
-            function calculateVisible(){
-                var clone = angular.copy(dataCache);
-
-                if(self.state.allSearch){
-                    clone = filter(clone, self.state.allSearch);
-                    self.state.iTotalDisplayRecords = clone.length;
-                } else {
-                    self.state.iTotalDisplayRecords = dataCache.length;
-                }
-
+            self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
+            
+            // handle going off the page
+            while (self.state.pageStartIdx > clone.length){
+                self.state.currentPage--;
                 self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
+            }
+
+            self.data = limitTo(startFrom(clone, self.state.pageStartIdx), self.state.linesPerPage);
+            self.state.pageStopIdx = self.state.pageStartIdx + self.data.length
+        }
+
+        // =================================
+        //          LOCAL DATA
+        // =================================
+
+        function initClientSide(){
+            dataCache = config.dataSrc;
+            self.state.iTotalRecords = self.state.iTotalDisplayRecords = config.dataSrc.length;
+            calculateVisible();
+            setupWatches();
+        }
+
+        // =================================
+        //          REMOTE DATA
+        // =================================
+
+        function defaultFetch(){
+            return $http.post(config.dataSrcUrl)
+        }
+
+        function transposeDataSet(response){
+            var columnArray = response.sColumns.split(',');
+            var transposed = response.aaData.map(convertArrayToObject);
+
+            return transposed;
+
+            function convertArrayToObject(valueArray){
+                var obj = {};
                 
-                // handle going off the page
-                while (self.state.pageStartIdx > clone.length){
-                    self.state.currentPage--;
-                    self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
+                columnArray.forEach(mapKeyToIndex);
+
+                return obj;
+
+                function mapKeyToIndex(key, idx){
+                    obj[key] = valueArray[idx];
                 }
-
-                self.data = limitTo(startFrom(clone, self.state.pageStartIdx), self.state.linesPerPage);
-                self.state.pageStopIdx = self.state.pageStartIdx + self.data.length
             }
+        }
 
-            function setupWatches(){
-                $scope.$watch(watchCurrentPage, calculateVisible);
-                $scope.$watch(watchLinesPerPage, calculateVisible);
-                $scope.$watch(watchAllSearch, calculateVisible);
+        function dataFetchSuccess(resp) {
+            self.data = dataCache = transposeDataSet(resp.data);
+            calculateVisible();
+        }
 
-                $scope.$watchCollection(watchClientDataSrc, calculateVisible);
-            }
+        function dataFetchError() {
+            alert('Error fetching data');
+        }
 
-            function watchCurrentPage(){
-                return self.state.currentPage;
-            }
+        // =================================
+        //          WATCHES
+        // =================================
 
-            function watchLinesPerPage(){
-                return self.state.linesPerPage;
-            }
+        function setupWatches(){
+            $scope.$watch(watchCurrentPage, calculateVisible);
+            $scope.$watch(watchLinesPerPage, calculateVisible);
+            $scope.$watch(watchAllSearch, calculateVisible);
 
-            function watchAllSearch(){
-                return self.state.allSearch;
-            }
+            $scope.$watchCollection(watchClientDataSrc, calculateVisible);
+        }
 
-            function watchClientDataSrc(){
-                return dataCache;
-            }
-        })
-        .directive('oTable', function() {
-            return {
-                priority: 800,
-                restrict: 'EA',
-                scope: {
-                    config: '='
-                },
-                controller: 'oTableCtrl',
-                controllerAs: 'oTableCtrl',
-                compile: function compile(tElement, tAttrs, transclude) {
-                    return function postLink(scope, iElement, iAttrs, controller) {
-                        controller.init(scope.config);
-                    }
+        function watchCurrentPage(){
+            return self.state.currentPage;
+        }
+
+        function watchLinesPerPage(){
+            return self.state.linesPerPage;
+        }
+
+        function watchAllSearch(){
+            return self.state.allSearch;
+        }
+
+        function watchClientDataSrc(){
+            return dataCache;
+        }
+    });
+    
+    app.directive('oTable', function() {
+        return {
+            priority: 800,
+            restrict: 'EA',
+            scope: {
+                config: '='
+            },
+            controller: 'oTableCtrl',
+            controllerAs: 'oTableCtrl',
+            compile: function compile(tElement, tAttrs, transclude) {
+                return function postLink(scope, iElement, iAttrs, controller) {
+                    controller.init(scope.config);
                 }
-            };
-        });
+            }
+        };
+    });
 })();

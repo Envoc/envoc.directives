@@ -9,6 +9,7 @@
         var $rootScope,
             $compile,
             $httpBackend,
+            $q,
             element,
             scope;
 
@@ -16,6 +17,7 @@
             $rootScope = $injector.get('$rootScope');
             $compile = $injector.get('$compile');
             $httpBackend = $injector.get('$httpBackend');
+            $q = $injector.get('$q');
             scope = $rootScope.$new();
         }));
 
@@ -64,6 +66,28 @@
                 $rootScope.$digest();
                 // expect(element.text()).toBe(2);
             });
+
+            it('should call fetchMethod if provided', function() {
+                element = angular.element('<div o-table config="config" id="childScope"></div>');
+
+                delete scope.config.dataSrcUrl;
+
+                var spy = jasmine.createSpy()
+
+                function fetchMethod(){
+                    var dfd = $q.defer();
+                    spy();
+                    dfd.resolve({data:httpResponse1});
+                    return dfd.promise;
+                };
+
+                scope.config.fetchMethod = fetchMethod;
+
+                element = $compile(element)(scope);
+
+                $rootScope.$digest();
+                expect(spy).toHaveBeenCalled();
+            });
         });
 
         describe('Directive: oTableDefault', function(){
@@ -110,25 +134,22 @@
             });
         });
 
-        // describe('Directive: oTableDefault', function(){
-        //     beforeEach(function() {
-        //         scope.config = {
-        //             dataSrcUrl: '/data/get'
-        //         }
+        describe('Directive: oTableDefault', function(){
+            beforeEach(function() {
+                scope.config = {
+                    dataSrcUrl: '/data/get'
+                }
 
-        //         $httpBackend.when('GET', '/data/get').respond(httpResponse1);
-        //     });
+                $httpBackend.when('POST', '/data/get').respond(httpResponse1);
+            });
 
-        //     it('should throw without a field list', function() {
-        //         element = angular.element('<div o-table config="config" id="childScope"><div o-table-default></div></div>');
-        //         expect(compile).toThrow();
+            it('should throw without a field list', function() {
+                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default fields="Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"></div></div>');
+                element = $compile(element)(scope);
+                $rootScope.$digest();
 
-        //         function compile(){
-        //             element = $compile(element)(scope);
-        //             $rootScope.$digest();
-        //         }
-        //     });
-        // });
+            });
+        });
     });
 
     // TODO: Cases:
