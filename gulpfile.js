@@ -23,6 +23,7 @@ gulp.task('js', function() {
     // main app js file
     gulp.src([
             './src/_vendor/ui.bootstrap/src/pagination/pagination.js',
+            // './src/_vendor/moment/moment.js',
             './build/partials/**/*.js',
             './build/_vendor/**/*.js',
             './src/app.js',
