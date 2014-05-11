@@ -90,6 +90,8 @@
                 $scope.$watch(watchCurrentPage, calculateVisible);
                 $scope.$watch(watchLinesPerPage, calculateVisible);
                 $scope.$watch(watchAllSearch, calculateVisible);
+
+                $scope.$watchCollection(watchClientDataSrc, calculateVisible);
             }
 
             function watchCurrentPage(){
@@ -102,6 +104,10 @@
 
             function watchAllSearch(){
                 return self.state.allSearch;
+            }
+
+            function watchClientDataSrc(){
+                return dataCache;
             }
         })
         .directive('oTable', function() {

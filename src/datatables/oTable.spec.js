@@ -83,6 +83,52 @@
                 }
             });
         });
+
+        describe('Databinding', function(){
+            beforeEach(function() {
+                scope.config = {
+                    dataSrc: [{id:1, name:'bob'}]
+                }
+            });
+
+            it('should throw without a field list', function() {
+                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default fields="id,name"></div></div>');
+                element = $compile(element)(scope);
+                $rootScope.$digest();
+                
+                var tbody = element.find('tbody');
+                var rowCount = tbody.find('tr').length;
+
+                expect(rowCount).toBe(1);
+
+                scope.config.dataSrc.push({id:2, name:'john'});
+                $rootScope.$digest();
+
+                rowCount = tbody.find('tr').length;
+
+                expect(rowCount).toBe(2);
+            });
+        });
+
+        // describe('Directive: oTableDefault', function(){
+        //     beforeEach(function() {
+        //         scope.config = {
+        //             dataSrcUrl: '/data/get'
+        //         }
+
+        //         $httpBackend.when('GET', '/data/get').respond(httpResponse1);
+        //     });
+
+        //     it('should throw without a field list', function() {
+        //         element = angular.element('<div o-table config="config" id="childScope"><div o-table-default></div></div>');
+        //         expect(compile).toThrow();
+
+        //         function compile(){
+        //             element = $compile(element)(scope);
+        //             $rootScope.$digest();
+        //         }
+        //     });
+        // });
     });
 
     // TODO: Cases:
