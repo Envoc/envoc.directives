@@ -61,7 +61,7 @@ module.run(['$templateCache', function($templateCache) {
     '\n' +
     '        <div class="span6 pull-right">\n' +
     '            <div class="dataTables_paginate paging_bootstrap">\n' +
-    '                <pagination total-items="ctrl.state.iTotalDisplayRecords" ng-model="ctrl.state.currentPage"></pagination>\n' +
+    '                <pagination total-items="ctrl.state.iTotalDisplayRecords" items-per-page="ctrl.state.linesPerPage" ng-model="ctrl.state.currentPage"></pagination>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
