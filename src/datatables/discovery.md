@@ -91,13 +91,17 @@ __oTableCtrl:__
     * Thinking config to mimic response similar to datatables response
 * Will contain the main event bus upon which events such as pagination will be routed through
 * Proposed State Properties
-    * DataSrc
-    * DataSrcUrl
     * SearchText
     * ColumnSortArray
     * ColumnFilterArray
     * Pagination (See pagination below)
-* Maybe have an overridable `fetchData` method that will be given stateParams and expected to return a promise
+* Config
+    * DataSrc
+    * DataSrcUrl
+    * FetchMethod
+        * Returns: promise
+        * The data returned from the promise should return a structure conforming to the 
+          datatables response strucutre
 
 oTableRepeat
 ----
