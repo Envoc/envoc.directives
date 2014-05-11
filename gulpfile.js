@@ -1,4 +1,5 @@
 var gulp = require('gulp'),
+    clean = require('gulp-clean'),
     gutil = require('gulp-util'),
     uglify = require('gulp-uglify'),
     watch = require('gulp-watch'),
@@ -6,6 +7,16 @@ var gulp = require('gulp'),
     ngHtml2Js = require("gulp-ng-html2js");
 
 var base = { base: './src/app/' };
+
+// =====================================
+//              Tasks
+// =====================================
+
+gulp.task('clean', function(){
+  gulp
+    .src(['./dist/*'], {read:false})
+    .pipe(clean());
+});
 
 // uglify task
 gulp.task('js', function() {
@@ -51,4 +62,4 @@ gulp.task('watch', function () {
 
 gulp.task('default', ['templatify', 'js', 'watch']);
 
-gulp.task('build', ['templatify', 'js']);
+gulp.task('build', ['clean', 'templatify', 'js']);
