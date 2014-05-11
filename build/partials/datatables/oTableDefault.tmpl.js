@@ -27,7 +27,7 @@ module.run(['$templateCache', function($templateCache) {
     '            <div class="dataTables_filter">\n' +
     '                <label>\n' +
     '                    Search:\n' +
-    '                    <input type="text" ng-model="ctrl.state.allSearch">\n' +
+    '                    <input type="text" o-table-filter>\n' +
     '                </label>\n' +
     '            </div>\n' +
     '        </div>\n' +

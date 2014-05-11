@@ -169,4 +169,21 @@
             }
         };
     });
+
+    app.directive('oTableFilter', function() {
+        return {
+            restrict: 'A',
+            scope: true,
+            require: '^oTable',
+            link: function postLink(scope, iElement, iAttrs, controller) {
+                iElement.on('keyup', setAllSearch)
+                
+                function setAllSearch(){
+                    scope.$evalAsync(function(){
+                        controller.state.allSearch = iElement.val();
+                    });
+                }
+            }
+        };
+    });
 })();
