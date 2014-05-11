@@ -47,11 +47,8 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="row">\n' +
     '        <div class="span6 pull-left">\n' +
     '            <div class="dataTables_info" id="user-table_info">\n' +
-    '                Showing\n' +
-    '                {{ctrl.state.pageStartIdx + 1}}\n' +
-    '                to {{ctrl.state.pageStopIdx}}\n' +
-    '                of\n' +
-    '                {{ctrl.state.iTotalDisplayRecords}}\n' +
+    '                {{ctrl.state.pageStartIdx + 1}} - {{ctrl.state.pageStopIdx}}\n' +
+    '                of {{ctrl.state.iTotalDisplayRecords}}\n' +
     '                entries\n' +
     '                <span ng-show="ctrl.state.iTotalRecords !== ctrl.state.iTotalDisplayRecords">\n' +
     '                    (filtered from {{ctrl.state.iTotalRecords}})\n' +
