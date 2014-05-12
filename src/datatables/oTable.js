@@ -2,16 +2,6 @@
     'use strict';
 
     var app = angular.module('envoc.directives.datatables');
-
-    app.filter('startFrom', function() {
-        return function(input, start) {
-            if (input === undefined) {
-                return input;
-            } else {
-                return input.slice(+start);
-            }
-        };
-    });
     
     app.controller('oTableCtrl', function($scope, $http, $filter) {
         var self = this,
@@ -193,72 +183,6 @@
                 return function postLink(scope, iElement, iAttrs, controller) {
                     controller.init(scope.config);
                 }
-            }
-        };
-    });
-
-    app.directive('oTableFilter', function() {
-        return {
-            restrict: 'A',
-            scope: true,
-            require: '^oTable',
-            link: function postLink(scope, iElement, iAttrs, controller) {
-                iElement.on('keyup change', setAllSearch)
-                
-                function setAllSearch(){
-                    scope.$evalAsync(function(){
-                        controller.state.allSearch = iElement.val();
-                    });
-                }
-            }
-        };
-    });
-
-    app.directive('oTableLinesPerPage', function() {
-        return {
-            restrict: 'A',
-            replace: true,
-            scope: true,
-            templateUrl: '/oTemplates/datatables/oTableLinesPerPage.tmpl.html',
-            require: '^oTable',
-            link: function postLink(scope, iElement, iAttrs, controller) {
-                scope.ctrl = controller;
-            }
-        };
-    });
-
-    app.directive('oTablePageInfo', function() {
-        return {
-            restrict: 'A',
-            replace: true,
-            scope: true,
-            templateUrl: '/oTemplates/datatables/oTablePageInfo.tmpl.html',
-            require: '^oTable',
-            link: function postLink(scope, iElement, iAttrs, controller) {
-                scope.ctrl = controller;
-            }
-        };
-    });
-
-    app.directive('oTablePagination', function() {
-        return {
-            restrict: 'A',
-            scope: true,
-            templateUrl: '/oTemplates/datatables/oTablePagination.tmpl.html',
-            require: '^oTable',
-            link: function postLink(scope, iElement, iAttrs, controller) {
-                scope.ctrl = controller;
-            }
-        };
-    });
-
-    app.directive('oTableRepeat', function() {
-        return {
-            restrict: 'A',
-            scope: true,
-            require: '^oTable',
-            link: function postLink(scope, iElement, iAttrs, controller) {
-                scope.ctrl = controller;
             }
         };
     });
