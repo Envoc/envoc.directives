@@ -213,4 +213,42 @@
             }
         };
     });
+
+    app.directive('oTableLinesPerPage', function() {
+        return {
+            restrict: 'A',
+            replace: true,
+            scope: true,
+            templateUrl: '/oTemplates/datatables/oTableLinesPerPage.tmpl.html',
+            require: '^oTable',
+            link: function postLink(scope, iElement, iAttrs, controller) {
+                scope.ctrl = controller;
+            }
+        };
+    });
+
+    app.directive('oTablePageInfo', function() {
+        return {
+            restrict: 'A',
+            replace: true,
+            scope: true,
+            templateUrl: '/oTemplates/datatables/oTablePageInfo.tmpl.html',
+            require: '^oTable',
+            link: function postLink(scope, iElement, iAttrs, controller) {
+                scope.ctrl = controller;
+            }
+        };
+    });
+
+    app.directive('oTablePagination', function() {
+        return {
+            restrict: 'A',
+            scope: true,
+            templateUrl: '/oTemplates/datatables/oTablePagination.tmpl.html',
+            require: '^oTable',
+            link: function postLink(scope, iElement, iAttrs, controller) {
+                scope.ctrl = controller;
+            }
+        };
+    });
 })();

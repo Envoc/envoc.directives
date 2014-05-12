@@ -16,7 +16,14 @@ app.controller('MainCtrl', function(FakeService) {
 
     function init() {
         _.times(33, function(n){
-            viewModel.config2.dataSrc.push({id:n+1, name:'User '+ n, position: 'Developer Level ' + (n+1)});
+            viewModel
+                .config2
+                .dataSrc
+                .push({
+                    id:n+1, 
+                    name:'User '+ n, 
+                    position: 'Developer Level ' + (n+1)
+                });
         })
     }
 });

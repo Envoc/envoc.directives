@@ -1,0 +1,8 @@
+<div class="dataTables_info">
+    {{ctrl.state.pageStartIdx + 1}} - {{ctrl.state.pageStopIdx}}
+    of {{ctrl.state.iTotalDisplayRecords}}
+    entries
+    <span ng-show="ctrl.state.iTotalRecords !== ctrl.state.iTotalDisplayRecords">
+        (filtered from {{ctrl.state.iTotalRecords}})
+    </span>
+</div>

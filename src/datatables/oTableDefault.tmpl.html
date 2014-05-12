@@ -1,18 +1,8 @@
-<pre>{{ctrl.state|json}}</pre>
 <div class="dataTables_wrapper form-inline" role="grid">
     <div class="row">
         <div class="span6 pull-left">
             <div class="dataTables_length">
-                <label>
-                    Show
-                    <select size="1" ng-model="ctrl.state.linesPerPage">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                    entries
-                </label>
+                <div o-table-lines-per-page></div>
             </div>
         </div>
         <div class="span6 pull-right">
@@ -38,19 +28,12 @@
 
     <div class="row">
         <div class="span6 pull-left">
-            <div class="dataTables_info" id="user-table_info">
-                {{ctrl.state.pageStartIdx + 1}} - {{ctrl.state.pageStopIdx}}
-                of {{ctrl.state.iTotalDisplayRecords}}
-                entries
-                <span ng-show="ctrl.state.iTotalRecords !== ctrl.state.iTotalDisplayRecords">
-                    (filtered from {{ctrl.state.iTotalRecords}})
-                </span>
-                </div>
+            <div o-table-page-info></div>
         </div>
 
         <div class="span6 pull-right">
             <div class="dataTables_paginate paging_bootstrap">
-                <pagination total-items="ctrl.state.iTotalDisplayRecords" items-per-page="ctrl.state.linesPerPage" ng-model="ctrl.state.currentPage"></pagination>
+                <div o-table-pagination></div>
             </div>
         </div>
     </div>
