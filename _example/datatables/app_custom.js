@@ -4,7 +4,8 @@ app.controller('MainCtrl', function() {
     var viewModel = this;
 
     viewModel.config = {
-        dataSrc: []
+        dataSrc: [],
+        linesPerPage:5
     };
 
     init();
@@ -16,8 +17,11 @@ app.controller('MainCtrl', function() {
                 .dataSrc
                 .push({
                     id:n+1, 
-                    name:'User '+ n, 
-                    position: 'Developer Level ' + (n+1)
+                    image: Faker.Image.imageUrl(), 
+                    date: Faker.Date.recent(999),
+                    tags: Faker.Lorem.words(),
+                    title: Faker.Lorem.sentence(),
+                    summary: Faker.Lorem.paragraph()
                 });
         })
     }
