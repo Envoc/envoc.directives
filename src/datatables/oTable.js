@@ -73,11 +73,11 @@
             // handle going off the page
             while (self.state.pageStartIdx > clone.length){
                 self.state.currentPage--;
-                self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
+                calcPageStart()
             }
 
             self.data = limitTo(startFrom(clone, self.state.pageStartIdx), self.state.linesPerPage);
-            self.state.pageStopIdx = self.state.pageStartIdx + self.data.length
+            calcPageStop();
         }
 
         // =================================
@@ -129,7 +129,10 @@
 
         function dataFetchSuccess(resp) {
             self.data = dataCache = transposeDataSet(resp.data);
-            calculateVisible();
+            self.state.iTotalRecords = resp.data.iTotalRecords;
+            self.state.iTotalDisplayRecords = resp.data.iTotalDisplayRecords;
+            calcPageStart();
+            calcPageStop();
         }
 
         function dataFetchError() {
@@ -162,6 +165,18 @@
 
         function watchClientDataSrc(){
             return dataCache;
+        }
+
+        // =================================
+        //          STATE MANAGEMENT
+        // =================================
+        
+        function calcPageStart(){
+            self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
+        }
+
+        function calcPageStop(){
+            self.state.pageStopIdx = self.state.pageStartIdx + self.data.length;
         }
     });
     
