@@ -23,7 +23,11 @@ module.run(['$templateCache', function($templateCache) {
     '        </div>\n' +
     '    </div>\n' +
     '\n' +
-    '    <table class="table table-striped dataTable">\n' +
+    '    <div class="alert alert-info" ng-hide="ctrl.data.length">\n' +
+    '        <strong>No data found...</strong>\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <table class="table table-striped dataTable" ng-show="ctrl.data.length">\n' +
     '        <thead>\n' +
     '            <tr role="row"></tr>\n' +
     '        </thead>\n' +
@@ -34,7 +38,7 @@ module.run(['$templateCache', function($templateCache) {
     '        </tbody>\n' +
     '    </table>\n' +
     '\n' +
-    '    <div class="row">\n' +
+    '    <div class="row" ng-show="ctrl.data.length">\n' +
     '        <div class="span6 pull-left">\n' +
     '            <div o-table-page-info></div>\n' +
     '        </div>\n' +

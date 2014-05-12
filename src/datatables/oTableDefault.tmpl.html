@@ -15,7 +15,11 @@
         </div>
     </div>
 
-    <table class="table table-striped dataTable">
+    <div class="alert alert-info" ng-hide="ctrl.data.length">
+        <strong>No data found...</strong>
+    </div>
+
+    <table class="table table-striped dataTable" ng-show="ctrl.data.length">
         <thead>
             <tr role="row"></tr>
         </thead>
@@ -26,7 +30,7 @@
         </tbody>
     </table>
 
-    <div class="row">
+    <div class="row" ng-show="ctrl.data.length">
         <div class="span6 pull-left">
             <div o-table-page-info></div>
         </div>
