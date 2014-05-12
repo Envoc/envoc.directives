@@ -81,6 +81,11 @@ __Default__
 
 __All directive live under the oTable directive__
 
+__TODO: Cases:__
+* [X] Property not found on data-bound object
+* [ ] Handle triming the list
+* [ ] "Expose Controller As"
+
 oTable
 ----
 

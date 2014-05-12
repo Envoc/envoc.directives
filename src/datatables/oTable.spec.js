@@ -154,10 +154,6 @@
         });
     });
 
-    // TODO: Cases:
-    //  -- [X] Property not found on data-bound object
-    //  -- [ ] Handle triming the list
-
     var httpResponse1 = {
         "sEcho": 1,
         "iTotalRecords": 2,
