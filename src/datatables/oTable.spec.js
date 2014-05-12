@@ -49,12 +49,11 @@
 
         describe('configuration', function() {
             beforeEach(function() {
-                scope.config = {
-                    dataSrcUrl: '/data/get'
-                }
+                scope.config = {};
             });
 
             it('should post to config url', function() {
+                scope.config.dataSrcUrl = '/data/get';
                 element = angular.element('<div o-table config="config" id="childScope"></div>');
                 element = $compile(element)(scope);
 
@@ -64,15 +63,17 @@
 
                 $httpBackend.flush();
                 $rootScope.$digest();
-                // expect(element.text()).toBe(2);
             });
 
             it('should call fetchMethod if provided', function() {
+                var spy = jasmine.createSpy();
+                scope.config.fetchMethod = fetchMethod;
+
                 element = angular.element('<div o-table config="config" id="childScope"></div>');
+                element = $compile(element)(scope);
+                $rootScope.$digest();
 
-                delete scope.config.dataSrcUrl;
-
-                var spy = jasmine.createSpy()
+                expect(spy).toHaveBeenCalled();
 
                 function fetchMethod(){
                     var dfd = $q.defer();
@@ -80,13 +81,6 @@
                     dfd.resolve({data:httpResponse1});
                     return dfd.promise;
                 };
-
-                scope.config.fetchMethod = fetchMethod;
-
-                element = $compile(element)(scope);
-
-                $rootScope.$digest();
-                expect(spy).toHaveBeenCalled();
             });
         });
 
@@ -110,16 +104,16 @@
 
         describe('Databinding', function(){
             beforeEach(function() {
-                scope.config = {
-                    dataSrc: [{id:1, name:'bob'}]
-                }
+                scope.config = {}
             });
 
             it('should throw without a field list', function() {
-                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default fields="id,name"></div></div>');
+                scope.config.dataSrc = [{id:1, name:'bob'}];
+
+                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default fields="id,name"></div></div>');                
                 element = $compile(element)(scope);
                 $rootScope.$digest();
-                
+
                 var tbody = element.find('tbody');
                 var rowCount = tbody.find('tr').length;
 
@@ -132,22 +126,26 @@
 
                 expect(rowCount).toBe(2);
             });
-        });
 
-        describe('Directive: oTableDefault', function(){
-            beforeEach(function() {
-                scope.config = {
-                    dataSrcUrl: '/data/get'
-                }
-
-                $httpBackend.when('POST', '/data/get').respond(httpResponse1);
-            });
-
-            it('should throw without a field list', function() {
-                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default fields="Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"></div></div>');
+            it('should databind via fetchMethod', function() {
+                var html =  '<div o-table config="config">' + 
+                                '<div o-table-default fields="Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"></div>' +
+                            '</div>';
+                scope.config.fetchMethod = fetchMethod;
+                
+                element = angular.element(html);
                 element = $compile(element)(scope);
+                
                 $rootScope.$digest();
 
+                var tbody = element.find('tbody');
+                var rowCount = tbody.find('tr').length;
+                
+                expect(rowCount).toBe(2);
+                
+                function fetchMethod(){
+                    return $q.when({data:httpResponse1});
+                };
             });
         });
     });

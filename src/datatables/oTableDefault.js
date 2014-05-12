@@ -11,7 +11,7 @@
                 scope: {},
                 compile: function compile(tElement, tAttrs, transclude) {
                     if(!tAttrs.fields) {
-                        throw new Error('No filed list included');
+                        throw new Error('No field list included');
                     }
 
                     var theBodyRow = tElement.find('tbody').find('tr');
