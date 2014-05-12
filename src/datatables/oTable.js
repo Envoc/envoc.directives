@@ -182,6 +182,7 @@
             compile: function compile(tElement, tAttrs, transclude) {
                 return function postLink(scope, iElement, iAttrs, controller) {
                     controller.init(scope.config);
+                    iElement.addClass('o-table');
                 }
             }
         };
