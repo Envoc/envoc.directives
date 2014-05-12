@@ -21,35 +21,84 @@
             scope = $rootScope.$new();
         }));
 
-        it('should compile and requires config', function() {
-            element = angular.element('<div o-table config="config"></div>');
-            expect(compile).toThrow();
+        describe('Directive: oTableDefault', function(){
+            beforeEach(function() {
+                scope.config = {
+                    dataSrc: [{id:1, name:'bob'}]
+                }
+            });
 
-            scope.config = {
-                dataSrcUrl: '/data/get'
-            }
+            it('should throw without a field list', function() {
+                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default></div></div>');
+                expect(compile).toThrow();
 
-            element = angular.element('<div o-table config="config"></div>');
-            expect(compile).not.toThrow();
-
-            scope.config = {
-                dataSrc: [
-                    {id: 1, name: 'bob'},
-                    {id: 2, name: 'john'}
-                ]
-            }
-
-            element = angular.element('<div o-table config="config"></div>');
-            expect(compile).not.toThrow();
-
-            function compile() {
-                element = $compile(element)(scope);
-            }
+                function compile(){
+                    element = $compile(element)(scope);
+                    $rootScope.$digest();
+                }
+            });
         });
 
-        describe('configuration', function() {
+        describe('Configuration:', function(){
             beforeEach(function() {
-                scope.config = {};
+                scope.config = {}
+            });
+
+            it('should throw without a field list', function() {
+                scope.config.dataSrc = [{id:1, name:'bob'}];
+
+                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default fields="id,name"></div></div>');                
+                element = $compile(element)(scope);
+                $rootScope.$digest();
+
+                var tbody = element.find('tbody');
+                var rowCount = tbody.find('tr').length;
+
+                expect(rowCount).toBe(1);
+
+                scope.config.dataSrc.push({id:2, name:'john'});
+                $rootScope.$digest();
+
+                rowCount = tbody.find('tr').length;
+
+                expect(rowCount).toBe(2);
+            });
+
+            it('should compile and requires config', function() {
+                element = angular.element('<div o-table config="config"></div>');
+                expect(compile).toThrow();
+
+                scope.config = {
+                    dataSrcUrl: '/data/get'
+                }
+
+                element = angular.element('<div o-table config="config"></div>');
+                expect(compile).not.toThrow();
+
+                scope.config = {
+                    dataSrc: [
+                        {id: 1, name: 'bob'},
+                        {id: 2, name: 'john'}
+                    ]
+                }
+
+                element = angular.element('<div o-table config="config"></div>');
+                expect(compile).not.toThrow();
+
+                function compile() {
+                    element = $compile(element)(scope);
+                }
+            });
+        });
+
+        describe('Remote Data:', function(){
+            var html;
+
+            beforeEach(function() {
+                scope.config = {}
+                html =  '<div o-table config="config">' + 
+                            '<div o-table-default fields="Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"></div>' +
+                        '</div>';
             });
 
             it('should post to config url', function() {
@@ -82,61 +131,11 @@
                     return dfd.promise;
                 };
             });
-        });
-
-        describe('Directive: oTableDefault', function(){
-            beforeEach(function() {
-                scope.config = {
-                    dataSrc: [{id:1, name:'bob'}]
-                }
-            });
-
-            it('should throw without a field list', function() {
-                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default></div></div>');
-                expect(compile).toThrow();
-
-                function compile(){
-                    element = $compile(element)(scope);
-                    $rootScope.$digest();
-                }
-            });
-        });
-
-        describe('Databinding', function(){
-            beforeEach(function() {
-                scope.config = {}
-            });
-
-            it('should throw without a field list', function() {
-                scope.config.dataSrc = [{id:1, name:'bob'}];
-
-                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default fields="id,name"></div></div>');                
-                element = $compile(element)(scope);
-                $rootScope.$digest();
-
-                var tbody = element.find('tbody');
-                var rowCount = tbody.find('tr').length;
-
-                expect(rowCount).toBe(1);
-
-                scope.config.dataSrc.push({id:2, name:'john'});
-                $rootScope.$digest();
-
-                rowCount = tbody.find('tr').length;
-
-                expect(rowCount).toBe(2);
-            });
 
             it('should databind via fetchMethod', function() {
-                var html =  '<div o-table config="config">' + 
-                                '<div o-table-default fields="Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"></div>' +
-                            '</div>';
                 scope.config.fetchMethod = fetchMethod;
                 
-                element = angular.element(html);
-                element = $compile(element)(scope);
-                
-                $rootScope.$digest();
+                compile();
 
                 var tbody = element.find('tbody');
                 var rowCount = tbody.find('tr').length;
@@ -147,6 +146,12 @@
                     return $q.when({data:httpResponse1});
                 };
             });
+
+            function compile(){
+                element = angular.element(html);
+                element = $compile(element)(scope);
+                $rootScope.$digest();
+            }
         });
     });
 

@@ -22,7 +22,9 @@ app.service('FakeService', function($q) {
         "iTotalRecords": 2,
         "iTotalDisplayRecords": 2,
         "aaData": [
-            [2, "\/Date(1383171547680)\/", null, "No", 4],
+            [4, "\/Date(1383171547680)\/", null, "No", 4],
+            [3, "\/Date(1383171098853)\/", "\/Date(1383171394617)\/", "Yes", 1],
+            [2, "\/Date(1383171098853)\/", "\/Date(1383171394617)\/", "Yes", 1],
             [1, "\/Date(1383171098853)\/", "\/Date(1383171394617)\/", "Yes", 1]
         ],
         "sColumns": "Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"
