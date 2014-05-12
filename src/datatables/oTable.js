@@ -67,6 +67,7 @@
                 self.state.iTotalDisplayRecords = dataCache.length;
             }
 
+            self.state.iTotalRecords = dataCache.length;
             self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
             
             // handle going off the page
@@ -85,7 +86,6 @@
 
         function initClientSide(){
             dataCache = config.dataSrc;
-            self.state.iTotalRecords = self.state.iTotalDisplayRecords = config.dataSrc.length;
             calculateVisible();
             setupWatches();
         }

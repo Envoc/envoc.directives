@@ -31,6 +31,7 @@ app.service('FakeService', function($q) {
     }
 
     this.fetch = function(stateOfTheWorld){
+        console.log(stateOfTheWorld);
         return $q.when({data:httpResponse1});
     }
 });
