@@ -114,19 +114,18 @@
                 $rootScope.$digest();
             });
 
-            it('should call fetchMethod if provided', function() {
+            it('should call fetchMethod with datatable request object when provided', function() {
                 var spy = jasmine.createSpy();
                 scope.config.fetchMethod = fetchMethod;
+                scope.config.linesPerPage = 15;
 
-                element = angular.element('<div o-table config="config" id="childScope"></div>');
-                element = $compile(element)(scope);
-                $rootScope.$digest();
+                compile();
 
-                expect(spy).toHaveBeenCalled();
+                expect(spy).toHaveBeenCalledWith({Skip: 0, Take: 15, AllSearch: ''});
 
-                function fetchMethod(){
+                function fetchMethod(request){
                     var dfd = $q.defer();
-                    spy();
+                    spy(request);
                     dfd.resolve({data:httpResponse1});
                     return dfd.promise;
                 };
@@ -140,7 +139,7 @@
                 var tbody = element.find('tbody');
                 var rowCount = tbody.find('tr').length;
                 
-                expect(rowCount).toBe(2);
+                expect(rowCount).toBe(httpResponse1.aaData.length);
                 
                 function fetchMethod(){
                     return $q.when({data:httpResponse1});

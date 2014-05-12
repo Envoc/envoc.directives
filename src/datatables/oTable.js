@@ -15,24 +15,25 @@
     
     app.controller('oTableCtrl', function($scope, $http, $filter) {
         var self = this,
-            config = {
-                fetchMethod: defaultFetch
-            },
             dataCache = [],
             limitTo = $filter('limitTo'),
             filter = $filter('filter'),
-            startFrom = $filter('startFrom');
-
-        this.state = {
-            currentPage: 1,
-            linesPerPage: 10,
-            iTotalRecords: 0,
-            iTotalDisplayRecords: 0,
-            allSearch: ''
-        };
+            startFrom = $filter('startFrom'),
+            config = {
+                fetchMethod: defaultFetch,
+                linesPerPage: 10
+            };
 
         this.init = function(config_) {
             angular.extend(config, config_);
+
+            this.state = {
+                currentPage: 1,
+                linesPerPage: config.linesPerPage,
+                iTotalRecords: 0,
+                iTotalDisplayRecords: 0,
+                allSearch: ''
+            };
 
             if (!config.dataSrcUrl && !config.dataSrc && !config.fetchMethod) {
                 throw new Error('A data source is required');
@@ -46,8 +47,9 @@
         }
 
         this.fetch = function() {
+            var request = createDatatableRequest();
             config
-                .fetchMethod()
+                .fetchMethod(request)
                 .then(dataFetchSuccess, dataFetchError);
         }
 
@@ -94,6 +96,16 @@
 
         function defaultFetch(){
             return $http.post(config.dataSrcUrl)
+        }
+
+        function createDatatableRequest(){
+            var s = self.state;
+
+            return {
+                Skip: (s.currentPage - 1) * s.linesPerPage, // 0
+                Take: s.linesPerPage, //10
+                AllSearch: s.allSearch
+            }
         }
 
         function transposeDataSet(response){
