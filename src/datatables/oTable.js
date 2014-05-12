@@ -203,7 +203,7 @@
             scope: true,
             require: '^oTable',
             link: function postLink(scope, iElement, iAttrs, controller) {
-                iElement.on('keyup', setAllSearch)
+                iElement.on('keyup change', setAllSearch)
                 
                 function setAllSearch(){
                     scope.$evalAsync(function(){
@@ -245,6 +245,17 @@
             restrict: 'A',
             scope: true,
             templateUrl: '/oTemplates/datatables/oTablePagination.tmpl.html',
+            require: '^oTable',
+            link: function postLink(scope, iElement, iAttrs, controller) {
+                scope.ctrl = controller;
+            }
+        };
+    });
+
+    app.directive('oTableRepeat', function() {
+        return {
+            restrict: 'A',
+            scope: true,
             require: '^oTable',
             link: function postLink(scope, iElement, iAttrs, controller) {
                 scope.ctrl = controller;
