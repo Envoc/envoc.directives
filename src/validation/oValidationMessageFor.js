@@ -13,7 +13,6 @@
                     scope: true,
                     link: function(scope, element, attr, oValidateWithCtrl) {
                         var key = attr.oValidationMessageFor.toLowerCase();
-                        scope.errors = oValidateWithCtrl.errors;
 
                         scope.$watch(getErrors, function(current, previous) {
                             if (current) {
