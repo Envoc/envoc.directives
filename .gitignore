@@ -32,3 +32,6 @@ node_modules
 bower_components
 _vendor
 *.sublime-workspace
+build/partials/*
+build/partials/datatables/oTablePageInfo.tmpl.js
+build/partials/datatables/oTablePagination.tmpl.js
