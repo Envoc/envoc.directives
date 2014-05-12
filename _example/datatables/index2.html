@@ -25,6 +25,7 @@
         .pager li a {
             padding-top: 20px;
             padding-bottom: 20px;
+            background: #D9EDF7;
         }
 
         .pager li.previous a {
@@ -78,7 +79,10 @@
                         </div>
                     </div>
 
-                    <pager total-items="ctrl.state.iTotalDisplayRecords" ng-model="ctrl.state.currentPage"></pager>
+                    <pager 
+                        total-items="ctrl.state.iTotalDisplayRecords" 
+                        ng-model="ctrl.state.currentPage"
+                        items-per-page="ctrl.state.linesPerPage"></pager>
                 </div>
 
                 <div o-table-pagination></div>
