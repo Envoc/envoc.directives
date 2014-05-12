@@ -35,3 +35,4 @@ _vendor
 build/partials/*
 build/partials/datatables/oTablePageInfo.tmpl.js
 build/partials/datatables/oTablePagination.tmpl.js
+build/*
