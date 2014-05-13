@@ -1,3 +1,5 @@
+![Build Status](https://api.travis-ci.org/Envoc/envoc.directives.svg)
+
 Envoc Directives
 ====
 
