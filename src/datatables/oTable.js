@@ -2,8 +2,8 @@
     'use strict';
 
     var app = angular.module('envoc.directives.datatables');
-    
-    app.controller('oTableCtrl', function($scope, $http, $filter) {
+
+    app.controller('oTableCtrl', function($scope, $http, $filter, $timeout) {
         var self = this,
             dataCache = [],
             limitTo,
@@ -11,7 +11,8 @@
             startFrom,
             config = {
                 fetchMethod: null,
-                linesPerPage: 10
+                linesPerPage: 10,
+                throttle: 0
             };
 
         this.init = function(config_) {
@@ -22,7 +23,6 @@
             }
 
             config.dataSrcUrl && (config.fetchMethod = defaultFetch);
-            
 
             this.state = {
                 currentPage: 1,
@@ -41,19 +41,25 @@
 
         this.fetch = function() {
             var request = createDatatableRequest();
+
+            if(config.fetchMethod.last && angular.toJson(request) == config.fetchMethod.last)
+                return;
+
             config
                 .fetchMethod(request)
                 .then(dataFetchSuccess, dataFetchError);
+
+            config.fetchMethod.last = angular.toJson(request);
         }
 
         // =================================
         //          DATA-BINDING
         // =================================
 
-        function calculateVisible(){
+        function calculateVisible() {
             var clone = angular.copy(dataCache);
 
-            if(self.state.allSearch){
+            if (self.state.allSearch) {
                 clone = filter(clone, self.state.allSearch);
                 self.state.iTotalDisplayRecords = clone.length;
             } else {
@@ -62,9 +68,9 @@
 
             self.state.iTotalRecords = dataCache.length;
             self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
-            
+
             // handle going off the page
-            while (self.state.pageStartIdx > clone.length){
+            while (self.state.pageStartIdx > clone.length) {
                 self.state.currentPage--;
                 calcPageStart()
             }
@@ -77,7 +83,7 @@
         //          LOCAL DATA
         // =================================
 
-        function initClientSide(){
+        function initClientSide() {
             limitTo = $filter('limitTo');
             filter = $filter('filter');
             startFrom = $filter('startFrom');
@@ -91,15 +97,15 @@
         //          REMOTE DATA
         // =================================
 
-        function initRemoteData(){
+        function initRemoteData() {
             setupRemoteWatches();
         }
 
-        function defaultFetch(){
+        function defaultFetch() {
             return $http.post(config.dataSrcUrl)
         }
 
-        function createDatatableRequest(){
+        function createDatatableRequest() {
             var s = self.state;
 
             return {
@@ -109,20 +115,20 @@
             }
         }
 
-        function transposeDataSet(response){
+        function transposeDataSet(response) {
             var columnArray = response.sColumns.split(',');
             var transposed = response.aaData.map(convertArrayToObject);
 
             return transposed;
 
-            function convertArrayToObject(valueArray){
+            function convertArrayToObject(valueArray) {
                 var obj = {};
-                
+
                 columnArray.forEach(mapKeyToIndex);
 
                 return obj;
 
-                function mapKeyToIndex(key, idx){
+                function mapKeyToIndex(key, idx) {
                     obj[key] = valueArray[idx];
                 }
             }
@@ -144,7 +150,7 @@
         //          WATCHES
         // =================================
 
-        function setupClientWatches(){
+        function setupClientWatches() {
             $scope.$watch(watchCurrentPage, calculateVisible);
             $scope.$watch(watchLinesPerPage, calculateVisible);
             $scope.$watch(watchAllSearch, calculateVisible);
@@ -152,41 +158,67 @@
             $scope.$watchCollection(watchClientDataSrc, calculateVisible);
         }
 
-        function setupRemoteWatches(){
-            $scope.$watch(watchCurrentPage, self.fetch);
-            // $scope.$watch(watchLinesPerPage, self.fetch);
-            // $scope.$watch(watchAllSearch, self.fetch);
+        function setupRemoteWatches() {
+            config.throttle > 300 && (self.fetch = throttle(self.fetch, config.throttle));
+            $scope.$watch(createDatatableRequest, self.fetch, true);
         }
 
-        function watchCurrentPage(){
+        function watchCurrentPage() {
             return self.state.currentPage;
         }
 
-        function watchLinesPerPage(){
+        function watchLinesPerPage() {
             return self.state.linesPerPage;
         }
 
-        function watchAllSearch(){
+        function watchAllSearch() {
             return self.state.allSearch;
         }
 
-        function watchClientDataSrc(){
+        function watchClientDataSrc() {
             return dataCache;
         }
 
         // =================================
         //          STATE MANAGEMENT
         // =================================
-        
-        function calcPageStart(){
+
+        function calcPageStart() {
             self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
         }
 
-        function calcPageStop(){
+        function calcPageStop() {
             self.state.pageStopIdx = self.state.pageStartIdx + self.data.length;
         }
+
+        // =================================
+        //          UTILITIES
+        // =================================
+
+        function throttle(fn, threshhold, scope) {
+            threshhold || (threshhold = 250);
+            var last,
+                deferTimer;
+            return function() {
+                var context = scope || this;
+
+                var now = +new Date,
+                    args = arguments;
+                if (last && now < last + threshhold) {
+                    // hold on to it
+                    clearTimeout(deferTimer);
+                    deferTimer = setTimeout(function() {
+                        last = now;
+                        fn.apply(context, args);
+                    }, threshhold);
+                } else {
+                    last = now;
+                    fn.apply(context, args);
+                }
+            };
+        }
     });
-    
+
     app.directive('oTable', function() {
         return {
             priority: 800,
@@ -201,7 +233,7 @@
                 return function postLink(scope, iElement, iAttrs, controller) {
                     controller.init(scope.config);
                     (scope.state && (scope.state = controller.state));
-                    
+
                     iElement.addClass('o-table');
                 }
             }

@@ -98,6 +98,7 @@
 
                 function compile() {
                     element = $compile(element)(scope);
+                    scope.$digest()
                 }
             });
 
@@ -135,8 +136,8 @@
                     .expect('POST', scope.config.dataSrcUrl)
                     .respond(httpResponse1);
 
-                $httpBackend.flush();
                 $rootScope.$digest();
+                $httpBackend.flush();
             });
 
             it('should call fetchMethod with datatable request object when provided', function() {
@@ -186,15 +187,14 @@
                 compile();
 
                 expect(scope.state.currentPage).toBe(1);
-
+                
                 scope.state.currentPage = 2;
 
                 $httpBackend
                     .expect('POST', scope.config.dataSrcUrl)
                     .respond(httpResponse1);
-
+                
                 scope.$digest();
-
                 $httpBackend.flush();
             });
 
