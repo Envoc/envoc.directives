@@ -10,12 +10,19 @@
             filter,
             startFrom,
             config = {
-                fetchMethod: defaultFetch,
+                fetchMethod: null,
                 linesPerPage: 10
             };
 
         this.init = function(config_) {
             angular.extend(config, config_);
+
+            if (!config.dataSrcUrl && !config.dataSrc && !config.fetchMethod) {
+                throw new Error('A data source is required');
+            }
+
+            config.dataSrcUrl && (config.fetchMethod = defaultFetch);
+            
 
             this.state = {
                 currentPage: 1,
@@ -25,14 +32,10 @@
                 allSearch: ''
             };
 
-            if (!config.dataSrcUrl && !config.dataSrc && !config.fetchMethod) {
-                throw new Error('A data source is required');
-            }
-
             if (config.dataSrc) {
                 initClientSide();
             } else {
-                this.fetch();
+                initRemoteData();
             }
         }
 
@@ -81,12 +84,16 @@
 
             dataCache = config.dataSrc;
             calculateVisible();
-            setupWatches();
+            setupClientWatches();
         }
 
         // =================================
         //          REMOTE DATA
         // =================================
+
+        function initRemoteData(){
+            setupRemoteWatches();
+        }
 
         function defaultFetch(){
             return $http.post(config.dataSrcUrl)
@@ -137,12 +144,18 @@
         //          WATCHES
         // =================================
 
-        function setupWatches(){
+        function setupClientWatches(){
             $scope.$watch(watchCurrentPage, calculateVisible);
             $scope.$watch(watchLinesPerPage, calculateVisible);
             $scope.$watch(watchAllSearch, calculateVisible);
 
             $scope.$watchCollection(watchClientDataSrc, calculateVisible);
+        }
+
+        function setupRemoteWatches(){
+            $scope.$watch(watchCurrentPage, self.fetch);
+            // $scope.$watch(watchLinesPerPage, self.fetch);
+            // $scope.$watch(watchAllSearch, self.fetch);
         }
 
         function watchCurrentPage(){
@@ -179,13 +192,16 @@
             priority: 800,
             restrict: 'EA',
             scope: {
-                config: '='
+                config: '=',
+                state: '='
             },
             controller: 'oTableCtrl',
             controllerAs: 'oTableCtrl',
             compile: function compile(tElement, tAttrs, transclude) {
                 return function postLink(scope, iElement, iAttrs, controller) {
                     controller.init(scope.config);
+                    (scope.state && (scope.state = controller.state));
+                    
                     iElement.addClass('o-table');
                 }
             }

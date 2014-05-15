@@ -21,6 +21,11 @@
             scope = $rootScope.$new();
         }));
 
+        afterEach(function() {
+            $httpBackend.verifyNoOutstandingExpectation();
+            $httpBackend.verifyNoOutstandingRequest();
+        });
+
         describe('Directive: oTableDefault', function(){
             beforeEach(function() {
                 scope.config = {
@@ -72,6 +77,10 @@
                     dataSrcUrl: '/data/get'
                 }
 
+                $httpBackend
+                    .expect('POST', scope.config.dataSrcUrl)
+                    .respond(httpResponse1);
+
                 element = angular.element('<div o-table config="config"></div>');
                 expect(compile).not.toThrow();
 
@@ -85,9 +94,25 @@
                 element = angular.element('<div o-table config="config"></div>');
                 expect(compile).not.toThrow();
 
+                $httpBackend.flush();
+
                 function compile() {
                     element = $compile(element)(scope);
                 }
+            });
+
+            it('should expose the state', function() {
+                scope.config = {
+                    dataSrc: [{id:1}]
+                }
+
+                scope.state = {};
+                
+                element = angular.element('<div o-table config="config" state="state"><div o-table-default fields="id"></div></div>');
+                element = $compile(element)(scope);
+
+                scope.$digest();
+                expect(scope.state.currentPage).toBe(1);
             });
         });
 
@@ -146,6 +171,33 @@
                 };
             });
 
+            it('should watch the current page and fetch accordingly', function() {
+                scope.config = {
+                    dataSrcUrl: '/data/get'
+                }
+
+                scope.state = {};
+
+                $httpBackend
+                    .expect('POST', scope.config.dataSrcUrl)
+                    .respond(httpResponse1);
+
+                html = '<div o-table config="config" state="state"><div o-table-default fields="id"></div></div>';
+                compile();
+
+                expect(scope.state.currentPage).toBe(1);
+
+                scope.state.currentPage = 2;
+
+                $httpBackend
+                    .expect('POST', scope.config.dataSrcUrl)
+                    .respond(httpResponse1);
+
+                scope.$digest();
+
+                $httpBackend.flush();
+            });
+
             function compile(){
                 element = angular.element(html);
                 element = $compile(element)(scope);
@@ -156,11 +208,18 @@
 
     var httpResponse1 = {
         "sEcho": 1,
-        "iTotalRecords": 2,
-        "iTotalDisplayRecords": 2,
+        "iTotalRecords": 9,
+        "iTotalDisplayRecords": 9,
         "aaData": [
+            [1, "\/Date(1383171098853)\/", "\/Date(1383171394617)\/", "Yes", 1],
             [2, "\/Date(1383171547680)\/", null, "No", 4],
-            [1, "\/Date(1383171098853)\/", "\/Date(1383171394617)\/", "Yes", 1]
+            [3, "\/Date(1383171547680)\/", null, "No", 4],
+            [4, "\/Date(1383171547680)\/", null, "No", 4],
+            [5, "\/Date(1383171547680)\/", null, "No", 4],
+            [6, "\/Date(1383171547680)\/", null, "No", 4],
+            [7, "\/Date(1383171547680)\/", null, "No", 4],
+            [8, "\/Date(1383171547680)\/", null, "No", 4],
+            [9, "\/Date(1383171547680)\/", null, "No", 4]
         ],
         "sColumns": "Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"
     }
