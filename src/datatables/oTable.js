@@ -6,9 +6,9 @@
     app.controller('oTableCtrl', function($scope, $http, $filter) {
         var self = this,
             dataCache = [],
-            limitTo = $filter('limitTo'),
-            filter = $filter('filter'),
-            startFrom = $filter('startFrom'),
+            limitTo,
+            filter,
+            startFrom,
             config = {
                 fetchMethod: defaultFetch,
                 linesPerPage: 10
@@ -75,6 +75,10 @@
         // =================================
 
         function initClientSide(){
+            limitTo = $filter('limitTo');
+            filter = $filter('filter');
+            startFrom = $filter('startFrom');
+
             dataCache = config.dataSrc;
             calculateVisible();
             setupWatches();
