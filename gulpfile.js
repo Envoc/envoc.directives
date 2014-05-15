@@ -61,6 +61,14 @@ gulp.task('watch', function () {
     });
 });
 
+gulp.task('watch-testing', function () {
+    gulp.watch('./src/**/*.*', function () {
+        gulp.run('js');
+    });
+});
+
 gulp.task('default', ['templatify', 'js', 'watch']);
 
 gulp.task('build', ['clean', 'templatify', 'js']);
+
+gulp.task('testing', ['js', 'watch-testing']);
