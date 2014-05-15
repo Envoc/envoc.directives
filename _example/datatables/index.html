@@ -37,18 +37,18 @@
 <body>
     <div class="container">
         <div class="row" ng-controller="MainCtrl as ctrl1">
-            
+            <br><br>
             <div class="col-xs-12" o-table config="ctrl1.config">
-                <div o-table-default fields="Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"></div>
+                <div o-table-default fields="Id,StartDateUtc,Name,IsClosed,RegistrationCount"></div>
             </div>
-
-            <div class="col-xs-12" o-table config="ctrl1.config">
+ 
+            <!--<div class="col-xs-12" o-table config="ctrl1.config">
                 <div o-table-default fields="StartDateUtc,IsClosed,Id,RegistrationCount"></div>
-            </div>
+            </div> -->
 
-            <div class="col-xs-12" o-table config="ctrl1.config2">
+            <!-- <div class="col-xs-12" o-table config="ctrl1.config2">
                 <div o-table-default fields="id,name,position"></div>
-            </div>
+            </div> -->
         </div>
     </div>
 </body> 

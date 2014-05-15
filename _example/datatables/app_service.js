@@ -5,7 +5,9 @@ app.controller('MainCtrl', function(FakeService) {
 
     
     viewModel.config = {
-        fetchMethod: FakeService.fetch
+        fetchMethod: FakeService.fetch,
+        linesPerPage: 5,
+        throttle: 301
     };
 
     viewModel.config2 = {
@@ -28,23 +30,38 @@ app.controller('MainCtrl', function(FakeService) {
     }
 });
 
-app.service('FakeService', function($q) {
+app.service('FakeService', function($q, $filter) {
     var self = this;
+    var search = $filter('filter');
 
-    var httpResponse1 = {
-        "iTotalRecords": 4,
-        "iTotalDisplayRecords": 4,
-        "aaData": [
-            [4, "\/Date(1383171547680)\/", null, "No", 4],
-            [3, "\/Date(1383171098853)\/", "\/Date(1383171394617)\/", "Yes", 1],
-            [2, "\/Date(1383171098853)\/", "\/Date(1383171394617)\/", "Yes", 1],
-            [1, "\/Date(1383171098853)\/", "\/Date(1383171394617)\/", "Yes", 1]
-        ],
-        "sColumns": "Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"
-    }
+    var data = [
+        [1, "\/Date(1383171098853)\/", "Joe", "Yes", 1],
+        [2, "\/Date(1383171098853)\/", "Joey", "Yes", 1],
+        [3, "\/Date(1383171098853)\/", "Jane", "Yes", 1],
+        [4, "\/Date(1383171547680)\/", "Bob", "No", 4],
+        [5, "\/Date(1383171547680)\/", "Sarah", "No", 4],
+        [6, "\/Date(1383171547680)\/", "Adrian", "No", 4],
+        [7, "\/Date(1383171547680)\/", "Sam", "No", 4],
+        [8, "\/Date(1383171547680)\/", "Sally", "No", 4],
+        [9, "\/Date(1383171547680)\/", "Justin", "No", 4]
+    ]
 
     this.fetch = function(stateOfTheWorld){
         console.log(stateOfTheWorld);
-        return $q.when({data:httpResponse1});
+
+        var cache = _.clone(data);
+
+        if(stateOfTheWorld.AllSearch){
+            cache = search(cache, stateOfTheWorld.AllSearch);
+        }
+
+        return $q.when({
+            data:{
+                "iTotalRecords": data.length,
+                "iTotalDisplayRecords": cache.length,
+                "aaData": _.take(_.rest(cache,stateOfTheWorld.Skip), parseInt(stateOfTheWorld.Take, 10)),
+                "sColumns": "Id,StartDateUtc,Name,IsClosed,RegistrationCount"
+            }
+        });
     }
 });
