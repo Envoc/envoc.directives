@@ -11,7 +11,11 @@ app.controller('MainCtrl', function(FakeService) {
     };
 
     viewModel.config2 = {
-        dataSrc: []
+        dataSrc: [],
+        linesPerPage: 5,
+        paginationSettings: {
+            maxSize:2
+        }
     };
 
     init();
