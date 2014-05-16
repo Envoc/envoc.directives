@@ -6,7 +6,7 @@ app.controller('MainCtrl', function(FakeService) {
     
     viewModel.config = {
         fetchMethod: FakeService.fetch,
-        linesPerPage: 5,
+        linesPerPage: 2,
         throttle: 301
     };
 
@@ -17,6 +17,10 @@ app.controller('MainCtrl', function(FakeService) {
             maxSize:2
         }
     };
+
+    viewModel.parseDate = function(input){
+        return new Date(parseInt(input.substring(6)));
+    }
 
     init();
 

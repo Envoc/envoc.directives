@@ -59,9 +59,27 @@
         <div class="row" ng-controller="MainCtrl as ctrl1">
             <br><br>
             <div class="col-xs-12" o-table config="ctrl1.config">
-                <div o-table-default 
-                    fields="Id,StartDateUtc,Name,IsClosed,RegistrationCount"
-                    sortable="Id,StartDateUtc,IsClosed"></div>
+                <div o-table-default>
+                    <table>
+                        <thead>
+                            <tr role="row">
+                                <th>Start Date</th>
+                                <th>Is Closed</th>
+                                <th>Id</th>
+                                <th>Registration Count</th>
+                            </tr>
+                        </thead>
+
+                        <tbody o-table-repeat>
+                            <tr ng-repeat="row in ctrl.data">
+                                <td>{{ctrl1.parseDate(row.StartDateUtc) | date:'medium'}}</td>
+                                <td>{{row.IsClosed}}</td>
+                                <td>{{row.Id}}</td>
+                                <td>{{row.RegistrationCount}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
  
             <!--<div class="col-xs-12" o-table config="ctrl1.config">
@@ -69,7 +87,25 @@
             </div> -->
 
             <div class="col-xs-12" o-table config="ctrl1.config2">
-                <div o-table-default fields="id,name,position"></div>
+                <div o-table-default>
+                    <table>
+                        <thead>
+                            <tr role="row">
+                                <th>Id</th>
+                                <th>Position</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+
+                        <tbody o-table-repeat>
+                            <tr ng-repeat="row in ctrl.data">
+                                <td>{{row.id}}</td>
+                                <td>{{row.position}}</td>
+                                <td>{{row.name}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
