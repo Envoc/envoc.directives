@@ -19,16 +19,7 @@
         <strong>No data found...</strong>
     </div>
 
-    <table class="table table-striped dataTable" ng-show="ctrl.data.length">
-        <thead>
-            <tr role="row"></tr>
-        </thead>
-
-        <tbody role="alert" aria-live="polite" aria-relevant="all">
-            <tr ng-repeat="row in ctrl.data">
-            </tr>
-        </tbody>
-    </table>
+    <div ng-transclude></div>
 
     <div class="row" ng-show="ctrl.data.length">
         <div class="span6 pull-left">
