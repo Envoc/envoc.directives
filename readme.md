@@ -43,6 +43,11 @@ Project Use
 Directives
 ====
 
+oTable
+----
+
+https://github.com/Envoc/envoc.directives/blob/master/src/datatables/discovery.md
+
 oValidateWith
 ----
 
