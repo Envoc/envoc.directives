@@ -3,7 +3,7 @@
 
     var app = angular.module('envoc.directives.datatables');
 
-    app.controller('oTableCtrl', function($scope, $http, $filter, $timeout) {
+    app.controller('oTableCtrl', function($scope, $http, $filter, $rootScope) {
         var self = this,
             dataCache = [],
             limitTo,
@@ -29,7 +29,9 @@
                 linesPerPage: config.linesPerPage,
                 iTotalRecords: 0,
                 iTotalDisplayRecords: 0,
-                allSearch: ''
+                allSearch: '',
+                sortObj: {},
+                sortOrder: []
             };
 
             if (config.dataSrc) {
@@ -50,6 +52,34 @@
                 .then(dataFetchSuccess, dataFetchError);
 
             config.fetchMethod.last = angular.toJson(request);
+        }
+
+        this.sortOn = function(shiftKey, propertyName){
+            var last = self.state.lastSortShifted;
+
+            var val = self.state.sortObj[propertyName];
+            var next = last && !shiftKey ? true : !val;
+
+            if(!shiftKey) {
+                self.state.sortObj = {}
+                self.state.sortOrder.length = 0;
+            }
+
+            var hasKey = self.state.sortOrder.indexOf(propertyName) > -1;
+            if(!hasKey) {
+                self.state.sortOrder.push(propertyName);
+            }
+
+            self.state.sortObj[propertyName] = next;
+            self.state.lastSortShifted = shiftKey;
+            $rootScope.$broadcast('oTable::sorting');
+        }
+
+        this.getSortingPropertyInfo = function(propertyName){
+            return {
+                sorting: isSortingProperty(propertyName),
+                direction: getSortDirection(propertyName)
+            }
         }
 
         // =================================
@@ -107,15 +137,46 @@
 
         function createDatatableRequest() {
             var s = self.state;
-
-            return {
+            var params = {
                 Skip: (s.currentPage - 1) * s.linesPerPage, // 0
                 Take: s.linesPerPage, //10
                 AllSearch: s.allSearch
+            };
+
+            if(s.sortOrder.length){
+                params.Columns = [];
+
+                angular.forEach(s.sortOrder, function(propertyName, idx){
+                    var direction = getSortDirection(propertyName);
+                    var propertyIndex = config.propertyMap[propertyName];
+                    
+                    params.Columns.push({
+                        ColumnIndex: propertyIndex,
+                        SortDirection: direction
+                    });
+                });
             }
+
+            return params
+        }
+
+        function isSortingProperty(propertyName){
+            return self.state.sortOrder.indexOf(propertyName) > -1;
+        }
+
+        function getSortDirection(propertyName){
+            var direction = '';
+
+            if(isSortingProperty(propertyName)){
+                direction = self.state.sortObj[propertyName] ? 'asc' : 'desc';
+            }
+
+            return direction;
         }
 
         function transposeDataSet(response) {
+            config.propertyMap = {};
+
             var columnArray = response.sColumns.split(',');
             var transposed = response.aaData.map(convertArrayToObject);
 
@@ -123,13 +184,13 @@
 
             function convertArrayToObject(valueArray) {
                 var obj = {};
-
                 columnArray.forEach(mapKeyToIndex);
 
                 return obj;
 
                 function mapKeyToIndex(key, idx) {
                     obj[key] = valueArray[idx];
+                    config.propertyMap[key] = idx;
                 }
             }
         }

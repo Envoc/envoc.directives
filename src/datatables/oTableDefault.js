@@ -18,8 +18,23 @@
                     var theHeadRow = tElement.find('thead').find('tr');
 
                     var theFields = tAttrs.fields.split(',');
+                    
+                    var sortable = (tAttrs.sortable || '').split(',');
 
-                    buildTemplate(theHeadRow, '<td>', '</td>', theFields);
+                    var headerHtml = '';
+                    angular.forEach(theFields, function(val){
+                        var sortTemplate = '<span class="pull-right"><span class="asc">asc</span><span class="desc">desc</span></span>'
+                        var found = sortable.indexOf(val) > -1;
+                        var header = found ? sortTemplate : '';
+                        var headerAttr = found ? 'o-table-sort field="' + val + '"' : '';
+                        var html =  '<th ' + headerAttr + '>' + 
+                                        val +
+                                        header +
+                                    '</th>'
+                        headerHtml = headerHtml + html;
+                    });
+
+                    theHeadRow.html(headerHtml)
 
                     buildTemplate(theBodyRow, '<td>{{row.', '}}</td>', theFields);
 
