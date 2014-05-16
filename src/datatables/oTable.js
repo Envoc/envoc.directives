@@ -132,7 +132,7 @@
         }
 
         function defaultFetch() {
-            return $http.post(config.dataSrcUrl)
+            return $http.post(config.dataSrcUrl, createDatatableRequest())
         }
 
         function createDatatableRequest() {
