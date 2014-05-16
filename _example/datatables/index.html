@@ -27,6 +27,26 @@
         thead tr {
             background: #c2c2c2;
         }
+
+        th {
+            border: solid 1px #FFF;
+        }
+
+        th:first-child {
+            border-left: none;
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        .sortable .desc, .sortable .asc {
+            display: none;
+        }
+
+        .sortable.sorting.asc .asc, .sortable.sorting.desc .desc {
+            display: initial;
+        }
     </style>
     <script src="../../src/_vendor/angular/angular.min.js"></script>
     <script src="../../src/_vendor/lodash/dist/lodash.js"></script>
@@ -39,7 +59,9 @@
         <div class="row" ng-controller="MainCtrl as ctrl1">
             <br><br>
             <div class="col-xs-12" o-table config="ctrl1.config">
-                <div o-table-default fields="Id,StartDateUtc,Name,IsClosed,RegistrationCount"></div>
+                <div o-table-default 
+                    fields="Id,StartDateUtc,Name,IsClosed,RegistrationCount"
+                    sortable="Id,StartDateUtc,IsClosed"></div>
             </div>
  
             <!--<div class="col-xs-12" o-table config="ctrl1.config">
