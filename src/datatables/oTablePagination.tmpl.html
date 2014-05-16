@@ -1,5 +1,8 @@
 <div pagination total-items="ctrl.state.iTotalDisplayRecords" 
         items-per-page="ctrl.state.linesPerPage" 
+        max-size="{{ctrl.paginationSettings.maxSize}}"
+        previous-text="{{ctrl.paginationSettings.previousText}}"
+        next-text="{{ctrl.paginationSettings.nextText}}"
         ng-model="ctrl.state.currentPage"
         ng-show="ctrl.data.length">
 </div>

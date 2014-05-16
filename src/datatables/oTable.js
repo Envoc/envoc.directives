@@ -18,6 +18,8 @@
         this.init = function(config_) {
             angular.extend(config, config_);
 
+            self.paginationSettings = config_.paginationSettings || {};
+
             if (!config.dataSrcUrl && !config.dataSrc && !config.fetchMethod) {
                 throw new Error('A data source is required');
             }
