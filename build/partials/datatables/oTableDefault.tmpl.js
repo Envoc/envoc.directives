@@ -27,16 +27,7 @@ module.run(['$templateCache', function($templateCache) {
     '        <strong>No data found...</strong>\n' +
     '    </div>\n' +
     '\n' +
-    '    <table class="table table-striped dataTable" ng-show="ctrl.data.length">\n' +
-    '        <thead>\n' +
-    '            <tr role="row"></tr>\n' +
-    '        </thead>\n' +
-    '\n' +
-    '        <tbody role="alert" aria-live="polite" aria-relevant="all">\n' +
-    '            <tr ng-repeat="row in ctrl.data">\n' +
-    '            </tr>\n' +
-    '        </tbody>\n' +
-    '    </table>\n' +
+    '    <div ng-transclude></div>\n' +
     '\n' +
     '    <div class="row" ng-show="ctrl.data.length">\n' +
     '        <div class="span6 pull-left">\n' +
