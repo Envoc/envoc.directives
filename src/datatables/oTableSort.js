@@ -10,18 +10,17 @@
             require: '^oTable',
             link: function postLink(scope, iElement, iAttrs, controller) {
                 var propertyName = iAttrs.field;
-                iElement.addClass('sortable');
+                iElement.addClass('sorting');
 
                 scope.$on('oTable::sorting', function() {
                     var sortInfo = controller.getSortingPropertyInfo(propertyName);
 
-                    angular.forEach(['sorting', 'asc', 'desc'], function(css) {
+                    angular.forEach(['sorting_asc', 'sorting_desc'], function(css) {
                         iElement.removeClass(css);
                     });
 
                     if (sortInfo.sorting) {
-                        iElement.addClass('sorting');
-                        iElement.addClass(sortInfo.direction);
+                        iElement.addClass('sorting_' + sortInfo.direction);
                     }
                 })
 
