@@ -33,40 +33,20 @@
                 }
             });
 
-            it('should throw without a field list', function() {
-                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default></div></div>');
-                expect(compile).toThrow();
+            // it('should throw without a field list', function() {
+            //     element = angular.element('<div o-table config="config" id="childScope"><div o-table-default></div></div>');
+            //     expect(compile).toThrow();
 
-                function compile(){
-                    element = $compile(element)(scope);
-                    $rootScope.$digest();
-                }
-            });
+            //     function compile(){
+            //         element = $compile(element)(scope);
+            //         $rootScope.$digest();
+            //     }
+            // });
         });
 
         describe('Configuration:', function(){
             beforeEach(function() {
                 scope.config = {}
-            });
-
-            it('should throw without a field list', function() {
-                scope.config.dataSrc = [{id:1, name:'bob'}];
-
-                element = angular.element('<div o-table config="config" id="childScope"><div o-table-default fields="id,name"></div></div>');                
-                element = $compile(element)(scope);
-                $rootScope.$digest();
-
-                var tbody = element.find('tbody');
-                var rowCount = tbody.find('tr').length;
-
-                expect(rowCount).toBe(1);
-
-                scope.config.dataSrc.push({id:2, name:'john'});
-                $rootScope.$digest();
-
-                rowCount = tbody.find('tr').length;
-
-                expect(rowCount).toBe(2);
             });
 
             it('should compile and requires config', function() {
@@ -123,7 +103,7 @@
             beforeEach(function() {
                 scope.config = {}
                 html =  '<div o-table config="config">' + 
-                            '<div o-table-default fields="Id,StartDateUtc,EndDateUtc,IsClosed,RegistrationCount"></div>' +
+                            "<div o-table-default><table><thead><tr role=\"row\"><th>Start Date</th><th>Is Closed</th><th>Id</th><th>Registration Count</th></tr></thead><tbody o-table-repeat><tr ng-repeat=\"row in ctrl.data\"><td>{{ctrl1.parseDate(row.StartDateUtc) | date:'medium'}}</td><td>{{row.IsClosed}}</td><td>{{row.Id}}</td><td>{{row.RegistrationCount}}</td></tr></tbody></table></div>" +
                         '</div>';
             });
 
