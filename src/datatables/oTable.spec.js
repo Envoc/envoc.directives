@@ -137,6 +137,26 @@
                 };
             });
 
+            it('should call get additional params when provided', function() {
+                var spy = jasmine.createSpy();
+                scope.config.fetchMethod = fetchMethod;
+                scope.config.getAdditionalParams = function(){
+                    return {name:'spaceman'}
+                }
+                scope.config.linesPerPage = 15;
+
+                compile();
+
+                expect(spy).toHaveBeenCalledWith({Skip: 0, Take: 15, AllSearch: '', name:'spaceman'});
+
+                function fetchMethod(request){
+                    var dfd = $q.defer();
+                    spy(request);
+                    dfd.resolve({data:httpResponse1});
+                    return dfd.promise;
+                };
+            });
+
             it('should databind via fetchMethod', function() {
                 scope.config.fetchMethod = fetchMethod;
                 

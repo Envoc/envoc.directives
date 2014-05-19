@@ -45,6 +45,9 @@
 
         this.fetch = function() {
             var request = createDatatableRequest();
+            if(config.getAdditionalParams){
+                request = angular.extend(request, config.getAdditionalParams());
+            }
 
             if(config.fetchMethod.last && angular.toJson(request) == config.fetchMethod.last)
                 return;
