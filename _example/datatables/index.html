@@ -6,6 +6,17 @@
     <title>Envoc! Directives</title>
     <link href="../bootstrap.min.css" rel="stylesheet" />
     <style>
+        table.table thead .sorting {
+            background: url('img/sort_both.png') no-repeat center right
+        }
+
+        table.table thead .sorting_asc {
+            background: url('img/sort_asc.png') no-repeat center right
+        }
+
+        table.table thead .sorting_desc {
+            background: url('img/sort_desc.png') no-repeat center right
+        }
         div.dataTables_length label {
             float: left;
             text-align: left
@@ -91,8 +102,8 @@
                     <table>
                         <thead>
                             <tr role="row">
-                                <th>Id</th>
-                                <th>Position</th>
+                                <th o-table-sort field="id">Id</th>
+                                <th o-table-sort field="position">Position</th>
                                 <th>Name</th>
                             </tr>
                         </thead>

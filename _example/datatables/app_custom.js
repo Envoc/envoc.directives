@@ -17,7 +17,7 @@ app.controller('MainCtrl', function() {
                 .dataSrc
                 .push({
                     id:n+1, 
-                    image: Faker.Image.imageUrl(), 
+                    image: 'http://lorempixel.com/640/480/people/9/', 
                     date: Faker.Date.recent(999),
                     tags: Faker.Lorem.words(),
                     title: Faker.Lorem.sentence(),
