@@ -6,9 +6,12 @@
     app.controller('oTableCtrl', function($scope, $http, $filter, $rootScope) {
         var self = this,
             dataCache = [],
+            // filters
             limitTo,
             filter,
             startFrom,
+            orderBy,
+            // config
             config = {
                 fetchMethod: null,
                 linesPerPage: 10,
@@ -74,7 +77,7 @@
             if(!hasKey) {
                 self.state.sortOrder.push(propertyName);
             }
-
+            
             self.state.sortObj[propertyName] = next;
             self.state.lastSortShifted = shiftKey;
             $rootScope.$broadcast('oTable::sorting');
@@ -101,6 +104,15 @@
                 self.state.iTotalDisplayRecords = dataCache.length;
             }
 
+            var isSorting = self.state.sortOrder.length > 0;
+
+            if(isSorting){
+                var sortProperty = self.state.sortOrder[0];
+                var sortDirectionPrefix = self.state.sortObj[sortProperty] ? '+' : '-';
+                var sortExpression = sortDirectionPrefix + sortProperty;
+                clone = orderBy(clone, sortExpression);
+            }
+
             self.state.iTotalRecords = dataCache.length;
             self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
 
@@ -122,10 +134,13 @@
             limitTo = $filter('limitTo');
             filter = $filter('filter');
             startFrom = $filter('startFrom');
+            orderBy = $filter('orderBy');
 
             dataCache = config.dataSrc;
             calculateVisible();
             setupClientWatches();
+
+            $rootScope.$on('oTable::sorting', calculateVisible);
         }
 
         // =================================

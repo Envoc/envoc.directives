@@ -6,7 +6,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTableDefault.tmpl.html',
-    '<div class="dataTables_wrapper form-inline" role="grid">\n' +
+    '<div class="dataTables_wrapper form-inline" role="grid" ng-cloak>\n' +
     '    <div class="row">\n' +
     '        <div class="span6 pull-left">\n' +
     '            <div class="dataTables_length">\n' +
