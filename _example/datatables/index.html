@@ -108,8 +108,8 @@
                             </tr>
                         </thead>
 
-                        <tbody o-table-repeat>
-                            <tr ng-repeat="row in ctrl.data">
+                        <tbody>
+                            <tr ng-repeat="row in dataCtrl.data" o-table-controller expose-as="dataCtrl">
                                 <td>{{row.id}}</td>
                                 <td>{{row.position}}</td>
                                 <td>{{row.name}}</td>

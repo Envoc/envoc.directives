@@ -146,16 +146,14 @@
                     </div>
                 </nav>
 
-                <div o-table-repeat>
-                    <!-- o-table-repeat exposes the controller as ctrl -->
-
-                    <div class="alert alert-info" ng-hide="ctrl.data.length">
+                <div>
+                    <div class="alert alert-info" ng-hide="ctrl.data.length" o-table-controller>
                         <strong>No data found...</strong>
                     </div>
 
                     <div class="well">
                         <div o-table-pagination></div>
-                        <article class="search-result row" ng-repeat-start="row in ctrl.data">
+                        <article class="search-result row" ng-repeat-start="row in ctrl.data" o-table-controller>
                             <div class="col-xs-12 col-sm-12 col-md-3">
                                 <a href="#" title="Lorem ipsum" class="thumbnail">
                                     <img ng-src="{{row.image}}" alt="Lorem ipsum" />
@@ -190,7 +188,7 @@
                     </div>
 
                     <pager ng-model="ctrl.state.currentPage" total-items="ctrl.state.iTotalDisplayRecords"
-                        items-per-page="ctrl.state.linesPerPage"></pager>
+                        items-per-page="ctrl.state.linesPerPage" o-table-controller></pager>
                 </div>
 
                 <!-- <div o-table-pagination></div> -->
