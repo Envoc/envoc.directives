@@ -81,8 +81,8 @@
                             </tr>
                         </thead>
 
-                        <tbody o-table-repeat>
-                            <tr ng-repeat="row in ctrl.data">
+                        <tbody>
+                            <tr ng-repeat="row in ctrl.data" o-table-controller>
                                 <td>{{ctrl1.parseDate(row.StartDateUtc) | date:'medium'}}</td>
                                 <td>{{row.IsClosed}}</td>
                                 <td>{{row.Id}}</td>
