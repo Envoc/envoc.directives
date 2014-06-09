@@ -13,8 +13,7 @@ act as a client-side drop in replacement.
 ### Possible Directives:
 
 * oTable
-    * oTableRepeat
-        * oTableColumn
+    * oTableController
     * oTableFilter
     * oTableColumnFilter
     * oTableColumnSort
@@ -46,13 +45,7 @@ __Default__
             <tr>Job Position</tr>
         </thead>
         <tbody>
-            <tr o-table-repeat>
-                <td o-table-column field="firstName"></td>
-                <td o-table-column field="fullName()"></td>
-                <td o-table-column field="jobPosition"></td>
-            </tr>
-            <!-- OR: Usgin ng-repeat -->
-            <tr ng-repeat="row in rows">
+            <tr ng-repeat="row in dataCtrl.rows" o-table-controller expose-as="dataCtrl">
                 <td>{{row.firstName}}</td>
                 <td>{{row.fullName()}}</td>
                 <td>{{row.jobPosition}}</td>
@@ -108,18 +101,13 @@ __oTableCtrl:__
         * The data returned from the promise should return a structure conforming to the 
           datatables response strucutre
 
-oTableRepeat
+oTableController
 ----
 
-* Essentially just a `ng-repeat` that will contain `o-table-column` directives
-* Default action is to just repeat using the `field="propName"` notation
-* Maybe not required to allow a more custom actual ng-repeat implimentation in the view
-
-oTableColumn
-----
-
-* Needs to handle both object properties and computed properties
-* Computed properties - When the server gets the json response, it can decorate each row
+* Exposes the oTableController (controller) to a scope. Because of
+    transclusion used in the directive, it is not accessible via
+    typical prototypal inheritence.
+* Option: ```expose-as``` (defaults to 'ctrl') the scope property name to expose the controller as
 
 oTableFilter
 ----
