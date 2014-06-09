@@ -320,4 +320,17 @@
             }
         };
     });
+
+    app.directive('oTableController', function() {
+        return {
+            restrict: 'A',
+            priority:1000,
+            scope: true,
+            require: '^oTable',
+            link: function postLink(scope, iElement, iAttrs, controller) {
+                var ctrlName = iAttrs.exposeAs || 'ctrl';
+                scope[ctrlName] = controller;
+            }
+        };
+    });
 })();
