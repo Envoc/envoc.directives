@@ -53,10 +53,13 @@ oValidateWith
 
 * Used as wrapper to map child validation messages to keys bound to error property
 * Child directive __oValidationMessageFor__ maps propertyName of error object in collection
+* Child directive __oValidationSummary__ displays a validation summary
 
 ```
 <div o-validate-with errors="ctrl1.errors">
+	<div o-validation-summary></div>
     <div o-validation-message-for="firstName"></div>
+    <div o-validation-message-for="lastName"></div>
 </div>
 ```
 
@@ -72,4 +75,5 @@ __where ctrl1.errors:__
         errorMessage: 'Last Name must be between 2 and 256 characters' 
     }
 ];
+
 ```

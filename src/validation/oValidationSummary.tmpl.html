@@ -1,0 +1,8 @@
+﻿<div ng-show="errors.length" ng-class="{'alert alert-danger alert-block': errors.length}">
+    <strong>Please fix the error{{ errors.length > 1 ? 's' : ''}} listed below and try again</strong>
+    <ul style="padding-left:30px">
+        <li ng-repeat="error in errors">
+            {{error.errorMessage}}
+        </li>
+    </ul>
+</div>
