@@ -36,7 +36,8 @@
                 iTotalDisplayRecords: 0,
                 allSearch: '',
                 sortObj: {},
-                sortOrder: []
+                sortOrder: [],
+                searchObj: {}
             };
 
             if (config.dataSrc) {
@@ -81,7 +82,16 @@
             self.state.sortObj[propertyName] = next;
             self.state.lastSortShifted = shiftKey;
             $rootScope.$broadcast('oTable::sorting');
-        }
+        };
+
+        this.columnFilter = function(searchTerm, propertyName){
+            var propertyIndex = config.propertyMap[propertyName];
+            self.state.searchObj[propertyName] = searchTerm;
+            if(!searchTerm){
+                delete self.state.searchObj[propertyName];
+            }
+            $rootScope.$broadcast('oTable::filtering');
+        };
 
         this.getSortingPropertyInfo = function(propertyName){
             return {
@@ -141,6 +151,7 @@
             setupClientWatches();
 
             $rootScope.$on('oTable::sorting', calculateVisible);
+            $rootScope.$on('oTable::filtering', calculateVisible);
         }
 
         // =================================
@@ -149,6 +160,8 @@
 
         function initRemoteData() {
             setupRemoteWatches();
+            $rootScope.$on('oTable::filtering', self.fetch);
+            // $rootScope.$on('oTable::sorting', self.fetch);
         }
 
         function defaultFetch() {
@@ -157,25 +170,28 @@
 
         function createDatatableRequest() {
             var s = self.state;
+            var filterKeys = angular.extend({}, s.searchObj, s.sortObj);
             var params = {
                 Skip: (s.currentPage - 1) * s.linesPerPage, // 0
                 Take: s.linesPerPage, //10
                 AllSearch: s.allSearch
             };
 
-            if(s.sortOrder.length){
-                params.Columns = [];
+            params.Columns = [];
 
-                angular.forEach(s.sortOrder, function(propertyName, idx){
-                    var direction = getSortDirection(propertyName);
-                    var propertyIndex = config.propertyMap[propertyName];
-                    
+            angular.forEach(filterKeys, function(propertyValue, propertyName){
+                var direction = s.sortObj[propertyName] ? getSortDirection(propertyName) : null;
+                var searchTerm = s.searchObj[propertyName] || null;
+                var propertyIndex = config.propertyMap[propertyName];
+                
+                if(direction || searchTerm){
                     params.Columns.push({
                         ColumnIndex: propertyIndex,
-                        SortDirection: direction
+                        SortDirection: direction,
+                        SearchTerm: searchTerm
                     });
-                });
-            }
+                }
+            });
 
             return params
         }
