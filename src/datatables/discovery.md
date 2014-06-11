@@ -184,10 +184,12 @@ Take:25
 AllSearch:1
 Columns[0].ColumnIndex:1
 Columns[0].SortDirection:asc
+Columns[0].SearchTerm:'asd'
 Columns[1].ColumnIndex:2
 Columns[1].SortDirection:asc
 Columns[2].ColumnIndex:3
 Columns[2].SortDirection:desc
+Columns[2].SearchTerm:'asd'
 ```
 
 __Existing Response Structure__ `class FormattedList`
