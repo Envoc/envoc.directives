@@ -103,7 +103,7 @@
             beforeEach(function() {
                 scope.config = {}
                 html =  '<div o-table config="config">' + 
-                            "<div o-table-default><table><thead><tr role=\"row\"><th>Start Date</th><th>Is Closed</th><th>Id</th><th>Registration Count</th></tr></thead><tbody o-table-repeat><tr ng-repeat=\"row in ctrl.data\"><td>{{ctrl1.parseDate(row.StartDateUtc) | date:'medium'}}</td><td>{{row.IsClosed}}</td><td>{{row.Id}}</td><td>{{row.RegistrationCount}}</td></tr></tbody></table></div>" +
+                            "<div><table><thead><tr role=\"row\"><th>Start Date</th><th>Is Closed</th><th>Id</th><th>Registration Count</th></tr></thead><tbody o-table-controller><tr ng-repeat=\"row in ctrl.data\"><td>{{ctrl1.parseDate(row.StartDateUtc) | date:'medium'}}</td><td>{{row.IsClosed}}</td><td>{{row.Id}}</td><td>{{row.RegistrationCount}}</td></tr></tbody></table></div>" +
                         '</div>';
             });
 
@@ -127,7 +127,7 @@
 
                 compile();
 
-                expect(spy).toHaveBeenCalledWith({Skip: 0, Take: 15, AllSearch: ''});
+                expect(spy).toHaveBeenCalledWith({Skip: 0, Take: 15, AllSearch: '', Columns : [  ]});
 
                 function fetchMethod(request){
                     var dfd = $q.defer();
@@ -147,7 +147,7 @@
 
                 compile();
 
-                expect(spy).toHaveBeenCalledWith({Skip: 0, Take: 15, AllSearch: '', name:'spaceman'});
+                expect(spy).toHaveBeenCalledWith({Skip: 0, Take: 15, AllSearch: '', Columns : [  ], name:'spaceman'});
 
                 function fetchMethod(request){
                     var dfd = $q.defer();
