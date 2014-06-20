@@ -31,7 +31,7 @@ gulp.task('js', function() {
             './src/datatables/**/*.js',
             '!./src/**/*.spec.js'
         ], base)
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(concat("oDirectives.min.js"))
         .pipe(gulp.dest('./dist/'));
 });
