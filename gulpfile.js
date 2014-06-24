@@ -21,7 +21,7 @@ gulp.task('clean', function(){
 // uglify task
 gulp.task('js', function() {
     // main app js file
-    gulp.src([
+    var the_source = gulp.src([
             './src/_vendor/ui.bootstrap/src/pagination/pagination.js',
             // './src/_vendor/moment/moment.js',
             './build/partials/**/*.js',
@@ -30,7 +30,13 @@ gulp.task('js', function() {
             './src/validation/**/*.js',
             './src/datatables/**/*.js',
             '!./src/**/*.spec.js'
-        ], base)
+        ], base);
+
+    the_source
+        .pipe(concat("oDirectives.js"))
+        .pipe(gulp.dest('./dist/'));
+
+    the_source
         .pipe(uglify())
         .pipe(concat("oDirectives.min.js"))
         .pipe(gulp.dest('./dist/'));
