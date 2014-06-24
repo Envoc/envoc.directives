@@ -20,14 +20,69 @@ app.controller('MainCtrl', function($timeout) {
 
         $timeout(function() {
             viewModel.errors = [
-                { propertyName: '', type: 'length', errorMessage: 'This is global' },
-                { propertyName: '', type: 'length', errorMessage: 'This is global also' },
-                { propertyName: 'firstName', type: 'required', errorMessage: 'First Name is required' },
-                { propertyName: 'firstName', type: 'length', errorMessage: 'First Name must be between 2 and 256 characters' },
-                { propertyName: 'lastName', type: 'length', errorMessage: 'Last Name must be between 2 and 256 characters' }
+                {
+                    propertyName: '',
+                    type: 'length',
+                    errorMessage: 'This is global'
+                }, {
+                    propertyName: '',
+                    type: 'length',
+                    errorMessage: 'This is global also'
+                }, {
+                    propertyName: 'firstName',
+                    type: 'required',
+                    errorMessage: 'First Name is required'
+                }, {
+                    propertyName: 'firstName',
+                    type: 'length',
+                    errorMessage: 'First Name must be between 2 and 256 characters'
+                }, {
+                    propertyName: 'lastName',
+                    type: 'length',
+                    errorMessage: 'Last Name must be between 2 and 256 characters'
+                }
             ];
 
             viewModel.action = 'Submit';
+
+            viewModel.modelState = {
+                "id": {
+                    "value": {
+                        "attemptedValue": "12",
+                        "culture": "en-US",
+                        "rawValue": 12
+                    },
+                    "errors": []
+                },
+                "firstName": {
+                    "value": {
+                        "attemptedValue": "",
+                        "culture": "en-US",
+                        "rawValue": ""
+                    },
+                    "errors": [{
+                        "errorMessage": "First Name is required."
+                    }]
+                },
+                "lastName": {
+                    "value": {
+                        "attemptedValue": "",
+                        "culture": "en-US",
+                        "rawValue": ""
+                    },
+                    "errors": [{
+                        "errorMessage": "Last Name is required."
+                    }]
+                },
+                "middleInitial": {
+                    "value": {
+                        "attemptedValue": "s",
+                        "culture": "en-US",
+                        "rawValue": "s"
+                    },
+                    "errors": []
+                }
+            };
 
         }, 750);
     };
