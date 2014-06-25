@@ -22,26 +22,46 @@ gulp.task('clean', function(){
 // uglify task
 gulp.task('js', function() {
     // main app js file
-    var the_source = gulp.src([
-            './src/_vendor/ui.bootstrap/src/pagination/pagination.js',
-            // './src/_vendor/moment/moment.js',
-            './build/partials/**/*.js',
-            './build/_vendor/**/*.js',
-            './src/app.js',
-            './src/validation/**/*.js',
-            './src/datatables/**/*.js',
-            '!./src/**/*.spec.js'
-        ], base);
+    var datatables_src = [
+        './src/_vendor/ui.bootstrap/src/pagination/pagination.js',
+        './build/partials/datatables/*.js',
+        './build/_vendor/**/*.js',
+        './src/datatables/app.js',
+        './src/datatables/**/*.js',
+        '!./src/**/*.spec.js'
+    ];
 
-    the_source
-        .pipe(concat("oDirectives.js"))
-        .pipe(gulp.dest('./dist/'));
+    var validation_src = [
+        './build/partials/validation/*.js',
+        './src/validation/app.js',
+        './src/validation/**/*.js',
+        '!./src/**/*.spec.js'
+    ];
 
-    the_source
-        .pipe(ngmin())
-        .pipe(uglify())
-        .pipe(concat("oDirectives.min.js"))
-        .pipe(gulp.dest('./dist/'));
+    var combined_src = [
+        './src/app.js',
+        '!./src/**/*.spec.js'
+    ]
+
+    build('oDirectives', [combined_src, datatables_src, validation_src]);
+    build('oDirectives.datatables', [datatables_src]);
+    build('oDirectives.validation', [validation_src]);
+
+
+    function build(outputFileName, sources){
+        var combined_buid = Array.prototype.concat.apply([], sources)
+        var the_source = gulp.src(combined_buid, base);  
+
+        the_source
+            .pipe(concat(outputFileName + ".js"))
+            .pipe(gulp.dest('./dist/'));
+
+        the_source
+            .pipe(ngmin())
+            .pipe(uglify())
+            .pipe(concat(outputFileName + ".min.js"))
+            .pipe(gulp.dest('./dist/'));
+    }
 });
 
 // templatify
