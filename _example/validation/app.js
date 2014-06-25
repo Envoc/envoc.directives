@@ -37,9 +37,8 @@ app.controller('MainCtrl', function($timeout) {
                     type: 'length',
                     errorMessage: 'First Name must be between 2 and 256 characters'
                 }, {
-                    propertyName: 'lastName',
-                    type: 'length',
-                    errorMessage: 'Last Name must be between 2 and 256 characters'
+                    key: 'lastName',
+                    message: 'I hate you'
                 }
             ];
 
