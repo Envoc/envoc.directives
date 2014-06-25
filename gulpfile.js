@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     clean = require('gulp-clean'),
     gutil = require('gulp-util'),
     uglify = require('gulp-uglify'),
+    ngmin = require('gulp-ngmin'),
     watch = require('gulp-watch'),
     concat = require('gulp-concat'),
     ngHtml2Js = require("gulp-ng-html2js");
@@ -37,6 +38,7 @@ gulp.task('js', function() {
         .pipe(gulp.dest('./dist/'));
 
     the_source
+        .pipe(ngmin())
         .pipe(uglify())
         .pipe(concat("oDirectives.min.js"))
         .pipe(gulp.dest('./dist/'));
