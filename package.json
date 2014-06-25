@@ -1,6 +1,6 @@
 {
   "name": "envoc.directives",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Base line directives for envoc web projects",
   "main": "index.js",
   "directories": {
@@ -38,6 +38,7 @@
     "gulp-clean": "^0.2.4",
     "http-server": "~0.6.1",
     "bower": "~1.3.3",
-    "karma-cli": "0.0.4"
+    "karma-cli": "0.0.4",
+    "gulp-ngmin": "~0.3.0"
   }
 }
