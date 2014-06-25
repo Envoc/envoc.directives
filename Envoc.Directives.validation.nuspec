@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>0.8.1</version>
+    <authors>Envoc</authors>
+    <owners>Envoc</owners>
+    <id>Envoc.Directives.Validation</id>
+    <title>Envoc.Directives.Validation</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Envoc.Directives.Validation</description>
+    <copyright>Copyright Envoc 2014</copyright>
+  </metadata>
+  <files>
+    <file src="dist\*validation*.js" target="Content\Assets\js" />
+  </files>
+</package>
