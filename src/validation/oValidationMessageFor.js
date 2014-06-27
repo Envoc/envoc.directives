@@ -19,6 +19,7 @@
                         scope.$watch(getErrors, function(current, previous) {
                             if (current) {
                                 scope.matches = current.filter(function(error) {
+                                    error.propertyName = error[propertyName];
                                     return angular.isDefined(error[propertyName]) && error[propertyName].toLowerCase() == key;
                                 });
 
