@@ -5,15 +5,26 @@
         .module('envoc.directives.validation')
         .directive('oValidateWith', [
             function() {
+                var noop = function() {};
+                var nullFormCtrl = {
+                    $addControl: noop,
+                    $removeControl: noop,
+                    $setValidity: noop,
+                    $setDirty: noop,
+                    $setPristine: noop
+                };
+
                 return {
                     restrict: 'EA',
-                    controller: function() {},
+                    controller: function($element) {
+                        this.parentForm = $element.inheritedData('$formController') || nullFormCtrl;
+                    },
                     link: function(scope, element, attrs, ctrl) {
-                        scope.$watch(function(){
+                        scope.$watch(function() {
                             return scope.$eval(attrs.errors);
-                        }, function(current) {
+                        }, function(current, previous) {
                             if (current) {
-                                ctrl.errors = scope.$eval(attrs.errors);
+                                ctrl.errors = current;
                             }
                         });
                     }
