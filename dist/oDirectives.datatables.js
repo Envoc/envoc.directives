@@ -447,7 +447,7 @@ module.run(['$templateCache', function($templateCache) {
             var last = self.state.lastSortShifted;
 
             var val = self.state.sortObj[propertyName];
-            var next = last && !shiftKey ? true : !val;
+            var next = angular.isDefined(val) ? !self.state.sortObj[propertyName] : true;
 
             if(!shiftKey) {
                 self.state.sortObj = {}
@@ -560,7 +560,7 @@ module.run(['$templateCache', function($templateCache) {
             params.Columns = [];
 
             angular.forEach(filterKeys, function(propertyValue, propertyName){
-                var direction = s.sortObj[propertyName] ? getSortDirection(propertyName) : null;
+                var direction = angular.isDefined(s.sortObj[propertyName]) ? getSortDirection(propertyName) : null;
                 var searchTerm = s.searchObj[propertyName] || null;
                 var propertyIndex = config.propertyMap[propertyName];
                 
@@ -879,6 +879,11 @@ module.run(['$templateCache', function($templateCache) {
 (function() {
     'use strict';
 
+    /*
+     * Example use: <th o-table-sort field="id">Id</th>
+     * params: (attribute field): this is the case-sensative key to sort on.
+     */
+    
     var app = angular.module('envoc.directives.datatables');
 
     app.directive('oTableSort', function() {
