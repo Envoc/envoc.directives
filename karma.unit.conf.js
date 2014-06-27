@@ -11,9 +11,18 @@ module.exports = function (config) {
         frameworks: ['jasmine'],
 
         files: [
+            "src/_vendor/jquery/dist/jquery.min.js",
             "src/_vendor/angular/angular.js",
             "src/_vendor/angular-mocks/angular-mocks.js",
-            "dist/oDirectives.min.js",
+            './src/_vendor/ui.bootstrap/src/pagination/pagination.js',
+            './src/app.js',
+            './build/partials/datatables/*.js',
+            './build/_vendor/**/*.js',
+            './build/partials/validation/*.js',
+            './src/datatables/app.js',
+            './src/datatables/**/*.js',
+            './src/validation/app.js',
+            './src/validation/**/*.js',
             "src/**/*.spec.js"
         ],
 

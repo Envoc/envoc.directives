@@ -1,6 +1,11 @@
 (function() {
     'use strict';
 
+    /*
+     * Example use: <th o-table-sort field="id">Id</th>
+     * params: (attribute field): this is the case-sensative key to sort on.
+     */
+    
     var app = angular.module('envoc.directives.datatables');
 
     app.directive('oTableSort', function() {
