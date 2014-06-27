@@ -39,6 +39,9 @@ app.controller('MainCtrl', function($timeout) {
                 }, {
                     key: 'lastName',
                     message: 'I hate you'
+                }, {
+                    key: 'lastName',
+                    message: 'No, but really'
                 }
             ];
 

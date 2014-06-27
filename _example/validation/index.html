@@ -5,7 +5,7 @@
     <title>AngularJS Plunker</title>
     <link data-require="bootstrap-css@*" data-semver="3.1.1" rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
     <script src="../../src/_vendor/angular/angular.min.js"></script>
-    <script src="../../dist/oDirectives.validation.min.js"></script>
+    <script src="../../dist/oDirectives.validation.js"></script>
     <script src="app.js"></script>
 </head>
 <body>
@@ -14,7 +14,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Form</div>
                 <div class="panel-body">
-                    <form o-validate-with errors="ctrl1.errors">
+                    <form o-validate-with errors="ctrl1.errors" name="form1">
                         <div o-validation-summary></div>
 
                         <!-- LOOK: THIS HERE -->
