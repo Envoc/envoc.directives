@@ -1,6 +1,6 @@
 {
   "name": "envoc.directives",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Base line directives for envoc web projects",
   "main": "index.js",
   "directories": {
