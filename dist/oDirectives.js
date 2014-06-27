@@ -1010,15 +1010,26 @@ module.run(['$templateCache', function($templateCache) {
         .module('envoc.directives.validation')
         .directive('oValidateWith', [
             function() {
+                var noop = function() {};
+                var nullFormCtrl = {
+                    $addControl: noop,
+                    $removeControl: noop,
+                    $setValidity: noop,
+                    $setDirty: noop,
+                    $setPristine: noop
+                };
+
                 return {
                     restrict: 'EA',
-                    controller: function() {},
+                    controller: function($element) {
+                        this.parentForm = $element.inheritedData('$formController') || nullFormCtrl;
+                    },
                     link: function(scope, element, attrs, ctrl) {
-                        scope.$watch(function(){
+                        scope.$watch(function() {
                             return scope.$eval(attrs.errors);
-                        }, function(current) {
+                        }, function(current, previous) {
                             if (current) {
-                                ctrl.errors = scope.$eval(attrs.errors);
+                                ctrl.errors = current;
                             }
                         });
                     }
@@ -1026,6 +1037,7 @@ module.run(['$templateCache', function($templateCache) {
             }
         ]);
 })();
+
 ﻿(function() {
     'use strict';
 
@@ -1047,6 +1059,7 @@ module.run(['$templateCache', function($templateCache) {
                         scope.$watch(getErrors, function(current, previous) {
                             if (current) {
                                 scope.matches = current.filter(function(error) {
+                                    error.propertyName = error[propertyName];
                                     return angular.isDefined(error[propertyName]) && error[propertyName].toLowerCase() == key;
                                 });
 
