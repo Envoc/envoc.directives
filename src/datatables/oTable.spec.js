@@ -32,16 +32,6 @@
                     dataSrc: [{id:1, name:'bob'}]
                 }
             });
-
-            // it('should throw without a field list', function() {
-            //     element = angular.element('<div o-table config="config" id="childScope"><div o-table-default></div></div>');
-            //     expect(compile).toThrow();
-
-            //     function compile(){
-            //         element = $compile(element)(scope);
-            //         $rootScope.$digest();
-            //     }
-            // });
         });
 
         describe('Configuration:', function(){
@@ -103,7 +93,26 @@
             beforeEach(function() {
                 scope.config = {}
                 html =  '<div o-table config="config">' + 
-                            "<div><table><thead><tr role=\"row\"><th>Start Date</th><th>Is Closed</th><th>Id</th><th>Registration Count</th></tr></thead><tbody o-table-controller><tr ng-repeat=\"row in ctrl.data\"><td>{{ctrl1.parseDate(row.StartDateUtc) | date:'medium'}}</td><td>{{row.IsClosed}}</td><td>{{row.Id}}</td><td>{{row.RegistrationCount}}</td></tr></tbody></table></div>" +
+                            "<div>" + 
+                                "<table>" + 
+                                    "<thead>" + 
+                                        "<tr role=\"row\">" + 
+                                            "<th>Start Date</th>" + 
+                                            "<th>Is Closed</th>" + 
+                                            "<th o-table-sort field=\"Id\">Id</th>" + 
+                                            "<th>Registration Count</th>" + 
+                                        "</tr>" + 
+                                    "</thead>" + 
+                                    "<tbody o-table-controller>" + 
+                                        "<tr ng-repeat=\"row in ctrl.data\">" + 
+                                            "<td>{{ctrl1.parseDate(row.StartDateUtc) | date:'medium'}}</td>" + 
+                                            "<td>{{row.IsClosed}}</td>" + 
+                                            "<td>{{row.Id}}</td>" + 
+                                            "<td>{{row.RegistrationCount}}</td>" + 
+                                        "</tr>" + 
+                                    "</tbody>" + 
+                                "</table>" + 
+                            "</div>" +
                         '</div>';
             });
 
@@ -196,6 +205,36 @@
                 
                 scope.$digest();
                 $httpBackend.flush();
+            });
+
+            describe('table sorting', function(){
+                it('should add sorting params when sort clicked', function() {
+                    var spy = jasmine.createSpy();
+                    scope.config.fetchMethod = fetchMethod;
+                    scope.config.linesPerPage = 15;
+
+                    compile();
+
+                    var sortField = element.find('[o-table-sort]');
+
+                    expect(sortField.length).toBe(1); // test case has required element
+                    expect(spy).toHaveBeenCalledWith({Skip: 0, Take: 15, AllSearch: '', Columns : []});
+                    
+                    sortField.click();
+                    $rootScope.$digest();
+                    expect(spy.mostRecentCall.args[0]).toEqual({Skip: 0, Take: 15, AllSearch: '', Columns : [{ColumnIndex: 0, SortDirection: 'asc', SearchTerm: null}]});
+
+                    sortField.click();
+                    $rootScope.$digest();
+                    expect(spy.mostRecentCall.args[0]).toEqual({Skip: 0, Take: 15, AllSearch: '', Columns : [{ColumnIndex: 0, SortDirection: 'desc', SearchTerm: null}]});
+
+                    function fetchMethod(request){
+                        var dfd = $q.defer();
+                        spy(request);
+                        dfd.resolve({data:httpResponse1});
+                        return dfd.promise;
+                    };
+                });
             });
 
             function compile(){
