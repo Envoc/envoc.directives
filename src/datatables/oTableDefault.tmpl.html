@@ -14,8 +14,12 @@
             </div>
         </div>
     </div>
+    
+    <div class="alert alert-info" ng-show="ctrl.loading">
+        <strong>Loading...</strong>
+    </div>
 
-    <div class="alert alert-info" ng-hide="ctrl.data.length">
+    <div class="alert alert-info" ng-hide="ctrl.data.length || ctrl.loading">
         <strong>No data found...</strong>
     </div>
 
