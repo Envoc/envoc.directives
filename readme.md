@@ -1,4 +1,6 @@
-![Build Status](https://api.travis-ci.org/Envoc/envoc.directives.svg)
+![Travis Status](http://img.shields.io/travis/Envoc/envoc.directives.svg?style=flat) 
+&nbsp;
+![NuGet Version](http://img.shields.io/nuget/v/Envoc.Directives.svg?style=flat)
 
 Envoc Directives
 ====
