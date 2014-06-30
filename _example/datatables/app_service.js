@@ -63,13 +63,19 @@ app.service('FakeService', function($q, $filter) {
             cache = search(cache, stateOfTheWorld.AllSearch);
         }
 
-        return $q.when({
-            data:{
-                "iTotalRecords": data.length,
-                "iTotalDisplayRecords": cache.length,
-                "aaData": _.take(_.rest(cache,stateOfTheWorld.Skip), parseInt(stateOfTheWorld.Take, 10)),
-                "sColumns": "Id,StartDateUtc,Name,IsClosed,RegistrationCount"
-            }
-        });
+        var dfd = $q.defer();
+
+        setTimeout(function () {
+            dfd.resolve({
+                data: {
+                    "iTotalRecords": data.length,
+                    "iTotalDisplayRecords": cache.length,
+                    "aaData": _.take(_.rest(cache, stateOfTheWorld.Skip), parseInt(stateOfTheWorld.Take, 10)),
+                    "sColumns": "Id,StartDateUtc,Name,IsClosed,RegistrationCount"
+                }
+            });
+        }, 3000);
+
+        return dfd.promise;
     }
 });

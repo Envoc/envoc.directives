@@ -48,6 +48,7 @@
         }
 
         this.fetch = function() {
+            self.loading = true;
             var request = createDatatableRequest();
             if(config.getAdditionalParams){
                 request = angular.extend(request, config.getAdditionalParams());
@@ -237,6 +238,7 @@
             self.state.iTotalDisplayRecords = resp.data.iTotalDisplayRecords;
             calcPageStart();
             calcPageStop();
+            self.loading = false;
         }
 
         function dataFetchError() {

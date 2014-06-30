@@ -237,8 +237,12 @@ module.run(['$templateCache', function($templateCache) {
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
+    '    \n' +
+    '    <div class="alert alert-info" ng-show="ctrl.loading">\n' +
+    '        <strong>Loading...</strong>\n' +
+    '    </div>\n' +
     '\n' +
-    '    <div class="alert alert-info" ng-hide="ctrl.data.length">\n' +
+    '    <div class="alert alert-info" ng-hide="ctrl.data.length || ctrl.loading">\n' +
     '        <strong>No data found...</strong>\n' +
     '    </div>\n' +
     '\n' +
@@ -428,6 +432,7 @@ module.run(['$templateCache', function($templateCache) {
         }
 
         this.fetch = function() {
+            self.loading = true;
             var request = createDatatableRequest();
             if(config.getAdditionalParams){
                 request = angular.extend(request, config.getAdditionalParams());
@@ -617,6 +622,7 @@ module.run(['$templateCache', function($templateCache) {
             self.state.iTotalDisplayRecords = resp.data.iTotalDisplayRecords;
             calcPageStart();
             calcPageStop();
+            self.loading = false;
         }
 
         function dataFetchError() {

@@ -22,8 +22,12 @@ module.run(['$templateCache', function($templateCache) {
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
+    '    \n' +
+    '    <div class="alert alert-info" ng-show="ctrl.loading">\n' +
+    '        <strong>Loading...</strong>\n' +
+    '    </div>\n' +
     '\n' +
-    '    <div class="alert alert-info" ng-hide="ctrl.data.length">\n' +
+    '    <div class="alert alert-info" ng-hide="ctrl.data.length || ctrl.loading">\n' +
     '        <strong>No data found...</strong>\n' +
     '    </div>\n' +
     '\n' +
