@@ -235,6 +235,46 @@
                         return dfd.promise;
                     };
                 });
+
+                it('should allow setting a default sort', function() {
+                    var spy = jasmine.createSpy();
+                    var expectedSort = { ColumnIndex: 2, SortDirection: 'desc', SearchTerm: null };
+
+                    scope.config.defaultSort = [[ 2, "desc" ]]
+                    scope.config.fetchMethod = fetchMethod;
+                    scope.config.linesPerPage = 15;
+
+                    compile();
+
+                    expect(spy).toHaveBeenCalledWith({Skip: 0, Take: 15, AllSearch: '', Columns : [expectedSort]});
+
+                    function fetchMethod(request){
+                        var dfd = $q.defer();
+                        spy(request);
+                        dfd.resolve({data:httpResponse1});
+                        return dfd.promise;
+                    };
+                });
+
+                it('should allow setting a default sort with default search', function() {
+                    var spy = jasmine.createSpy();
+                    var expectedSort = { ColumnIndex: 2, SortDirection: 'desc', SearchTerm: "boom" };
+
+                    scope.config.defaultSort = [[ 2, "desc", "boom" ]]
+                    scope.config.fetchMethod = fetchMethod;
+                    scope.config.linesPerPage = 15;
+
+                    compile();
+
+                    expect(spy).toHaveBeenCalledWith({Skip: 0, Take: 15, AllSearch: '', Columns : [expectedSort]});
+
+                    function fetchMethod(request){
+                        var dfd = $q.defer();
+                        spy(request);
+                        dfd.resolve({data:httpResponse1});
+                        return dfd.promise;
+                    };
+                });
             });
 
             function compile(){
