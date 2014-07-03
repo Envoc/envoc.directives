@@ -15,7 +15,8 @@
             config = {
                 fetchMethod: null,
                 linesPerPage: 10,
-                throttle: 0
+                throttle: 0,
+                defaultSort: []
             };
 
         this.init = function(config_) {
@@ -169,6 +170,16 @@
             return $http.post(config.dataSrcUrl, createDatatableRequest())
         }
 
+        function mapDefaultSort(){
+            return config.defaultSort.map(function(val, idx){
+                return {
+                    ColumnIndex: val[0],
+                    SortDirection: val[1],
+                    SearchTerm: (val[2] || null)
+                };
+            });
+        }
+
         function createDatatableRequest() {
             var s = self.state;
             var filterKeys = angular.extend({}, s.searchObj, s.sortObj);
@@ -193,6 +204,10 @@
                     });
                 }
             });
+
+            if(config.defaultSort.length && !self.state.sortOrder.length){
+                params.Columns = Array.prototype.concat.apply(params.Columns, mapDefaultSort());
+            }
 
             return params
         }
