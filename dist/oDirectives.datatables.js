@@ -550,8 +550,8 @@ module.run(['$templateCache', function($templateCache) {
             // $rootScope.$on('oTable::sorting', self.fetch);
         }
 
-        function defaultFetch() {
-            return $http.post(config.dataSrcUrl, createDatatableRequest())
+        function defaultFetch(request) {
+            return $http.post(config.dataSrcUrl, request)
         }
 
         function mapDefaultSort(){
