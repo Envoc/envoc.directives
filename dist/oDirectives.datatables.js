@@ -387,7 +387,7 @@ module.run(['$templateCache', function($templateCache) {
 
     var app = angular.module('envoc.directives.datatables');
 
-    app.controller('oTableCtrl', function($scope, $http, $filter, $rootScope) {
+    app.controller('oTableCtrl', function($scope, $http, $filter, $rootScope,$timeout) {
         var self = this,
             dataCache = [],
             // filters
@@ -432,8 +432,7 @@ module.run(['$templateCache', function($templateCache) {
             }
         }
 
-        this.fetch = function() {
-            self.loading = true;
+        this.fetch = function () {
             var request = createDatatableRequest();
             if(config.getAdditionalParams){
                 request = angular.extend(request, config.getAdditionalParams());
@@ -441,6 +440,14 @@ module.run(['$templateCache', function($templateCache) {
 
             if(config.fetchMethod.last && angular.toJson(request) == config.fetchMethod.last)
                 return;
+
+            self.loading = null;
+
+            $timeout(function () {
+                if (self.loading == null) {
+                    self.loading = true;
+                }
+            }, 500);
 
             config
                 .fetchMethod(request)
