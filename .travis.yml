@@ -4,4 +4,6 @@ node_js:
  - "0.10"
 
  notifications:
-  slack: envochq:hYyorKDh0h14NiNrvCoCaeev
+  slack:
+    rooms:
+      - envochq:hYyorKDh0h14NiNrvCoCaeev#general
