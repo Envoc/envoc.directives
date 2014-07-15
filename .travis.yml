@@ -1,3 +1,6 @@
+notifications:
+  slack: 'envochq:hYyorKDh0h14NiNrvCoCaeev'
+
 language: node_js
 
 node_js:
