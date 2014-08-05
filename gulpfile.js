@@ -5,18 +5,28 @@ var gulp = require('gulp'),
     ngmin = require('gulp-ngmin'),
     watch = require('gulp-watch'),
     concat = require('gulp-concat'),
-    ngHtml2Js = require("gulp-ng-html2js");
+    jeditor = require("gulp-json-editor"),
+    ngHtml2Js = require("gulp-ng-html2js"),
+    fs = require('fs'),
+    pkg = require('./package.json'),
+    git = require('git-rev'),
+    semver = require("semver"),
+    changelog = require('conventional-changelog');
 
-var base = { base: './src/app/' };
+var base = {
+    base: './src/app/'
+};
 
 // =====================================
 //              Tasks
 // =====================================
 
-gulp.task('clean', function(){
-  gulp
-    .src(['./dist/*'], {read:false})
-    .pipe(clean());
+gulp.task('clean', function() {
+    gulp
+        .src(['./dist/*'], {
+            read: false
+        })
+        .pipe(clean());
 });
 
 // uglify task
@@ -48,9 +58,9 @@ gulp.task('js', function() {
     build('oDirectives.validation', [validation_src]);
 
 
-    function build(outputFileName, sources){
+    function build(outputFileName, sources) {
         var combined_buid = Array.prototype.concat.apply([], sources)
-        var the_source = gulp.src(combined_buid, base);  
+        var the_source = gulp.src(combined_buid, base);
 
         the_source
             .pipe(concat(outputFileName + ".js"))
@@ -65,7 +75,7 @@ gulp.task('js', function() {
 });
 
 // templatify
-gulp.task('templatify', function () {
+gulp.task('templatify', function() {
     gulp
         .src("./src/**/*.tmpl.html")
         .pipe(ngHtml2Js({
@@ -83,17 +93,48 @@ gulp.task('templatify', function () {
         .pipe(gulp.dest("./build/_vendor/templates"));
 });
 
-gulp.task('watch', function () {
-    gulp.watch('./src/**/*.*', function () {
+gulp.task('watch', function() {
+    gulp.watch('./src/**/*.*', function() {
         gulp.run('build');
     });
 });
 
-gulp.task('watch-testing', function () {
-    gulp.watch('./src/**/*.*', function () {
+gulp.task('watch-testing', function() {
+    gulp.watch('./src/**/*.*', function() {
         gulp.run('js');
     });
 });
+
+gulp.task('bump', function() {
+    var from = pkg.lastDocHash;
+    var newVer = semver.inc(pkg.version, 'minor');
+
+    git.long(function (str) {
+        gulp.src('./package.json')
+            // .pipe(bump({version:'minor'}))
+            .pipe(jeditor({
+                'lastDocHash': str,
+                'version': newVer
+            }))
+            .pipe(gulp.dest('./'));
+
+        var opts = {
+            repository: 'https://github.com/Envoc/envoc.directives',
+            version: newVer
+        };
+
+        if(from) opts.from = from;
+
+        changelog(opts, function(err, log) {
+            var stream = fs.createWriteStream("changelog.md");
+            stream.once('open', function(fd) {
+                stream.write(log);
+                stream.end();
+            });
+        });
+    })
+});
+
 
 gulp.task('default', ['templatify', 'js', 'watch']);
 
