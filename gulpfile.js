@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     concat = require('gulp-concat'),
     jeditor = require("gulp-json-editor"),
+    xeditor = require("gulp-xml-editor"),
     ngHtml2Js = require("gulp-ng-html2js"),
     fs = require('fs'),
     pkg = require('./package.json'),
@@ -110,6 +111,7 @@ gulp.task('bump', function() {
     var newVer = semver.inc(pkg.version, 'minor');
 
     git.long(function (str) {
+        // bump package.json
         gulp.src('./package.json')
             // .pipe(bump({version:'minor'}))
             .pipe(jeditor({
@@ -118,6 +120,16 @@ gulp.task('bump', function() {
             }))
             .pipe(gulp.dest('./'));
 
+        
+        // bump NuGet package
+        gulp.src("./Envoc.Directives.nuspec")
+            .pipe(xeditor([
+                {path: '//version', text: newVer}
+            ]))
+            .pipe(gulp.dest("./"));
+
+
+        // create changelog
         var opts = {
             repository: 'https://github.com/Envoc/envoc.directives',
             version: newVer
