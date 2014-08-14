@@ -6,7 +6,6 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     concat = require('gulp-concat'),
     jeditor = require("gulp-json-editor"),
-    xeditor = require("gulp-xml-editor"),
     ngHtml2Js = require("gulp-ng-html2js"),
     fs = require('fs'),
     pkg = require('./package.json'),
@@ -119,14 +118,6 @@ gulp.task('bump', function() {
                 'version': newVer
             }))
             .pipe(gulp.dest('./'));
-
-        
-        // bump NuGet package
-        gulp.src("./Envoc.Directives.nuspec")
-            .pipe(xeditor([
-                {path: '//version', text: newVer}
-            ]))
-            .pipe(gulp.dest("./"));
 
 
         // create changelog
