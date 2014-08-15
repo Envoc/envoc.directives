@@ -1,9 +1,5 @@
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.directive('oTableFilter', function() {
+angular.module('envoc.directives.datatables')
+    .directive('oTableFilter', function() {
         return {
             restrict: 'A',
             scope: true,
@@ -18,9 +14,8 @@
                 }
             }
         };
-    });
-
-    app.directive('oTableColumnFilter', function() {
+    })
+    .directive('oTableColumnFilter', function() {
         return {
             restrict: 'A',
             scope: true,
@@ -38,5 +33,3 @@
             }
         };
     });
-    
-})();

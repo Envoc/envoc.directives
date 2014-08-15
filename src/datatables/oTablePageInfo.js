@@ -1,9 +1,5 @@
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.directive('oTablePageInfo', function() {
+angular.module('envoc.directives.datatables')
+    .directive('oTablePageInfo', function() {
         return {
             restrict: 'A',
             replace: true,
@@ -15,5 +11,3 @@
             }
         };
     });
-    
-})();

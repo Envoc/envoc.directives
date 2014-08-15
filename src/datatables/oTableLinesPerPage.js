@@ -1,9 +1,5 @@
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.directive('oTableLinesPerPage', function() {
+angular.module('envoc.directives.datatables')
+    .directive('oTableLinesPerPage', function() {
         return {
             restrict: 'A',
             replace: true,
@@ -15,5 +11,3 @@
             }
         };
     });
-    
-})();

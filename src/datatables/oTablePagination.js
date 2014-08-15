@@ -1,9 +1,5 @@
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.directive('oTablePagination', function() {
+angular.module('envoc.directives.datatables')
+    .directive('oTablePagination', function() {
         return {
             restrict: 'A',
             scope: true,
@@ -22,5 +18,3 @@
             }
         };
     });
-    
-})();

@@ -1,9 +1,5 @@
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.controller('oTableCtrl', function($scope, $http, $filter, $rootScope,$timeout) {
+angular.module('envoc.directives.datatables')
+    .controller('oTableCtrl', function($scope, $http, $filter, $rootScope,$timeout) {
         var self = this,
             dataCache = [],
             // filters
@@ -338,9 +334,8 @@
                 }
             };
         }
-    });
-
-    app.directive('oTable', function() {
+    })
+    .directive('oTable', function() {
         return {
             priority: 800,
             restrict: 'EA',
@@ -359,9 +354,8 @@
                 }
             }
         };
-    });
-
-    app.directive('oTableController', function() {
+    })
+    .directive('oTableController', function() {
         return {
             restrict: 'A',
             priority:1000,
@@ -373,4 +367,3 @@
             }
         };
     });
-})();
