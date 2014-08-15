@@ -163,6 +163,6 @@ gulp.task('build-bump', function() {
 
 gulp.task('default', ['build-bump', 'templatify', 'js', 'watch']);
 
-gulp.task('build', ['clean', 'bump', 'templatify', 'js']);
+gulp.task('build', ['clean', 'templatify', 'js']);
 
 gulp.task('testing', ['js', 'watch-testing']);
