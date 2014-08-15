@@ -1,3 +1,8 @@
+/*
+ * envoc.directives 0.9.2
+ * Author: Envoc
+ * Repository: https://github.com/Envoc/envoc.directives
+ */
 (function(module) {
 try {
   module = angular.module('envoc.directives.partials');

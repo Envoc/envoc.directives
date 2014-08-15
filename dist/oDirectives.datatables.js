@@ -1,3 +1,8 @@
+/*
+ * envoc.directives 0.9.2
+ * Author: Envoc
+ * Repository: https://github.com/Envoc/envoc.directives
+ */
 angular.module('ui.bootstrap.pagination', [])
 
 .controller('PaginationController', ['$scope', '$attrs', '$parse', function ($scope, $attrs, $parse) {
@@ -357,37 +362,22 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
-(function() {
-    'use strict';
-
-    angular.module('envoc.directives.datatables', [
-        'envoc.directives.partials',
-        'ui.bootstrap.pagination'
-    ]);
-})();
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.filter('startFrom', function() {
-        return function(input, start) {
-            if (input === undefined) {
-                return input;
-            } else {
-                return input.slice(+start);
-            }
-        };
-    });
-    
-})();
-
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.controller('oTableCtrl', function($scope, $http, $filter, $rootScope,$timeout) {
+angular.module('envoc.directives.datatables', [
+    'envoc.directives.partials',
+    'ui.bootstrap.pagination'
+]);
+angular.module('envoc.directives.datatables')
+  .filter('startFrom', function() {
+      return function(input, start) {
+          if (input === undefined) {
+              return input;
+          } else {
+              return input.slice(+start);
+          }
+      };
+  });
+angular.module('envoc.directives.datatables')
+    .controller('oTableCtrl', function($scope, $http, $filter, $rootScope,$timeout) {
         var self = this,
             dataCache = [],
             // filters
@@ -722,9 +712,8 @@ module.run(['$templateCache', function($templateCache) {
                 }
             };
         }
-    });
-
-    app.directive('oTable', function() {
+    })
+    .directive('oTable', function() {
         return {
             priority: 800,
             restrict: 'EA',
@@ -743,9 +732,8 @@ module.run(['$templateCache', function($templateCache) {
                 }
             }
         };
-    });
-
-    app.directive('oTableController', function() {
+    })
+    .directive('oTableController', function() {
         return {
             restrict: 'A',
             priority:1000,
@@ -757,50 +745,38 @@ module.run(['$templateCache', function($templateCache) {
             }
         };
     });
-})();
+angular.module('envoc.directives.datatables')
+    .directive('oTableDefault', function() {
+        return {
+            templateUrl: '/oTemplates/datatables/oTableDefault.tmpl.html',
+            require: '^oTable',
+            restrict: 'EA',
+            transclude: true,
+            scope: {},
+            compile: function compile(tElement, tAttrs, transclude) {
+                return function postLink(scope, iElement, iAttrs, controller) {
+                    ctor();
+                    function ctor() {
+                        scope.ctrl = controller;
+                        scope.$watch(getOTableData, applyToScope);
+                        iElement.find('table').addClass('table table-striped dataTable');
+                    }
 
-(function() {
-    'use strict';
+                    function getOTableData() {
+                        return controller.data;
+                    }
 
-    angular
-        .module('envoc.directives.datatables')
-        .directive('oTableDefault', function() {
-            return {
-                templateUrl: '/oTemplates/datatables/oTableDefault.tmpl.html',
-                require: '^oTable',
-                restrict: 'EA',
-                transclude: true,
-                scope: {},
-                compile: function compile(tElement, tAttrs, transclude) {
-                    return function postLink(scope, iElement, iAttrs, controller) {
-                        ctor();
-                        function ctor() {
-                            scope.ctrl = controller;
-                            scope.$watch(getOTableData, applyToScope);
-                            iElement.find('table').addClass('table table-striped dataTable');
-                        }
-
-                        function getOTableData() {
-                            return controller.data;
-                        }
-
-                        function applyToScope(current, previous, scope) {
-                            if (current && current.length) {
-                                scope.rows = current;
-                            }
+                    function applyToScope(current, previous, scope) {
+                        if (current && current.length) {
+                            scope.rows = current;
                         }
                     }
                 }
-            };
-        });
-})();
-
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.directive('oTableFilter', function() {
+            }
+        };
+    });
+angular.module('envoc.directives.datatables')
+    .directive('oTableFilter', function() {
         return {
             restrict: 'A',
             scope: true,
@@ -815,9 +791,8 @@ module.run(['$templateCache', function($templateCache) {
                 }
             }
         };
-    });
-
-    app.directive('oTableColumnFilter', function() {
+    })
+    .directive('oTableColumnFilter', function() {
         return {
             restrict: 'A',
             scope: true,
@@ -835,15 +810,8 @@ module.run(['$templateCache', function($templateCache) {
             }
         };
     });
-    
-})();
-
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.directive('oTableLinesPerPage', function() {
+angular.module('envoc.directives.datatables')
+    .directive('oTableLinesPerPage', function() {
         return {
             restrict: 'A',
             replace: true,
@@ -855,14 +823,8 @@ module.run(['$templateCache', function($templateCache) {
             }
         };
     });
-    
-})();
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.directive('oTablePageInfo', function() {
+angular.module('envoc.directives.datatables')
+    .directive('oTablePageInfo', function() {
         return {
             restrict: 'A',
             replace: true,
@@ -874,15 +836,8 @@ module.run(['$templateCache', function($templateCache) {
             }
         };
     });
-    
-})();
-
-(function() {
-    'use strict';
-
-    var app = angular.module('envoc.directives.datatables');
-
-    app.directive('oTablePagination', function() {
+angular.module('envoc.directives.datatables')
+    .directive('oTablePagination', function() {
         return {
             restrict: 'A',
             scope: true,
@@ -901,20 +856,13 @@ module.run(['$templateCache', function($templateCache) {
             }
         };
     });
-    
-})();
+/*
+ * Example use: <th o-table-sort field="id">Id</th>
+ * params: (attribute field): this is the case-sensative key to sort on.
+ */
 
-(function() {
-    'use strict';
-
-    /*
-     * Example use: <th o-table-sort field="id">Id</th>
-     * params: (attribute field): this is the case-sensative key to sort on.
-     */
-    
-    var app = angular.module('envoc.directives.datatables');
-
-    app.directive('oTableSort', function() {
+angular.module('envoc.directives.datatables')
+    .directive('oTableSort', function() {
         return {
             restrict: 'A',
             scope: true,
@@ -956,5 +904,3 @@ module.run(['$templateCache', function($templateCache) {
             }
         };
     });
-
-})();
