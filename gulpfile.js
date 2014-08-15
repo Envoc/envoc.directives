@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
     clean = require('gulp-clean'),
+    replace = require('gulp-replace'),
     gutil = require('gulp-util'),
     uglify = require('gulp-uglify'),
     ngmin = require('gulp-ngmin'),
@@ -16,6 +17,7 @@ var gulp = require('gulp'),
 var base = {
     base: './src/app/'
 };
+
 
 // =====================================
 //              Tasks
@@ -53,14 +55,23 @@ gulp.task('js', function() {
         '!./src/**/*.spec.js'
     ]
 
+    gulp.src(['./build_head.js'])
+        .pipe(replace(/\{version\}/g, pkg.version))
+        .pipe(gulp.dest('./build/'));
+
     build('oDirectives', [combined_src, datatables_src, validation_src]);
     build('oDirectives.datatables', [datatables_src]);
     build('oDirectives.validation', [validation_src]);
 
 
     function build(outputFileName, sources) {
-        var combined_buid = Array.prototype.concat.apply([], sources)
-        var the_source = gulp.src(combined_buid, base);
+        var combined_build = Array.prototype.concat.apply([], sources)
+        combined_build.unshift('./build/build_head.js');
+        
+
+        //console.log(combined_build);
+        //
+        var the_source = gulp.src(combined_build, base);
 
         the_source
             .pipe(concat(outputFileName + ".js"))
@@ -138,9 +149,20 @@ gulp.task('bump', function() {
     })
 });
 
+gulp.task('build-bump', function() {
+    var newVer = semver.inc(pkg.version, 'patch');
 
-gulp.task('default', ['templatify', 'js', 'watch']);
+    // bump package.json
+    gulp.src('./package.json')
+        .pipe(jeditor({
+            'version': newVer
+        }))
+        .pipe(gulp.dest('./'));
+});
 
-gulp.task('build', ['clean', 'templatify', 'js']);
+
+gulp.task('default', ['build-bump', 'templatify', 'js', 'watch']);
+
+gulp.task('build', ['clean', 'bump', 'templatify', 'js']);
 
 gulp.task('testing', ['js', 'watch-testing']);
