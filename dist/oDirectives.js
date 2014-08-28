@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.9.2
+ * envoc.directives 0.9.3
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -401,6 +401,12 @@ angular.module('envoc.directives.datatables')
                 defaultSort: []
             };
 
+        this.api = {
+            refresh: function(){
+                self.fetch();
+            }
+        }
+
         this.init = function(config_) {
             angular.extend(config, config_);
 
@@ -727,7 +733,8 @@ angular.module('envoc.directives.datatables')
             restrict: 'EA',
             scope: {
                 config: '=',
-                state: '='
+                state: '=',
+                api: '='
             },
             controller: 'oTableCtrl',
             controllerAs: 'oTableCtrl',
@@ -735,6 +742,7 @@ angular.module('envoc.directives.datatables')
                 return function postLink(scope, iElement, iAttrs, controller) {
                     controller.init(scope.config);
                     (scope.state && (scope.state = controller.state));
+                    (iAttrs.api && (scope.api = controller.api));
 
                     iElement.addClass('o-table');
                 }

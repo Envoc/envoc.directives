@@ -61,7 +61,7 @@
     </style>
     <script src="../../src/_vendor/angular/angular.min.js"></script>
     <script src="../../src/_vendor/lodash/dist/lodash.js"></script>
-    <script src="../../dist/oDirectives.min.js"></script>
+    <script src="../../dist/oDirectives.js"></script>
     <script src="app_service.js"></script>
 </head>
 
@@ -69,7 +69,7 @@
     <div class="container">
         <div class="row" ng-controller="MainCtrl as ctrl1">
             <br><br>
-            <div class="col-xs-12" o-table config="ctrl1.config">
+            <div class="col-xs-12" o-table config="ctrl1.config" api="ctrl1.api">
                 <div o-table-default>
                     <table>
                         <thead>
