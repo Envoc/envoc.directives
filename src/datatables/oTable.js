@@ -348,7 +348,7 @@ angular.module('envoc.directives.datatables')
             scope: {
                 config: '=',
                 state: '=',
-                api: '='
+                exposeApiAs: '='
             },
             controller: 'oTableCtrl',
             controllerAs: 'oTableCtrl',
@@ -356,7 +356,7 @@ angular.module('envoc.directives.datatables')
                 return function postLink(scope, iElement, iAttrs, controller) {
                     controller.init(scope.config);
                     (scope.state && (scope.state = controller.state));
-                    (iAttrs.api && (scope.api = controller.api));
+                    (iAttrs.exposeApiAs && (scope.exposeApiAs = controller.api));
 
                     iElement.addClass('o-table');
                 }
