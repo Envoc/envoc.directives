@@ -50,8 +50,20 @@ gulp.task('js', function() {
         '!./src/**/*.spec.js'
     ];
 
+    var confirm_src = [
+        './build/partials/validation/*.js',
+        './build/_vendor/**/*.js',
+        './src/validation/app.js',
+        './src/validation/**/*.js',
+        '!./src/**/*.spec.js'
+    ];
+
     var combined_src = [
-        './src/app.js',
+        './build/partials/confirm/*.js',
+        './src/confirm/app.js',
+        './src/_vendor/ui.bootstrap/src/tooltip/tooltip.js',
+        './src/_vendor/ui.bootstrap/src/popover/popover.js',
+        './src/confirm/**/*.js',
         '!./src/**/*.spec.js'
     ]
 
