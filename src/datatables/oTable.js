@@ -17,7 +17,7 @@ angular.module('envoc.directives.datatables')
 
         this.api = {
             refresh: function(){
-                self.fetch();
+                self.fetch(true);
             }
         }
 
@@ -50,13 +50,13 @@ angular.module('envoc.directives.datatables')
             }
         }
 
-        this.fetch = function () {
+        this.fetch = function (forceRefresh) {
             var request = createDatatableRequest();
             if(config.getAdditionalParams){
                 request = angular.extend(request, config.getAdditionalParams());
             }
 
-            if(config.fetchMethod.last && angular.toJson(request) == config.fetchMethod.last)
+            if(!forceRefresh & config.fetchMethod.last && angular.toJson(request) == config.fetchMethod.last)
                 return;
 
             self.loading = null;
