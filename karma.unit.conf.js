@@ -12,6 +12,7 @@ module.exports = function (config) {
 
         files: [
             "src/_vendor/jquery/dist/jquery.min.js",
+            "src/_vendor/lodash/dist/lodash.js",
             "src/_vendor/angular/angular.js",
             "src/_vendor/angular-mocks/angular-mocks.js",
             './src/_vendor/ui.bootstrap/src/pagination/pagination.js',
