@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.9.4
+ * envoc.directives 0.9.5
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -444,6 +444,23 @@ angular.module('envoc.directives.datatables')
         searchObj: {}
       };
 
+      try{
+        var saved;
+        if(config.saveState){
+          saved = angular.fromJson(localStorage.getItem(config.saveState));
+          if(saved){
+            angular.extend(this.state, saved);
+            $timeout(function(){
+              $rootScope.$broadcast('oTable::internalStateChanged');
+            });
+          }
+        }
+      }
+      catch(e){
+        console.log('unable to use saved state');
+      }
+
+
       if (config.dataSrc) {
         initClientSide();
       } else {
@@ -452,12 +469,19 @@ angular.module('envoc.directives.datatables')
     }
 
     this.fetch = function(forceRefresh) {
+      if(self.waitForInitialSaveStateLoad)
+        return;
+
+      if(!self.fetch.called && config.saveState)
+          self.waitForInitialSaveStateLoad = angular.fromJson(localStorage.getItem(config.saveState));
+      
       var request = createDatatableRequest();
       if (config.getAdditionalParams) {
         request = angular.extend(request, config.getAdditionalParams());
       }
 
-      if (!forceRefresh & config.fetchMethod.last && angular.toJson(request) == config.fetchMethod.last)
+      forceRefresh = typeof forceRefresh == 'boolean' && forceRefresh;
+      if (!forceRefresh && config.fetchMethod.last && angular.toJson(request) == config.fetchMethod.last)
         return;
 
       self.loading = null;
@@ -473,6 +497,7 @@ angular.module('envoc.directives.datatables')
         .then(dataFetchSuccess, dataFetchError);
 
       config.fetchMethod.last = angular.toJson(request);
+      self.fetch.called = true;
     }
 
     this.sortOn = function(shiftKey, propertyName) {
@@ -539,13 +564,16 @@ angular.module('envoc.directives.datatables')
       self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
 
       // handle going off the page
-      while (self.state.pageStartIdx > clone.length) {
+      while (self.state.pageStartIdx >= clone.length) {
         self.state.currentPage--;
-        calcPageStart()
+        calcPageStart();
       }
 
       self.data = limitTo(startFrom(clone, self.state.pageStartIdx), self.state.linesPerPage);
       calcPageStop();
+
+      if(config.saveState)
+        updateSavedState();
     }
 
     // =================================
@@ -618,8 +646,7 @@ angular.module('envoc.directives.datatables')
       if (config.defaultSort.length && !self.state.sortOrder.length) {
         params.Columns = Array.prototype.concat.apply(params.Columns, mapDefaultSort());
       }
-
-      return params
+      return params;
     }
 
     function isSortingProperty(propertyName) {
@@ -664,9 +691,18 @@ angular.module('envoc.directives.datatables')
       calcPageStart();
       calcPageStop();
       self.loading = false;
+
+      if(config.saveState){
+        if(self.waitForInitialSaveStateLoad)
+          self.state = defaultsShallow(self.state, self.waitForInitialSaveStateLoad);
+        updateSavedState();
+      }
+
+      self.waitForInitialSaveStateLoad = false;
     }
 
     function dataFetchError() {
+      self.waitForInitialSaveStateLoad = false;
       alert('Error fetching data');
     }
 
@@ -715,6 +751,21 @@ angular.module('envoc.directives.datatables')
       self.state.pageStopIdx = self.state.pageStartIdx + self.data.length;
     }
 
+    function updateSavedState(){
+      var savedSettings = {
+        time: +new Date(),
+        allSearch: "",
+        currentPage: 1,
+        linesPerPage: config.linesPerPage
+      };
+
+      savedSettings = defaultsShallow(savedSettings,self.state);
+      try {
+        localStorage.setItem(config.saveState, angular.toJson(savedSettings));
+      }
+      catch(e){}
+    }
+
     // =================================
     //          UTILITIES
     // =================================
@@ -740,6 +791,25 @@ angular.module('envoc.directives.datatables')
           fn.apply(context, args);
         }
       };
+    }
+
+    function defaultsShallow(obj){
+      var keys = Object.keys(obj),
+          defaultObjects = Array.prototype.slice.call(arguments, 1),
+          result = {};
+          
+      defaultObjects.unshift({});
+          
+      var merged = angular.extend.apply({}, defaultObjects);
+
+      angular.forEach(keys, function(val, idx){
+        if(angular.isDefined(merged[val]))
+          result[val] = merged[val];
+        else
+          result[val] = obj[val];
+      });
+
+      return result;
     }
   })
   .directive('oTable', function() {
@@ -814,7 +884,12 @@ angular.module('envoc.directives.datatables')
             scope: true,
             require: '^oTable',
             link: function postLink(scope, iElement, iAttrs, controller) {
-                iElement.on('keyup change', setAllSearch)
+
+                scope.$on('oTable::internalStateChanged', function(){
+                  iElement.val(controller.state.allSearch);
+                });
+
+                iElement.on('keyup change', setAllSearch);
                 
                 function setAllSearch(){
                     scope.$evalAsync(function(){
@@ -842,6 +917,7 @@ angular.module('envoc.directives.datatables')
             }
         };
     });
+
 angular.module('envoc.directives.datatables')
   .directive('oTableLinesPerPage', function(oTableConfig) {
     return {
