@@ -23,9 +23,9 @@
 
     describe('Provider Configuration:', function() {
       var customRoute = '/my/custom/route',
-          config;
+        config;
 
-      beforeEach(module('envoc.directives.datatables', function(oTableConfigProvider){
+      beforeEach(module('envoc.directives.datatables', function(oTableConfigProvider) {
         oTableConfigProvider.config.templates.oTableLinesPerPageUrl = customRoute;
       }));
 
@@ -49,15 +49,12 @@
         $httpBackend = $injector.get('$httpBackend');
         $q = $injector.get('$q');
         scope = $rootScope.$new();
+        scope.config = {};
       }));
 
       afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
-      });
-
-      beforeEach(function() {
-        scope.config = {}
       });
 
       it('should compile and requires config', function() {
@@ -111,7 +108,81 @@
         scope.$digest();
         expect(scope.state.currentPage).toBe(1);
       });
+
+      describe('saving state', function() {
+        var sessionSaveKey = 'this_instance';
+        var savedSettings = {
+          time: +new Date(),
+          allSearch: "",
+          currentPage: 2,
+          linesPerPage: 5
+        };
+
+        afterEach(function() {
+          localStorage.removeItem(sessionSaveKey);
+        });
+
+        it('should use a saved config', function() {
+          expect(localStorage.getItem(sessionSaveKey)).toBe(null);
+
+          localStorage.setItem(sessionSaveKey, angular.toJson(savedSettings));
+          scope.config = {
+            dataSrc: _.times(15, function(n) { return {id: n }; }),
+            saveState: sessionSaveKey
+          };
+
+          scope.state = {};
+
+          element = angular.element('<div o-table config="config" state="state"></div>');
+          element = $compile(element)(scope);
+
+          scope.$digest();
+          expect(scope.state.currentPage).toBe(savedSettings.currentPage);
+        });
+
+        it('should not set page past valid range', function() {
+          expect(localStorage.getItem(sessionSaveKey)).toBe(null);
+
+          localStorage.setItem(sessionSaveKey, angular.toJson(savedSettings));
+          scope.config = {
+            dataSrc: _.times(5, function(n) { return {id: n }; }),
+            saveState: sessionSaveKey
+          };
+
+          scope.state = {};
+
+          element = angular.element('<div o-table config="config" state="state"></div>');
+          element = $compile(element)(scope);
+
+          scope.$digest();
+          expect(scope.state.currentPage).toBe(1);
+        });
+
+        it('should update saved config', function() {
+          var state;
+
+          scope.config = {
+            dataSrc: _.times(15, function(n) { return {id: n }; }),
+            saveState: sessionSaveKey
+          };
+
+          scope.state = {};
+
+          element = angular.element('<div o-table config="config" state="state"></div>');
+          element = $compile(element)(scope);
+
+          scope.$digest();
+          state = angular.fromJson(localStorage.getItem(sessionSaveKey));
+          expect(state.currentPage).toBe(scope.state.currentPage);
+
+          scope.state.currentPage = 2;
+          scope.$digest();
+          state = angular.fromJson(localStorage.getItem(sessionSaveKey));
+          expect(state.currentPage).toBe(scope.state.currentPage);
+        });
+      });
     });
+
 
     describe('Remote Data:', function() {
       var html;

@@ -5,7 +5,12 @@ angular.module('envoc.directives.datatables')
             scope: true,
             require: '^oTable',
             link: function postLink(scope, iElement, iAttrs, controller) {
-                iElement.on('keyup change', setAllSearch)
+
+                scope.$on('oTable::internalStateChanged', function(){
+                  iElement.val(controller.state.allSearch);
+                });
+
+                iElement.on('keyup change', setAllSearch);
                 
                 function setAllSearch(){
                     scope.$evalAsync(function(){
