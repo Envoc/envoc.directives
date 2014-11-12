@@ -401,28 +401,32 @@ angular.module('envoc.directives.datatables')
     }
   })
   .controller('oTableCtrl', function($scope, $http, $filter, $rootScope, $timeout) {
-    var self = this,
-      dataCache = [],
-      // filters
-      limitTo,
-      filter,
-      startFrom,
-      orderBy,
-      // config
-      config = {
-        fetchMethod: null,
-        linesPerPage: 10,
-        throttle: 0,
-        defaultSort: []
-      };
+    var self      = this;
+    var dataCache = [];
 
-    this.api = {
-      refresh: function() {
-        self.fetch(true);
-      }
+    var config    = {
+      fetchMethod: null,
+      linesPerPage: 10,
+      throttle: 0,
+      defaultSort: []
+    };
+
+    var limitTo, filter, startFrom, orderBy; // filters
+
+    self.init                   = init;
+    self.fetch                  = fetch;
+    self.sortOn                 = sortOn;
+    self.columnFilter           = columnFilter;
+    self.getSortingPropertyInfo = getSortingPropertyInfo;
+    self.api                    = {
+      refresh: refresh
     }
 
-    this.init = function(config_) {
+    // =================================
+    //          PUBLIC API
+    // =================================
+
+    function init(config_) {
       angular.extend(config, config_);
 
       self.paginationSettings = config_.paginationSettings || {};
@@ -444,19 +448,18 @@ angular.module('envoc.directives.datatables')
         searchObj: {}
       };
 
-      try{
+      try {
         var saved;
-        if(config.saveState){
+        if (config.saveState) {
           saved = angular.fromJson(localStorage.getItem(config.saveState));
-          if(saved){
+          if (saved) {
             angular.extend(this.state, saved);
-            $timeout(function(){
+            $timeout(function() {
               $rootScope.$broadcast('oTable::internalStateChanged');
             });
           }
         }
-      }
-      catch(e){
+      } catch (e) {
         console.log('unable to use saved state');
       }
 
@@ -468,13 +471,13 @@ angular.module('envoc.directives.datatables')
       }
     }
 
-    this.fetch = function(forceRefresh) {
-      if(self.waitForInitialSaveStateLoad)
+    function fetch(forceRefresh) {
+      if (self.waitForInitialSaveStateLoad)
         return;
 
-      if(!self.fetch.called && config.saveState)
-          self.waitForInitialSaveStateLoad = angular.fromJson(localStorage.getItem(config.saveState));
-      
+      if (!self.fetch.called && config.saveState)
+        self.waitForInitialSaveStateLoad = angular.fromJson(localStorage.getItem(config.saveState));
+
       var request = createDatatableRequest();
       if (config.getAdditionalParams) {
         request = angular.extend(request, config.getAdditionalParams());
@@ -500,7 +503,7 @@ angular.module('envoc.directives.datatables')
       self.fetch.called = true;
     }
 
-    this.sortOn = function(shiftKey, propertyName) {
+    function sortOn(shiftKey, propertyName) {
       var last = self.state.lastSortShifted;
 
       var val = self.state.sortObj[propertyName];
@@ -521,7 +524,7 @@ angular.module('envoc.directives.datatables')
       $rootScope.$broadcast('oTable::sorting');
     };
 
-    this.columnFilter = function(searchTerm, propertyName) {
+    function columnFilter(searchTerm, propertyName) {
       var propertyIndex = config.propertyMap[propertyName];
       self.state.searchObj[propertyName] = searchTerm;
       if (!searchTerm) {
@@ -530,11 +533,15 @@ angular.module('envoc.directives.datatables')
       $rootScope.$broadcast('oTable::filtering');
     };
 
-    this.getSortingPropertyInfo = function(propertyName) {
+    function getSortingPropertyInfo(propertyName) {
       return {
         sorting: isSortingProperty(propertyName),
         direction: getSortDirection(propertyName)
       }
+    }
+
+    function refresh() {
+      self.fetch(true);
     }
 
     // =================================
@@ -572,7 +579,7 @@ angular.module('envoc.directives.datatables')
       self.data = limitTo(startFrom(clone, self.state.pageStartIdx), self.state.linesPerPage);
       calcPageStop();
 
-      if(config.saveState)
+      if (config.saveState)
         updateSavedState();
     }
 
@@ -692,8 +699,8 @@ angular.module('envoc.directives.datatables')
       calcPageStop();
       self.loading = false;
 
-      if(config.saveState){
-        if(self.waitForInitialSaveStateLoad)
+      if (config.saveState) {
+        if (self.waitForInitialSaveStateLoad)
           self.state = defaultsShallow(self.state, self.waitForInitialSaveStateLoad);
         updateSavedState();
       }
@@ -751,7 +758,7 @@ angular.module('envoc.directives.datatables')
       self.state.pageStopIdx = self.state.pageStartIdx + self.data.length;
     }
 
-    function updateSavedState(){
+    function updateSavedState() {
       var savedSettings = {
         time: +new Date(),
         allSearch: "",
@@ -759,11 +766,10 @@ angular.module('envoc.directives.datatables')
         linesPerPage: config.linesPerPage
       };
 
-      savedSettings = defaultsShallow(savedSettings,self.state);
+      savedSettings = defaultsShallow(savedSettings, self.state);
       try {
         localStorage.setItem(config.saveState, angular.toJson(savedSettings));
-      }
-      catch(e){}
+      } catch (e) {}
     }
 
     // =================================
@@ -793,17 +799,17 @@ angular.module('envoc.directives.datatables')
       };
     }
 
-    function defaultsShallow(obj){
+    function defaultsShallow(obj) {
       var keys = Object.keys(obj),
-          defaultObjects = Array.prototype.slice.call(arguments, 1),
-          result = {};
-          
+        defaultObjects = Array.prototype.slice.call(arguments, 1),
+        result = {};
+
       defaultObjects.unshift({});
-          
+
       var merged = angular.extend.apply({}, defaultObjects);
 
-      angular.forEach(keys, function(val, idx){
-        if(angular.isDefined(merged[val]))
+      angular.forEach(keys, function(val, idx) {
+        if (angular.isDefined(merged[val]))
           result[val] = merged[val];
         else
           result[val] = obj[val];
