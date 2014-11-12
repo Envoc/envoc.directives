@@ -183,9 +183,11 @@ angular.module('envoc.directives.datatables')
 
       self.state.iTotalRecords = dataCache.length;
       self.state.pageStartIdx = (self.state.currentPage - 1) * self.state.linesPerPage;
+      if(self.state.pageStartIdx < 0)
+        self.state.pageStartIdx = 0;
 
       // handle going off the page
-      while (self.state.pageStartIdx >= clone.length) {
+      while (clone.length && self.state.pageStartIdx >= clone.length) {
         self.state.currentPage--;
         calcPageStart();
       }
