@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.9.5
+ * envoc.directives 0.9.6
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
