@@ -16,15 +16,14 @@ app.controller('MainCtrl', function(FakeService) {
         linesPerPage: 5,
         paginationSettings: {
             maxSize:2
-        },
-        saveState: 'config2'
+        }
     };
 
     viewModel.parseDate = function(input){
         return new Date(parseInt(input.substring(6)));
     };
 
-    init();
+    setTimeout(init, 100);
 
     function init() {
         _.times(33, function(n){

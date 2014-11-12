@@ -1,0 +1,52 @@
+table.table thead.sorting {
+  background: url('img/sort_both.png') no - repeat center right
+}
+
+table.table thead.sorting_asc {
+  background: url('img/sort_asc.png') no - repeat center right
+}
+
+table.table thead.sorting_desc {
+  background: url('img/sort_desc.png') no - repeat center right
+}
+div.dataTables_length label {
+  float: left;
+  text - align: left
+}
+div.dataTables_length select {
+  width: 75 px
+}
+div.dataTables_filter label {
+  float: right
+}
+div.dataTables_info {
+  padding - top: 8 px
+}
+div.dataTables_paginate {
+  float: right;
+  margin: 0
+}
+
+thead tr {
+  background: #c2c2c2;
+}
+
+th {
+  border: solid 1 px# FFF;
+}
+
+th: first - child {
+  border - left: none;
+}
+
+th: last - child {
+  border - right: none;
+}
+
+.sortable.desc, .sortable.asc {
+  display: none;
+}
+
+.sortable.sorting.asc.asc, .sortable.sorting.desc.desc {
+  display: initial;
+}
