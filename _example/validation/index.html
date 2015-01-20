@@ -19,15 +19,18 @@
 
                         <!-- LOOK: THIS HERE -->
                         <div o-validation-message-for=""></div>
-                        <div class="form-group" o-validation-message-for="firstName">
+
+                        <div class="form-group">
                             <!-- LOOK: THIS HERE -->
                             <label>Name:</label>
                             <input type="text" class="form-control" ng-model="ctrl1.name" />
+                            <div o-validation-message-for="firstName"></div>
                         </div>
-                        <div class="form-group" o-validation-message-for="lastName" alt-message-name="message"  alt-property-name="key">
+                        <div class="form-group">
                             <!-- LOOK: THIS HERE -->
                             <label>Last Name:</label>
                             <input type="text" class="form-control" ng-model="ctrl1.lastName" />
+                            <div o-validation-message-for="lastName" alt-message-name="message"  alt-property-name="key"></div>
                         </div>
                         <a class="btn btn-primary" ng-click="ctrl1.submit()">{{ctrl1.action}}</a>
                     </form>
@@ -41,10 +44,12 @@
                             <br>
                             <div o-validation-message-for-modelstate="firstName"></div>
                         </div>
-                        <div class="form-group" o-validation-message-for-modelstate="lastName">
+                        <div class="form-group">
                             <!-- LOOK: THIS HERE -->
                             <label>Last Name:</label>
                             <input type="text" class="form-control" ng-model="ctrl1.lastName" />
+                            <br>
+                            <div o-validation-message-for-modelstate="lastName"></div>
                         </div>
                         <a class="btn btn-primary" ng-click="ctrl1.submit()">{{ctrl1.action}}</a>
                     </form>

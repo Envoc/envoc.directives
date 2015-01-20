@@ -1,15 +1,11 @@
 ﻿var app = angular.module('example.validation', ['envoc.directives.validation']);
 
 // comment me out to see default template
-//app.run([
-//    '$templateCache', function ($templateCache) {
-//        $templateCache.put('/oTemplates/validation/oValidationMessageFor.tmpl.html',
-//            '﻿<div>\n' +
-//            '    <div ng-transclude></div>\n' +
-//            '    <pre ng-show="matches.length" ng-repeat="error in matches">{{error|json}}</pre>\n' +
-//            '</div>');
-//    }
-//]);
+app.config(['oValidateConfigProvider', config]);
+
+function config(oValidateConfigProvider) {
+   oValidateConfigProvider.config.templates.oValidationMessageFor = 'oValidationMessageFor.override.html';
+}
 
 app.controller('MainCtrl', function($timeout) {
     var viewModel = this;

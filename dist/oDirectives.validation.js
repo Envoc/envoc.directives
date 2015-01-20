@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.9.6
+ * envoc.directives 0.9.7
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -68,10 +68,26 @@ module.run(['$templateCache', function($templateCache) {
 })();
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('envoc.directives.validation', ['envoc.directives.partials']);
+  angular.module('envoc.directives.validation', ['envoc.directives.partials'])
+    .provider('oValidateConfig', function() {
+      var config = {
+        templates: {
+          oValidationMessageFor: '/oTemplates/validation/oValidationMessageFor.tmpl.html',
+          oValidationMessageForModelstate: '/oTemplates/validation/oValidationMessageForModelstate.tmpl.html',
+          oValidationSummary: '/oTemplates/validation/oValidationSummary.tmpl.html'
+        }
+      };
+      return {
+        config: config,
+        $get: function() {
+          return config;
+        }
+      }
+    });
 })();
+
 ﻿(function() {
     'use strict';
 
@@ -112,12 +128,12 @@ module.run(['$templateCache', function($templateCache) {
 
     angular
         .module('envoc.directives.validation')
-        .directive('oValidationMessageFor', [
-            function() {
+        .directive('oValidationMessageFor', ['oValidateConfig',
+            function(oValidateConfig) {
                 return {
                     restrict: 'EA',
                     require: '^oValidateWith',
-                    templateUrl: '/oTemplates/validation/oValidationMessageFor.tmpl.html',
+                    templateUrl: oValidateConfig.templates.oValidationMessageFor,
                     transclude: true,
                     scope: true,
                     link: function(scope, element, attr, oValidateWithCtrl) {
@@ -152,12 +168,12 @@ module.run(['$templateCache', function($templateCache) {
 
     angular
         .module('envoc.directives.validation')
-        .directive('oValidationMessageForModelstate', [
-            function() {
+        .directive('oValidationMessageForModelstate', ['oValidateConfig',
+            function(oValidateConfig) {
                 return {
                     restrict: 'EA',
                     require: '^oValidateWith',
-                    templateUrl: '/oTemplates/validation/oValidationMessageForModelstate.tmpl.html',
+                    templateUrl: oValidateConfig.templates.oValidationMessageForModelstate,
                     transclude: true,
                     scope: true,
                     link: function(scope, element, attr, oValidateWithCtrl) {
@@ -180,12 +196,12 @@ module.run(['$templateCache', function($templateCache) {
 
     angular
         .module('envoc.directives.validation')
-        .directive('oValidationSummary', [
-            function() {
+        .directive('oValidationSummary', ['oValidateConfig',
+            function(oValidateConfig) {
                 return {
                     restrict: 'EA',
                     require: '^oValidateWith',
-                    templateUrl: '/oTemplates/validation/oValidationSummary.tmpl.html',
+                    templateUrl: oValidateConfig.templates.oValidationSummary,
                     transclude: true,
                     scope: true,
                     link: function(scope, element, attr, oValidateWithCtrl) {
