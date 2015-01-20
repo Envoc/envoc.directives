@@ -1,6 +1,6 @@
 {
   "name": "envoc.directives",
-  "version": "0.9.8",
+  "version": "0.10.0",
   "description": "Base line directives for envoc web projects",
   "main": "index.js",
   "directories": {
@@ -45,5 +45,5 @@
     "gulp-replace": "~0.4.0"
   },
   "dependencies": {},
-  "lastDocHash": "b739c90f063eecccc120820014fecd1172f7244a"
+  "lastDocHash": "9c072df1aacf734113dc3dbcc62a470178c6ff08"
 }
