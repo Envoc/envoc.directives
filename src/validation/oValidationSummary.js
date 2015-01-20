@@ -3,12 +3,12 @@
 
     angular
         .module('envoc.directives.validation')
-        .directive('oValidationSummary', [
-            function() {
+        .directive('oValidationSummary', ['oValidateConfig',
+            function(oValidateConfig) {
                 return {
                     restrict: 'EA',
                     require: '^oValidateWith',
-                    templateUrl: '/oTemplates/validation/oValidationSummary.tmpl.html',
+                    templateUrl: oValidateConfig.templates.oValidationSummary,
                     transclude: true,
                     scope: true,
                     link: function(scope, element, attr, oValidateWithCtrl) {

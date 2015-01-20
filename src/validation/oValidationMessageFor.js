@@ -3,12 +3,12 @@
 
     angular
         .module('envoc.directives.validation')
-        .directive('oValidationMessageFor', [
-            function() {
+        .directive('oValidationMessageFor', ['oValidateConfig',
+            function(oValidateConfig) {
                 return {
                     restrict: 'EA',
                     require: '^oValidateWith',
-                    templateUrl: '/oTemplates/validation/oValidationMessageFor.tmpl.html',
+                    templateUrl: oValidateConfig.templates.oValidationMessageFor,
                     transclude: true,
                     scope: true,
                     link: function(scope, element, attr, oValidateWithCtrl) {
