@@ -5,16 +5,32 @@ angular.module('envoc.directives.datatables')
         oTableLinesPerPageUrl: '/oTemplates/datatables/oTableLinesPerPage.tmpl.html',
         oTablePageInfoUrl: '/oTemplates/datatables/oTablePageInfo.tmpl.html',
         oTablePaginationUrl: '/oTemplates/datatables/oTablePagination.tmpl.html'
+      },
+      i18n: {
+        en: {
+          show: 'Show',
+          entries: 'entries',
+          filteredFrom: 'filtered from',
+          search: 'Search',
+          loading: 'Loading...',
+          noData: 'No data found...',
+          of: 'of',
+          nextText: 'Next',
+          previousText: 'Previous'
+        }
       }
     };
     return {
       config: config,
+      addLangConfig: function addLangConfig(key, langConfig){
+        config.i18n[key] = langConfig;
+      },
       $get: function() {
         return config;
       }
     }
   })
-  .controller('oTableCtrl', function($scope, $http, $filter, $rootScope, $timeout) {
+  .controller('oTableCtrl', function($scope, $http, $filter, $rootScope, $timeout, oTableConfig) {
     var self      = this;
     var dataCache = [];
 
@@ -33,7 +49,8 @@ angular.module('envoc.directives.datatables')
     self.columnFilter           = columnFilter;
     self.getSortingPropertyInfo = getSortingPropertyInfo;
     self.api                    = {
-      refresh: refresh
+      refresh: refresh,
+      setLang: setLang
     }
 
     // =================================
@@ -41,9 +58,11 @@ angular.module('envoc.directives.datatables')
     // =================================
 
     function init(config_) {
+      var lang = config_.lang || 'en';
+      self.lang = oTableConfig.i18n[lang];
       angular.extend(config, config_);
 
-      self.paginationSettings = config_.paginationSettings || {};
+      self.paginationSettings = config_.paginationSettings || self.lang;
 
       if (!config.dataSrcUrl && !config.dataSrc && !config.fetchMethod) {
         throw new Error('A data source is required');
@@ -152,6 +171,10 @@ angular.module('envoc.directives.datatables')
         sorting: isSortingProperty(propertyName),
         direction: getSortDirection(propertyName)
       }
+    }
+
+    function setLang(key){
+      self.lang = oTableConfig.i18n[key];
     }
 
     function refresh() {

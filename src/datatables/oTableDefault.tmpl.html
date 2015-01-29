@@ -8,7 +8,7 @@
         <div class="span6 pull-right">
             <div class="dataTables_filter">
                 <label>
-                    Search:
+                    {{ctrl.lang.search}}:
                     <input type="text" o-table-filter>
                 </label>
             </div>
@@ -16,11 +16,11 @@
     </div>
     
     <div class="alert alert-info" ng-show="ctrl.loading">
-        <strong>Loading...</strong>
+        <strong>{{ctrl.lang.loading}}</strong>
     </div>
 
     <div class="alert alert-info" ng-hide="ctrl.data.length || ctrl.loading">
-        <strong>No data found...</strong>
+        <strong>{{ctrl.lang.noData}}</strong>
     </div>
 
     <div ng-transclude></div>

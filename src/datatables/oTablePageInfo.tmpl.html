@@ -1,8 +1,8 @@
 <span class="dataTables_info" ng-show="ctrl.data.length">
     {{ctrl.state.pageStartIdx + 1}} - {{ctrl.state.pageStopIdx}}
-    of {{ctrl.state.iTotalDisplayRecords}}
-    entries
+    {{ctrl.lang.of}} {{ctrl.state.iTotalDisplayRecords}}
+    {{ctrl.lang.entries}}
     <span ng-show="ctrl.state.iTotalRecords !== ctrl.state.iTotalDisplayRecords">
-        (filtered from {{ctrl.state.iTotalRecords}})
+        ({{ctrl.lang.filteredFrom}} {{ctrl.state.iTotalRecords}})
     </span>
 </span>

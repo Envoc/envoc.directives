@@ -187,7 +187,14 @@
     describe('Remote Data:', function() {
       var html;
 
-      beforeEach(module('envoc.directives.datatables'));
+      beforeEach(module('envoc.directives.datatables', function(oTableConfigProvider) {
+        oTableConfigProvider.addLangConfig('fr', {
+          show: 'Le Show',
+          entries: 'Le entries',
+          nextText: 'Le Next',
+          previousText: 'Le Previous'
+        })
+      }));
 
       beforeEach(inject(function($injector) {
         $rootScope = $injector.get('$rootScope');
@@ -204,27 +211,28 @@
 
       beforeEach(function() {
         scope.config = {};
-        html = '<div o-table config="config">' +
-          "<div>" +
-          "<table>" +
-          "<thead>" +
-          "<tr role=\"row\">" +
-          "<th>Start Date</th>" +
-          "<th>Is Closed</th>" +
-          "<th o-table-sort field=\"Id\">Id</th>" +
-          "<th>Registration Count</th>" +
-          "</tr>" +
-          "</thead>" +
-          "<tbody o-table-controller>" +
-          "<tr ng-repeat=\"row in ctrl.data\">" +
-          "<td>{{ctrl1.parseDate(row.StartDateUtc) | date:'medium'}}</td>" +
-          "<td>{{row.IsClosed}}</td>" +
-          "<td>{{row.Id}}</td>" +
-          "<td>{{row.RegistrationCount}}</td>" +
-          "</tr>" +
-          "</tbody>" +
-          "</table>" +
-          "</div>" +
+        html = "" + 
+          "<div o-table config='config'>" +
+            "<div o-table-lines-per-page></div>" +
+              "<table>" +
+                "<thead>" +
+                  "<tr role=\"row\">" +
+                    "<th>Start Date</th>" +
+                    "<th>Is Closed</th>" +
+                    "<th o-table-sort field=\"Id\">Id</th>" +
+                    "<th>Registration Count</th>" +
+                  "</tr>" +
+                "</thead>" +
+                "<tbody o-table-controller>" +
+                  "<tr ng-repeat=\"row in ctrl.data\">" +
+                    "<td>{{ctrl.parseDate(row.StartDateUtc) | date:'medium'}}</td>" +
+                    "<td>{{row.IsClosed}}</td>" +
+                    "<td>{{row.Id}}</td>" +
+                    "<td>{{row.RegistrationCount}}</td>" +
+                  "</tr>" +
+                "</tbody>" +
+              "</table>" +
+            "<div o-table-pagination></div>" +
           '</div>';
       });
 
@@ -302,8 +310,40 @@
 
         var tbody = element.find('tbody');
         var rowCount = tbody.find('tr').length;
-
         expect(rowCount).toBe(httpResponse1.aaData.length);
+
+        function fetchMethod() {
+          return $q.when({
+            data: httpResponse1
+          });
+        };
+      });
+
+      it('should allow configuring languages - default english', function() {
+        scope.config.fetchMethod = fetchMethod;
+
+        compile();
+
+        expect(element.text()).toContain('Show');
+        expect(element.text()).toContain('Previous');
+        expect(element.text()).toContain('Next');
+
+        function fetchMethod() {
+          return $q.when({
+            data: httpResponse1
+          });
+        };
+      });
+
+      it('should allow configuring languages - french', function() {
+        scope.config.fetchMethod = fetchMethod;
+        scope.config.lang = 'fr';
+
+        compile();
+
+        expect(element.text()).toContain('Le Show');
+        expect(element.text()).toContain('Le Previous');
+        expect(element.text()).toContain('Le Next');
 
         function fetchMethod() {
           return $q.when({
