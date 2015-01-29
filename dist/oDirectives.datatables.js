@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.10.1
+ * envoc.directives 0.11.0
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -236,7 +236,7 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="span6 pull-right">\n' +
     '            <div class="dataTables_filter">\n' +
     '                <label>\n' +
-    '                    Search:\n' +
+    '                    {{ctrl.lang.search}}:\n' +
     '                    <input type="text" o-table-filter>\n' +
     '                </label>\n' +
     '            </div>\n' +
@@ -244,11 +244,11 @@ module.run(['$templateCache', function($templateCache) {
     '    </div>\n' +
     '    \n' +
     '    <div class="alert alert-info" ng-show="ctrl.loading">\n' +
-    '        <strong>Loading...</strong>\n' +
+    '        <strong>{{ctrl.lang.loading}}</strong>\n' +
     '    </div>\n' +
     '\n' +
     '    <div class="alert alert-info" ng-hide="ctrl.data.length || ctrl.loading">\n' +
-    '        <strong>No data found...</strong>\n' +
+    '        <strong>{{ctrl.lang.noData}}</strong>\n' +
     '    </div>\n' +
     '\n' +
     '    <div ng-transclude></div>\n' +
@@ -408,7 +408,7 @@ angular.module('envoc.directives.datatables')
       }
     }
   })
-  .controller('oTableCtrl', function($scope, $http, $filter, $rootScope, $timeout, oTableConfig) {
+  .controller('oTableCtrl', ["$scope", "$http", "$filter", "$rootScope", "$timeout", "oTableConfig", function($scope, $http, $filter, $rootScope, $timeout, oTableConfig) {
     var self      = this;
     var dataCache = [];
 
@@ -834,7 +834,7 @@ angular.module('envoc.directives.datatables')
 
       return result;
     }
-  })
+  }])
   .directive('oTable', function() {
     return {
       priority: 800,
@@ -942,7 +942,7 @@ angular.module('envoc.directives.datatables')
     });
 
 angular.module('envoc.directives.datatables')
-  .directive('oTableLinesPerPage', function(oTableConfig) {
+  .directive('oTableLinesPerPage', ["oTableConfig", function(oTableConfig) {
     return {
       restrict: 'A',
       replace: true,
@@ -953,10 +953,10 @@ angular.module('envoc.directives.datatables')
         scope.ctrl = controller;
       }
     };
-  });
+  }]);
 
 angular.module('envoc.directives.datatables')
-  .directive('oTablePageInfo', function(oTableConfig) {
+  .directive('oTablePageInfo', ["oTableConfig", function(oTableConfig) {
     return {
       restrict: 'A',
       replace: true,
@@ -967,10 +967,10 @@ angular.module('envoc.directives.datatables')
         scope.ctrl = controller;
       }
     };
-  });
+  }]);
 
 angular.module('envoc.directives.datatables')
-  .directive('oTablePagination', function(oTableConfig) {
+  .directive('oTablePagination', ["oTableConfig", function(oTableConfig) {
     return {
       restrict: 'A',
       scope: true,
@@ -988,7 +988,7 @@ angular.module('envoc.directives.datatables')
         }, scope.ctrl.paginationSettings);
       }
     };
-  });
+  }]);
 
 /*
  * Example use: <th o-table-sort field="id">Id</th>

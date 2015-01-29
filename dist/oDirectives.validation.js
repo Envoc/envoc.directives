@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.10.1
+ * envoc.directives 0.11.0
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -106,9 +106,9 @@ module.run(['$templateCache', function($templateCache) {
 
                 return {
                     restrict: 'EA',
-                    controller: function($element) {
+                    controller: ["$element", function($element) {
                         this.parentForm = $element.inheritedData('$formController') || nullFormCtrl;
-                    },
+                    }],
                     link: function(scope, element, attrs, ctrl) {
                         scope.$watch(function() {
                             return scope.$eval(attrs.errors);

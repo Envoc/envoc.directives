@@ -3,7 +3,7 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
     gutil = require('gulp-util'),
     uglify = require('gulp-uglify'),
-    ngmin = require('gulp-ngmin'),
+    ngAnnotate = require('gulp-ng-annotate'),
     watch = require('gulp-watch'),
     concat = require('gulp-concat'),
     jeditor = require("gulp-json-editor"),
@@ -74,11 +74,12 @@ gulp.task('js', function() {
         var the_source = gulp.src(combined_build, base);
 
         the_source
+            .pipe(ngAnnotate())
             .pipe(concat(outputFileName + ".js"))
             .pipe(gulp.dest('./dist/'));
 
         the_source
-            .pipe(ngmin())
+            .pipe(ngAnnotate())
             .pipe(uglify())
             .pipe(concat(outputFileName + ".min.js"))
             .pipe(gulp.dest('./dist/'));
