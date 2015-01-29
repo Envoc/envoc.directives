@@ -392,6 +392,7 @@ angular.module('envoc.directives.datatables')
         oTablePageInfoUrl: '/oTemplates/datatables/oTablePageInfo.tmpl.html',
         oTablePaginationUrl: '/oTemplates/datatables/oTablePagination.tmpl.html'
       },
+      addLangConfig: addLangConfig,
       i18n: {
         en: {
           show: 'Show',
@@ -408,12 +409,14 @@ angular.module('envoc.directives.datatables')
     };
     return {
       config: config,
-      addLangConfig: function addLangConfig(key, langConfig){
-        config.i18n[key] = langConfig;
-      },
+      addLangConfig: addLangConfig,
       $get: function() {
         return config;
       }
+    }
+
+    function addLangConfig(key, langConfig){
+      config.i18n[key] = langConfig;
     }
   })
   .controller('oTableCtrl', ["$scope", "$http", "$filter", "$rootScope", "$timeout", "oTableConfig", function($scope, $http, $filter, $rootScope, $timeout, oTableConfig) {
@@ -561,6 +564,7 @@ angular.module('envoc.directives.datatables')
 
     function setLang(key){
       self.lang = oTableConfig.i18n[key];
+      self.paginationSettings = _.extend({}, self.paginationSettings, self.lang);
     }
 
     function refresh() {
