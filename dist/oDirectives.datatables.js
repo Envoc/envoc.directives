@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.9.7
+ * envoc.directives 0.10.1
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -278,7 +278,7 @@ try {
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTableLinesPerPage.tmpl.html',
     '<label>\n' +
-    '    Show\n' +
+    '    {{ctrl.lang.show}}\n' +
     '    <select ng-model="ctrl.state.linesPerPage">\n' +
     '        <option value="5">5</option>\n' +
     '        <option value="10">10</option>\n' +
@@ -286,7 +286,7 @@ module.run(['$templateCache', function($templateCache) {
     '        <option value="50">50</option>\n' +
     '        <option value="100">100</option>\n' +
     '    </select>\n' +
-    '    entries\n' +
+    '    {{ctrl.lang.entries}}\n' +
     '</label>');
 }]);
 })();
@@ -301,10 +301,10 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTablePageInfo.tmpl.html',
     '<span class="dataTables_info" ng-show="ctrl.data.length">\n' +
     '    {{ctrl.state.pageStartIdx + 1}} - {{ctrl.state.pageStopIdx}}\n' +
-    '    of {{ctrl.state.iTotalDisplayRecords}}\n' +
-    '    entries\n' +
+    '    {{ctrl.lang.of}} {{ctrl.state.iTotalDisplayRecords}}\n' +
+    '    {{ctrl.lang.entries}}\n' +
     '    <span ng-show="ctrl.state.iTotalRecords !== ctrl.state.iTotalDisplayRecords">\n' +
-    '        (filtered from {{ctrl.state.iTotalRecords}})\n' +
+    '        ({{ctrl.lang.filteredFrom}} {{ctrl.state.iTotalRecords}})\n' +
     '    </span>\n' +
     '</span>');
 }]);
@@ -383,16 +383,32 @@ angular.module('envoc.directives.datatables')
         oTableLinesPerPageUrl: '/oTemplates/datatables/oTableLinesPerPage.tmpl.html',
         oTablePageInfoUrl: '/oTemplates/datatables/oTablePageInfo.tmpl.html',
         oTablePaginationUrl: '/oTemplates/datatables/oTablePagination.tmpl.html'
+      },
+      i18n: {
+        en: {
+          show: 'Show',
+          entries: 'entries',
+          filteredFrom: 'filtered from',
+          search: 'Search',
+          loading: 'Loading...',
+          noData: 'No data found...',
+          of: 'of',
+          nextText: 'Next',
+          previousText: 'Previous'
+        }
       }
     };
     return {
       config: config,
+      addLangConfig: function addLangConfig(key, langConfig){
+        config.i18n[key] = langConfig;
+      },
       $get: function() {
         return config;
       }
     }
   })
-  .controller('oTableCtrl', function($scope, $http, $filter, $rootScope, $timeout) {
+  .controller('oTableCtrl', function($scope, $http, $filter, $rootScope, $timeout, oTableConfig) {
     var self      = this;
     var dataCache = [];
 
@@ -411,7 +427,8 @@ angular.module('envoc.directives.datatables')
     self.columnFilter           = columnFilter;
     self.getSortingPropertyInfo = getSortingPropertyInfo;
     self.api                    = {
-      refresh: refresh
+      refresh: refresh,
+      setLang: setLang
     }
 
     // =================================
@@ -419,9 +436,11 @@ angular.module('envoc.directives.datatables')
     // =================================
 
     function init(config_) {
+      var lang = config_.lang || 'en';
+      self.lang = oTableConfig.i18n[lang];
       angular.extend(config, config_);
 
-      self.paginationSettings = config_.paginationSettings || {};
+      self.paginationSettings = config_.paginationSettings || self.lang;
 
       if (!config.dataSrcUrl && !config.dataSrc && !config.fetchMethod) {
         throw new Error('A data source is required');
@@ -530,6 +549,10 @@ angular.module('envoc.directives.datatables')
         sorting: isSortingProperty(propertyName),
         direction: getSortDirection(propertyName)
       }
+    }
+
+    function setLang(key){
+      self.lang = oTableConfig.i18n[key];
     }
 
     function refresh() {

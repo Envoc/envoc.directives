@@ -16,7 +16,7 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="span6 pull-right">\n' +
     '            <div class="dataTables_filter">\n' +
     '                <label>\n' +
-    '                    Search:\n' +
+    '                    {{ctrl.lang.search}}:\n' +
     '                    <input type="text" o-table-filter>\n' +
     '                </label>\n' +
     '            </div>\n' +
@@ -24,11 +24,11 @@ module.run(['$templateCache', function($templateCache) {
     '    </div>\n' +
     '    \n' +
     '    <div class="alert alert-info" ng-show="ctrl.loading">\n' +
-    '        <strong>Loading...</strong>\n' +
+    '        <strong>{{ctrl.lang.loading}}</strong>\n' +
     '    </div>\n' +
     '\n' +
     '    <div class="alert alert-info" ng-hide="ctrl.data.length || ctrl.loading">\n' +
-    '        <strong>No data found...</strong>\n' +
+    '        <strong>{{ctrl.lang.noData}}</strong>\n' +
     '    </div>\n' +
     '\n' +
     '    <div ng-transclude></div>\n' +

@@ -1,3 +1,11 @@
+## 0.11.0 (2015-01-29)
+
+
+#### Features
+
+* **language:** adding simple language settings ([75ba9d78](https://github.com/Envoc/envoc.directives/commit/75ba9d78c8ca59e377a12c98e71f3fd997a37024))
+
+
 ## 0.10.0 (2015-01-20)
 
 
