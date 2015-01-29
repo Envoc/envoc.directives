@@ -22,6 +22,7 @@ module.exports = function (config) {
             './build/partials/validation/*.js',
             './src/datatables/app.js',
             './src/datatables/**/*.js',
+            './src/datatables/**/*.html',
             './src/validation/app.js',
             './src/validation/**/*.js',
             "src/**/*.spec.js"

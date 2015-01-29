@@ -3,7 +3,7 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
     gutil = require('gulp-util'),
     uglify = require('gulp-uglify'),
-    ngmin = require('gulp-ngmin'),
+    ngAnnotate = require('gulp-ng-annotate'),
     watch = require('gulp-watch'),
     concat = require('gulp-concat'),
     jeditor = require("gulp-json-editor"),
@@ -74,11 +74,12 @@ gulp.task('js', function() {
         var the_source = gulp.src(combined_build, base);
 
         the_source
+            .pipe(ngAnnotate())
             .pipe(concat(outputFileName + ".js"))
             .pipe(gulp.dest('./dist/'));
 
         the_source
-            .pipe(ngmin())
+            .pipe(ngAnnotate())
             .pipe(uglify())
             .pipe(concat(outputFileName + ".min.js"))
             .pipe(gulp.dest('./dist/'));
@@ -88,20 +89,20 @@ gulp.task('js', function() {
 // templatify
 gulp.task('templatify', function() {
     gulp
-        .src("./src/**/*.tmpl.html")
-        .pipe(ngHtml2Js({
-            moduleName: "envoc.directives.partials",
-            prefix: "/oTemplates/"
-        }))
-        .pipe(gulp.dest("./build/partials"));
-
-    gulp
         .src("./src/_vendor/ui.bootstrap/template/pagination/*.html")
         .pipe(ngHtml2Js({
             moduleName: "envoc.directives.partials",
             prefix: "template/pagination/"
         }))
         .pipe(gulp.dest("./build/_vendor/templates"));
+
+    return gulp
+        .src("./src/**/*.tmpl.html")
+        .pipe(ngHtml2Js({
+            moduleName: "envoc.directives.partials",
+            prefix: "/oTemplates/"
+        }))
+        .pipe(gulp.dest("./build/partials"));
 });
 
 gulp.task('watch', function() {
@@ -112,7 +113,7 @@ gulp.task('watch', function() {
 
 gulp.task('watch-testing', function() {
     gulp.watch('./src/**/*.*', function() {
-        gulp.run('js');
+        gulp.run('templatify');
     });
 });
 
