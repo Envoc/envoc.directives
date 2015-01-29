@@ -19,7 +19,8 @@ angular.module('envoc.directives.datatables')
           nextText: 'Next',
           previousText: 'Previous'
         }
-      }
+      },
+      defaultLang: 'en'
     };
     return {
       config: config,
@@ -31,6 +32,7 @@ angular.module('envoc.directives.datatables')
 
     function addLangConfig(key, langConfig){
       config.i18n[key] = langConfig;
+      config.defaultLang = key;
     }
   })
   .controller('oTableCtrl', function($scope, $http, $filter, $rootScope, $timeout, oTableConfig) {
@@ -61,7 +63,7 @@ angular.module('envoc.directives.datatables')
     // =================================
 
     function init(config_) {
-      var lang = config_.lang || 'en';
+      var lang = config_.lang || oTableConfig.defaultLang;
       self.lang = oTableConfig.i18n[lang];
       angular.extend(config, config_);
 
@@ -177,6 +179,7 @@ angular.module('envoc.directives.datatables')
     }
 
     function setLang(key){
+      oTableConfig.defaultLang = key;
       self.lang = oTableConfig.i18n[key];
       self.paginationSettings = _.extend({}, self.paginationSettings, self.lang);
     }
