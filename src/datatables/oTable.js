@@ -38,7 +38,7 @@ angular.module('envoc.directives.datatables')
   .controller('oTableCtrl', function($scope, $http, $filter, $rootScope, $timeout, oTableConfig) {
     var self      = this;
     var dataCache = [];
-
+    $scope.config.oTable = self;
     var config    = {
       fetchMethod: null,
       linesPerPage: 10,
