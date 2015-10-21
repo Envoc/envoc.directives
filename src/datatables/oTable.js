@@ -73,7 +73,9 @@ angular.module('envoc.directives.datatables')
         throw new Error('A data source is required');
       }
 
-      config.dataSrcUrl && (config.fetchMethod = defaultFetch);
+      if (config.dataSrcUrl && !config.fetchMethod){
+        config.fetchMethod = defaultFetch;
+      }
 
       this.state = {
         currentPage: 1,
