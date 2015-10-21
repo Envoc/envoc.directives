@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.11.0
+ * envoc.directives 0.11.1
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -416,7 +416,7 @@ angular.module('envoc.directives.datatables')
   .controller('oTableCtrl', ["$scope", "$http", "$filter", "$rootScope", "$timeout", "oTableConfig", function($scope, $http, $filter, $rootScope, $timeout, oTableConfig) {
     var self      = this;
     var dataCache = [];
-    $scope.config.oTable = self;
+
     var config    = {
       fetchMethod: null,
       linesPerPage: 10,
