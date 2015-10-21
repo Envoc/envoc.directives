@@ -38,7 +38,7 @@ angular.module('envoc.directives.datatables')
   .controller('oTableCtrl', function($scope, $http, $filter, $rootScope, $timeout, oTableConfig) {
     var self      = this;
     var dataCache = [];
-    $scope.config.oTable = self;
+
     var config    = {
       fetchMethod: null,
       linesPerPage: 10,
@@ -73,7 +73,9 @@ angular.module('envoc.directives.datatables')
         throw new Error('A data source is required');
       }
 
-      config.dataSrcUrl && (config.fetchMethod = defaultFetch);
+      if (config.dataSrcUrl && !config.fetchMethod){
+        config.fetchMethod = defaultFetch;
+      }
 
       this.state = {
         currentPage: 1,

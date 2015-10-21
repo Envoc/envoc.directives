@@ -1,6 +1,6 @@
 {
   "name": "envoc.directives",
-  "version": "0.11.0",
+  "version": "0.11.2",
   "description": "Base line directives for envoc web projects",
   "main": "index.js",
   "directories": {
@@ -11,9 +11,7 @@
     "start": "karma start ./karma.unit.conf.js",
     "postinstall": "cd src && bower install"
   },
-  "keywords": [
-    "Envoc"
-  ],
+  "keywords": ["Envoc"],
   "author": "Envoc",
   "license": "BSD-2-Clause",
   "devDependencies": {
