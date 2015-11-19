@@ -43,7 +43,8 @@ angular.module('envoc.directives.datatables')
       fetchMethod: null,
       linesPerPage: 10,
       throttle: 0,
-      defaultSort: []
+      defaultSort: [],
+      linesPerPageOptions: [5,10,25,50,100]
     };
 
     var limitTo, filter, startFrom, orderBy; // filters
@@ -68,6 +69,7 @@ angular.module('envoc.directives.datatables')
       angular.extend(config, config_);
 
       self.paginationSettings = config_.paginationSettings || self.lang;
+      self.linesPerPageOptions = config.linesPerPageOptions;
 
       if (!config.dataSrcUrl && !config.dataSrc && !config.fetchMethod) {
         throw new Error('A data source is required');
