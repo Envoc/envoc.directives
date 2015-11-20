@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.11.1
+ * envoc.directives 0.11.2
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -279,12 +279,7 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTableLinesPerPage.tmpl.html',
     '<label>\n' +
     '    {{ctrl.lang.show}}\n' +
-    '    <select ng-model="ctrl.state.linesPerPage">\n' +
-    '        <option value="5">5</option>\n' +
-    '        <option value="10">10</option>\n' +
-    '        <option value="25">25</option>\n' +
-    '        <option value="50">50</option>\n' +
-    '        <option value="100">100</option>\n' +
+    '    <select ng-model="ctrl.state.linesPerPage" ng-options="o for o in ctrl.linesPerPageOptions">\n' +
     '    </select>\n' +
     '    {{ctrl.lang.entries}}\n' +
     '</label>');
@@ -421,7 +416,8 @@ angular.module('envoc.directives.datatables')
       fetchMethod: null,
       linesPerPage: 10,
       throttle: 0,
-      defaultSort: []
+      defaultSort: [],
+      linesPerPageOptions: [5,10,25,50,100]
     };
 
     var limitTo, filter, startFrom, orderBy; // filters
@@ -446,6 +442,7 @@ angular.module('envoc.directives.datatables')
       angular.extend(config, config_);
 
       self.paginationSettings = config_.paginationSettings || self.lang;
+      self.linesPerPageOptions = config.linesPerPageOptions;
 
       if (!config.dataSrcUrl && !config.dataSrc && !config.fetchMethod) {
         throw new Error('A data source is required');

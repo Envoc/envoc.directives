@@ -3,12 +3,12 @@ var app = angular.module('example.datatables', ['envoc.directives']);
 app.controller('MainCtrl', function(FakeService) {
     var viewModel = this;
 
-    
     viewModel.config = {
         fetchMethod: FakeService.fetch,
         linesPerPage: 2,
         throttle: 301,
-        saveState: 'config'
+        saveState: 'config',
+        linesPerPageOptions: [2,4,6,8]
     };
 
     viewModel.config2 = {
