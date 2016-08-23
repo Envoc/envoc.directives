@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.11.2
+ * envoc.directives 0.11.3
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -1060,7 +1060,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/validation/oValidationMessageFor.tmpl.html',
-    '﻿<div>\n' +
+    '<div>\n' +
     '    <!-- This is where the content of the tag gets replaced -->\n' +
     '    <div ng-transclude></div>\n' +
     '\n' +
@@ -1104,7 +1104,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/validation/oValidationSummary.tmpl.html',
-    '﻿<div ng-show="errors.length" ng-class="{\'alert alert-danger alert-block\': errors.length}">\n' +
+    '<div ng-show="errors.length" ng-class="{\'alert alert-danger alert-block\': errors.length}">\n' +
     '    <strong>Please fix the error{{ errors.length > 1 ? \'s\' : \'\'}} listed below and try again</strong>\n' +
     '    <ul style="padding-left:30px">\n' +
     '        <li ng-repeat="error in errors">\n' +
@@ -1137,7 +1137,7 @@ module.run(['$templateCache', function($templateCache) {
     });
 })();
 
-﻿(function() {
+(function() {
     'use strict';
 
     angular
@@ -1172,7 +1172,7 @@ module.run(['$templateCache', function($templateCache) {
         ]);
 })();
 
-﻿(function() {
+(function() {
     'use strict';
 
     angular
@@ -1240,7 +1240,7 @@ module.run(['$templateCache', function($templateCache) {
             }
         ]);
 })();
-﻿(function() {
+(function() {
     'use strict';
 
     angular
@@ -1264,4 +1264,182 @@ module.run(['$templateCache', function($templateCache) {
                 };
             }
         ]);
+})();
+(function () {
+    angular
+        .module('envoc', [])
+        .value('defaultNamespace', 'root')
+        .value('namespacePropName', '__namespace')
+        .config(['$httpProvider', function ($httpProvider) {
+            $httpProvider.interceptors.push('errorNamespacingHttpInterceptor');
+            $httpProvider.interceptors.push('noCacheInterceptor');
+        }]);
+})();
+(function () {
+    'use strict';
+    angular
+       .module('envoc')
+       .directive('validationMessage', ['errorService', function (errorService) {
+           return {
+               restrict: 'E',
+               scope: { 'for': '@', 'namespace': '@' },
+               template: '<div ng-repeat="error in matches" class="alert alert-danger m-t">{{error.errorMessage}}</div>\n',
+               bindToController: true,
+               controllerAs: 'validateCtrl',
+               controller: ['$scope', 'defaultNamespace', function ($scope, defaultNamespace) {
+                   var vm = this;
+                   vm.namespace = vm.namespace || defaultNamespace;
+                   $scope.$watch(watchErrors, updateMatches, true);
+
+                   function updateMatches(errors) {
+                       var namespaceErrors = errors[vm.namespace] || {};
+                       $scope.matches = _.filter(namespaceErrors, propertyIsMatch);
+                   }
+
+                   function propertyIsMatch(error) {
+                       if (typeof vm.for !== 'undefined') {
+                           return error.propertyName.toLowerCase() == vm.for.toLowerCase();
+                       }
+                       return true;
+                   }
+
+                   function watchErrors() {
+                       return errorService.errors;
+                   }
+               }]
+           };
+       }]);
+})();
+(function () {
+    'use strict';
+    angular
+        .module('envoc')
+        .factory('errorNamespacingHttpInterceptor', ['$q', 'errorService', 'namespacePropName', function ($q, errorService, namespacePropName) {
+            return {
+                request: function (request) {
+                    if (typeof request[namespacePropName] !== 'undefined') {
+                        errorService.clearNamespace(request[namespacePropName]);
+                    }
+                    return request;
+                },
+                response: function (response) {
+                    return response;
+                },
+                responseError: function (rejection) {
+                    var requestNamespace = rejection.config[namespacePropName];
+                    if (typeof requestNamespace !== 'undefined') {
+                        var errors = parseResponseErrors(rejection.data);
+                        errorService.addErrors(requestNamespace, errors);
+                    }
+                    return $q.reject(rejection);
+                }
+            };
+        }]);
+
+    /**
+     * Retrieves the array of errors from the response and converts them to our preferred form.
+     * Change this function if the server doesnt return an envoc standard response like this: 
+     *  { errors:[{PropertyName:"",ErrorMessage:"" }] }
+     * 
+     */
+    function parseResponseErrors(response) {
+        return response.Errors.map(function (err) {
+            return {
+                propertyName: err.PropertyName,
+                errorMessage: err.ErrorMessage
+            };
+        });
+    }
+
+})();
+(function () {
+    'use strict';
+    angular
+        .module('envoc')
+        .factory('noCacheInterceptor', [function () {
+            return {
+                request: function (config) {
+                    if (config.method == 'GET' && config.url.indexOf(".html") == -1) {
+                        var separator = config.url.indexOf('?') === -1 ? '?' : '&';
+                        config.url = config.url + separator + 'c=' + new Date().getTime();
+                    }
+                    return config;
+                }
+            };
+        }]);
+})();
+(function () {
+    'use strict';
+    angular
+        .module('envoc')
+        .service('apiClient', ['$http', 'errorService', 'defaultNamespace', 'namespacePropName',
+            function ($http, errorService, defaultNamespace, namespacePropName) {
+                var constructorFn = apiClient;
+
+                function apiClient(nameSpace, _http) {
+                    var service = this;
+                    var http = _http;
+
+                    var idempotentMethods = ['get', 'head', 'delete', 'jsonp'];
+                    //these take an optional data param that needs to be handled separately
+                    var nonIdempotentMethods = ['post', 'put', 'patch'];
+
+                    service.nameSpace = nameSpace;
+
+                    service.bindNamespace = function (ns) {
+                        return new constructorFn(ns, http);
+                    };
+
+                    /**decorate calls to $http by modifying the parameters*/
+                    idempotentMethods.forEach(function (method) {
+                        service[method] = function (url, config) {
+                            return $http[method].call($http, url, decorateConfig(config));
+                        };
+                    });
+
+                    nonIdempotentMethods.forEach(function (method) {
+                        service[method] = function (url, data, config) {
+                            return $http[method].call($http, url, data, decorateConfig(config));
+                        };
+                    });
+
+                    function decorateConfig(config) {
+                        var _config = typeof config !== 'undefined' ? config : {};
+                        _config[namespacePropName] = service.nameSpace;
+                        return _config;
+                    }
+                }
+
+                return new apiClient(defaultNamespace, $http);
+            }
+        ]);
+})();
+(function () {
+    'use strict';
+    angular
+        .module('envoc')
+        .service('errorService', ['$timeout', function errorService($timeout) {
+            function service() {
+                var srvc = this;
+                srvc.errors = {};
+
+                srvc.clear = function () {
+                    srvc.errors = {};
+                };
+
+                srvc.clearNamespace = function (namespace) {
+                    srvc.errors[namespace] = {};
+                };
+
+                srvc.addErrors = function (namespace, errors) {
+                    $timeout(function () {
+                        srvc.clearNamespace(namespace);
+                        errors.forEach(function (err) {
+                            srvc.errors[namespace][err.propertyName] = err;
+                        });
+                    });
+                };
+            }
+            return new service();
+        }]);
 })();

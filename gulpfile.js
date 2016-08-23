@@ -50,6 +50,11 @@ gulp.task('js', function() {
         '!./src/**/*.spec.js'
     ];
 
+    var envoc_src = [
+        './src/envoc/envoc-module.js',
+        './src/envoc/**/*.js'
+    ]
+
     var combined_src = [
         './src/app.js',
         '!./src/**/*.spec.js'
@@ -59,7 +64,7 @@ gulp.task('js', function() {
         .pipe(replace(/\{version\}/g, pkg.version))
         .pipe(gulp.dest('./build/'));
 
-    build('oDirectives', [combined_src, datatables_src, validation_src]);
+    build('oDirectives', [combined_src, datatables_src, validation_src, envoc_src]);
     build('oDirectives.datatables', [datatables_src]);
     build('oDirectives.validation', [validation_src]);
 

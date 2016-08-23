@@ -1,7 +1,7 @@
 ﻿var app = angular.module('example.validation', ['envoc.directives.validation']);
 
 // comment me out to see default template
-app.config(['oValidateConfigProvider', config]);
+//app.config(['oValidateConfigProvider', config]);
 
 function config(oValidateConfigProvider) {
    oValidateConfigProvider.config.templates.oValidationMessageFor = 'oValidationMessageFor.override.html';

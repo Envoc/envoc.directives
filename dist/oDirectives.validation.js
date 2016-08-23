@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.11.2
+ * envoc.directives 0.11.3
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -11,7 +11,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/validation/oValidationMessageFor.tmpl.html',
-    '﻿<div>\n' +
+    '<div>\n' +
     '    <!-- This is where the content of the tag gets replaced -->\n' +
     '    <div ng-transclude></div>\n' +
     '\n' +
@@ -55,7 +55,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/validation/oValidationSummary.tmpl.html',
-    '﻿<div ng-show="errors.length" ng-class="{\'alert alert-danger alert-block\': errors.length}">\n' +
+    '<div ng-show="errors.length" ng-class="{\'alert alert-danger alert-block\': errors.length}">\n' +
     '    <strong>Please fix the error{{ errors.length > 1 ? \'s\' : \'\'}} listed below and try again</strong>\n' +
     '    <ul style="padding-left:30px">\n' +
     '        <li ng-repeat="error in errors">\n' +
@@ -88,7 +88,7 @@ module.run(['$templateCache', function($templateCache) {
     });
 })();
 
-﻿(function() {
+(function() {
     'use strict';
 
     angular
@@ -123,7 +123,7 @@ module.run(['$templateCache', function($templateCache) {
         ]);
 })();
 
-﻿(function() {
+(function() {
     'use strict';
 
     angular
@@ -191,7 +191,7 @@ module.run(['$templateCache', function($templateCache) {
             }
         ]);
 })();
-﻿(function() {
+(function() {
     'use strict';
 
     angular
