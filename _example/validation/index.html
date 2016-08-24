@@ -5,7 +5,8 @@
     <title>AngularJS Plunker</title>
     <link data-require="bootstrap-css@*" data-semver="3.1.1" rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
     <script src="../../src/_vendor/angular/angular.min.js"></script>
-    <script src="../../dist/oDirectives.validation.js"></script>
+    <script src="../../src/_vendor/lodash/dist/lodash.min.js"></script>
+    <script src="../../dist/oDirectives.js"></script>
     <script src="app.js"></script>
 </head>
 <body>
@@ -14,42 +15,37 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Form</div>
                 <div class="panel-body">
-                    <form o-validate-with errors="ctrl1.errors" name="form1">
-                        <div o-validation-summary></div>
-
-                        <!-- LOOK: THIS HERE -->
-                        <div o-validation-message-for=""></div>
-
+                    <form name="form1">
                         <div class="form-group">
                             <!-- LOOK: THIS HERE -->
                             <label>Name:</label>
                             <input type="text" class="form-control" ng-model="ctrl1.name" />
-                            <div o-validation-message-for="firstName"></div>
+                            <validation-message for="firstName"></validation-message>
                         </div>
                         <div class="form-group">
                             <!-- LOOK: THIS HERE -->
                             <label>Last Name:</label>
                             <input type="text" class="form-control" ng-model="ctrl1.lastName" />
-                            <div o-validation-message-for="lastName" alt-message-name="message"  alt-property-name="key"></div>
+                            <validation-message for="lastName"></validation-message>
                         </div>
                         <a class="btn btn-primary" ng-click="ctrl1.submit()">{{ctrl1.action}}</a>
                     </form>
                     <hr>
-                    <form o-validate-with errors="ctrl1.modelState">
+                    <form>
                         <!-- LOOK: THIS HERE -->
                         <div class="form-group">
                             <!-- LOOK: THIS HERE -->
                             <label>Name:</label>
                             <input type="text" class="form-control" ng-model="ctrl1.firstName" />
                             <br>
-                            <div o-validation-message-for-modelstate="firstName"></div>
+                            <validation-message for="firstName"></validation-message>
                         </div>
                         <div class="form-group">
                             <!-- LOOK: THIS HERE -->
                             <label>Last Name:</label>
                             <input type="text" class="form-control" ng-model="ctrl1.lastName" />
                             <br>
-                            <div o-validation-message-for-modelstate="lastName"></div>
+                            <validation-message for="lastName"></validation-message>
                         </div>
                         <a class="btn btn-primary" ng-click="ctrl1.submit()">{{ctrl1.action}}</a>
                     </form>

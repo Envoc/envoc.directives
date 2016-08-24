@@ -12,15 +12,13 @@
                 };
 
                 srvc.clearNamespace = function (namespace) {
-                    srvc.errors[namespace] = {};
+                    srvc.errors[namespace] = [];
                 };
 
                 srvc.addErrors = function (namespace, errors) {
                     $timeout(function () {
                         srvc.clearNamespace(namespace);
-                        errors.forEach(function (err) {
-                            srvc.errors[namespace][err.propertyName] = err;
-                        });
+                        srvc.errors[namespace] = errors;
                     });
                 };
             }
