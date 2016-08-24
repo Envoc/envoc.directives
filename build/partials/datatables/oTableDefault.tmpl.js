@@ -1,8 +1,8 @@
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTableDefault.tmpl.html',

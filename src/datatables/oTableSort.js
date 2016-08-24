@@ -3,7 +3,7 @@
  * params: (attribute field): this is the case-sensative key to sort on.
  */
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
     .directive('oTableSort', function() {
         return {
             restrict: 'A',

@@ -33,23 +33,14 @@ gulp.task('clean', function() {
 
 // uglify task
 gulp.task('js', function() {
-    // main app js file
-    var datatables_src = [
+    
+    var combined_src = [
+        './src/app.js',
         './src/_vendor/ui.bootstrap/src/pagination/pagination.js',
         './build/partials/datatables/*.js',
         './build/_vendor/**/*.js',
-        './src/datatables/app.js',
         './src/datatables/**/*.js',
-        '!./src/**/*.spec.js'
-    ];
-
-    var envoc_src = [
-        './src/envoc/envoc-module.js',
-        './src/envoc/**/*.js'
-    ]
-
-    var combined_src = [
-        './src/app.js',
+        './src/validation/**/*.js',
         '!./src/**/*.spec.js'
     ]
 
@@ -57,14 +48,12 @@ gulp.task('js', function() {
         .pipe(replace(/\{version\}/g, pkg.version))
         .pipe(gulp.dest('./build/'));
 
-    build('oDirectives', [combined_src, datatables_src, envoc_src]);
-    build('oDirectives.datatables', [datatables_src]);
+    build('oDirectives', [combined_src]);
 
     function build(outputFileName, sources) {
         var combined_build = Array.prototype.concat.apply([], sources)
         combined_build.unshift('./build/build_head.js');
         
-
         //console.log(combined_build);
         //
         var the_source = gulp.src(combined_build, base);
@@ -87,7 +76,7 @@ gulp.task('templatify', function() {
     gulp
         .src("./src/_vendor/ui.bootstrap/template/pagination/*.html")
         .pipe(ngHtml2Js({
-            moduleName: "envoc.directives.partials",
+            moduleName: "envoc",
             prefix: "template/pagination/"
         }))
         .pipe(gulp.dest("./build/_vendor/templates"));
@@ -95,7 +84,7 @@ gulp.task('templatify', function() {
     return gulp
         .src("./src/**/*.tmpl.html")
         .pipe(ngHtml2Js({
-            moduleName: "envoc.directives.partials",
+            moduleName: "envoc",
             prefix: "/oTemplates/"
         }))
         .pipe(gulp.dest("./build/partials"));

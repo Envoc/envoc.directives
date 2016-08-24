@@ -6,10 +6,13 @@
 (function() {
     'use strict';
 
-    angular.module('envoc.directives', [
-        'envoc.directives.validation',
-        'envoc.directives.datatables'
-    ]);
+    angular.module('envoc', ['ui.bootstrap.pagination'])
+    	.value('defaultNamespace', 'root')
+        .value('namespacePropName', '__namespace')
+        .config(['$httpProvider', function ($httpProvider) {
+            $httpProvider.interceptors.push('errorNamespacingHttpInterceptor');
+            $httpProvider.interceptors.push('noCacheInterceptor');
+        }]);
 })();
 angular.module('ui.bootstrap.pagination', [])
 
@@ -228,9 +231,9 @@ angular.module('ui.bootstrap.pagination', [])
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTableDefault.tmpl.html',
@@ -277,28 +280,12 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
-(function(module) {
-try {
-  module = angular.module('envoc.directives.partials');
-} catch (e) {
-  module = angular.module('envoc.directives.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('/oTemplates/datatables/oTableLinesPerPage.tmpl.html',
-    '<label>\n' +
-    '    {{ctrl.lang.show}}\n' +
-    '    <select ng-model="ctrl.state.linesPerPage" ng-options="o for o in ctrl.linesPerPageOptions">\n' +
-    '    </select>\n' +
-    '    {{ctrl.lang.entries}}\n' +
-    '</label>');
-}]);
-})();
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTablePageInfo.tmpl.html',
@@ -315,9 +302,9 @@ module.run(['$templateCache', function($templateCache) {
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTablePagination.tmpl.html',
@@ -334,9 +321,9 @@ module.run(['$templateCache', function($templateCache) {
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/pagination/pager.html',
@@ -349,9 +336,9 @@ module.run(['$templateCache', function($templateCache) {
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/pagination/pagination.html',
@@ -365,11 +352,7 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
-angular.module('envoc.directives.datatables', [
-    'envoc.directives.partials',
-    'ui.bootstrap.pagination'
-]);
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .filter('startFrom', function() {
       return function(input, start) {
           if (input === undefined) {
@@ -379,7 +362,7 @@ angular.module('envoc.directives.datatables')
           }
       };
   });
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .provider('oTableConfig', function() {
     var config = {
       templates: {
@@ -884,7 +867,7 @@ angular.module('envoc.directives.datatables')
     };
   });
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
     .directive('oTableDefault', function() {
         return {
             templateUrl: '/oTemplates/datatables/oTableDefault.tmpl.html',
@@ -914,7 +897,7 @@ angular.module('envoc.directives.datatables')
             }
         };
     });
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
     .directive('oTableFilter', function() {
         return {
             restrict: 'A',
@@ -955,7 +938,7 @@ angular.module('envoc.directives.datatables')
         };
     });
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .directive('oTableLinesPerPage', ["oTableConfig", function(oTableConfig) {
     return {
       restrict: 'A',
@@ -969,7 +952,7 @@ angular.module('envoc.directives.datatables')
     };
   }]);
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .directive('oTablePageInfo', ["oTableConfig", function(oTableConfig) {
     return {
       restrict: 'A',
@@ -983,7 +966,7 @@ angular.module('envoc.directives.datatables')
     };
   }]);
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .directive('oTablePagination', ["oTableConfig", function(oTableConfig) {
     return {
       restrict: 'A',
@@ -1009,7 +992,7 @@ angular.module('envoc.directives.datatables')
  * params: (attribute field): this is the case-sensative key to sort on.
  */
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
     .directive('oTableSort', function() {
         return {
             restrict: 'A',
@@ -1052,51 +1035,6 @@ angular.module('envoc.directives.datatables')
             }
         };
     });
-(function () {
-    angular
-        .module('envoc', [])
-        .value('defaultNamespace', 'root')
-        .value('namespacePropName', '__namespace')
-        .config(['$httpProvider', function ($httpProvider) {
-            $httpProvider.interceptors.push('errorNamespacingHttpInterceptor');
-            $httpProvider.interceptors.push('noCacheInterceptor');
-        }]);
-})();
-(function () {
-    'use strict';
-    angular
-       .module('envoc')
-       .directive('validationMessage', ['errorService', function (errorService) {
-           return {
-               restrict: 'E',
-               scope: { 'for': '@', 'namespace': '@' },
-               template: '<div ng-repeat="error in matches" class="alert alert-danger m-t">{{error.errorMessage}}</div>\n',
-               bindToController: true,
-               controllerAs: 'validateCtrl',
-               controller: ['$scope', 'defaultNamespace', function ($scope, defaultNamespace) {
-                   var vm = this;
-                   vm.namespace = vm.namespace || defaultNamespace;
-                   $scope.$watch(watchErrors, updateMatches, true);
-
-                   function updateMatches(errors) {
-                       var namespaceErrors = errors[vm.namespace] || {};
-                       $scope.matches = _.filter(namespaceErrors, propertyIsMatch);
-                   }
-
-                   function propertyIsMatch(error) {
-                       if (typeof vm.for !== 'undefined') {
-                           return error.propertyName.toLowerCase() == vm.for.toLowerCase();
-                       }
-                       return true;
-                   }
-
-                   function watchErrors() {
-                       return errorService.errors;
-                   }
-               }]
-           };
-       }]);
-})();
 (function () {
     'use strict';
     angular
@@ -1147,33 +1085,6 @@ angular.module('envoc.directives.datatables')
     'use strict';
     angular
         .module('envoc')
-        .service('errorService', ['$timeout', function errorService($timeout) {
-            function service() {
-                var srvc = this;
-                srvc.errors = {};
-
-                srvc.clear = function () {
-                    srvc.errors = {};
-                };
-
-                srvc.clearNamespace = function (namespace) {
-                    srvc.errors[namespace] = [];
-                };
-
-                srvc.addErrors = function (namespace, errors) {
-                    $timeout(function () {
-                        srvc.clearNamespace(namespace);
-                        srvc.errors[namespace] = errors;
-                    });
-                };
-            }
-            return new service();
-        }]);
-})();
-(function () {
-    'use strict';
-    angular
-        .module('envoc')
         .factory('errorNamespacingHttpInterceptor', ['$q', 'errorService', 'namespacePropName', function ($q, errorService, namespacePropName) {
             return {
                 request: function (request) {
@@ -1215,6 +1126,33 @@ angular.module('envoc.directives.datatables')
     'use strict';
     angular
         .module('envoc')
+        .service('errorService', ['$timeout', function errorService($timeout) {
+            function service() {
+                var srvc = this;
+                srvc.errors = {};
+
+                srvc.clear = function () {
+                    srvc.errors = {};
+                };
+
+                srvc.clearNamespace = function (namespace) {
+                    srvc.errors[namespace] = [];
+                };
+
+                srvc.addErrors = function (namespace, errors) {
+                    $timeout(function () {
+                        srvc.clearNamespace(namespace);
+                        srvc.errors[namespace] = errors;
+                    });
+                };
+            }
+            return new service();
+        }]);
+})();
+(function () {
+    'use strict';
+    angular
+        .module('envoc')
         .factory('noCacheInterceptor', [function () {
             return {
                 request: function (config) {
@@ -1226,4 +1164,39 @@ angular.module('envoc.directives.datatables')
                 }
             };
         }]);
+})();
+(function () {
+    'use strict';
+    angular
+       .module('envoc')
+       .directive('validationMessage', ['errorService', function (errorService) {
+           return {
+               restrict: 'E',
+               scope: { 'for': '@', 'namespace': '@' },
+               template: '<div ng-repeat="error in matches" class="alert alert-danger m-t">{{error.errorMessage}}</div>\n',
+               bindToController: true,
+               controllerAs: 'validateCtrl',
+               controller: ['$scope', 'defaultNamespace', function ($scope, defaultNamespace) {
+                   var vm = this;
+                   vm.namespace = vm.namespace || defaultNamespace;
+                   $scope.$watch(watchErrors, updateMatches, true);
+
+                   function updateMatches(errors) {
+                       var namespaceErrors = errors[vm.namespace] || {};
+                       $scope.matches = _.filter(namespaceErrors, propertyIsMatch);
+                   }
+
+                   function propertyIsMatch(error) {
+                       if (typeof vm.for !== 'undefined') {
+                           return error.propertyName.toLowerCase() == vm.for.toLowerCase();
+                       }
+                       return true;
+                   }
+
+                   function watchErrors() {
+                       return errorService.errors;
+                   }
+               }]
+           };
+       }]);
 })();

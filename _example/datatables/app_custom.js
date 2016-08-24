@@ -1,4 +1,4 @@
-var app = angular.module('example.datatables', ['envoc.directives']);
+var app = angular.module('example.datatables', ['envoc']);
 
 app.controller('MainCtrl', function() {
     var viewModel = this;

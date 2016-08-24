@@ -1,4 +1,4 @@
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .directive('oTablePageInfo', function(oTableConfig) {
     return {
       restrict: 'A',
