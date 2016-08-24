@@ -1,5 +1,5 @@
 /*
- * envoc.directives 0.11.3
+ * envoc.directives 0.12.0
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
@@ -280,6 +280,22 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
+(function(module) {
+try {
+  module = angular.module('envoc');
+} catch (e) {
+  module = angular.module('envoc', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('/oTemplates/datatables/oTableLinesPerPage.tmpl.html',
+    '<label>\n' +
+    '    {{ctrl.lang.show}}\n' +
+    '    <select ng-model="ctrl.state.linesPerPage" ng-options="o for o in ctrl.linesPerPageOptions">\n' +
+    '    </select>\n' +
+    '    {{ctrl.lang.entries}}\n' +
+    '</label>');
+}]);
+})();
 
 (function(module) {
 try {
