@@ -6,7 +6,7 @@
            return {
                restrict: 'E',
                scope: { 'for': '@', 'namespace': '@' },
-               template: '<div ng-repeat="error in matches" class="alert alert-danger m-t">{{error.errorMessage}}</div>\n',
+               template: '<div ng-repeat="error in matches" class="help-block">{{error.errorMessage}}</div>\n',
                bindToController: true,
                controllerAs: 'validateCtrl',
                controller: ['$scope', 'defaultNamespace', function ($scope, defaultNamespace) {

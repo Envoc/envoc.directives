@@ -16,26 +16,10 @@
                 responseError: function (rejection) {
                     var requestNamespace = rejection.config[namespacePropName];
                     if (typeof requestNamespace !== 'undefined') {
-                        var errors = parseResponseErrors(rejection.data);
-                        errorService.addErrors(requestNamespace, errors);
+                        errorService.addErrors(requestNamespace, rejection.data.errors);
                     }
                     return $q.reject(rejection);
                 }
             };
         }]);
-
-    /**
-     * Retrieves the array of errors from the response and converts them to our preferred form.
-     * Change this function if the server doesnt return an envoc standard response like this: 
-     *  { errors:[{PropertyName:"",ErrorMessage:"" }] }
-     * 
-     */
-    function parseResponseErrors(response) {
-        return response.Errors.map(function (err) {
-            return {
-                propertyName: err.PropertyName,
-                errorMessage: err.ErrorMessage
-            };
-        });
-    }
 })();
