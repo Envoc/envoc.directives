@@ -1,12 +1,12 @@
 <div class="dataTables_wrapper form-inline" role="grid" ng-cloak>
     <div class="row">
-        <div class="span6 pull-left">
+        <div class="col-sm-6">
             <div class="dataTables_length">
                 <div o-table-lines-per-page></div>
             </div>
         </div>
-        <div class="span6 pull-right">
-            <div class="dataTables_filter">
+        <div class="col-sm-6">
+            <div class="dataTables_filter pull-right">
                 <label>
                     {{ctrl.lang.search}}:
                     <input type="text" o-table-filter>
@@ -14,7 +14,9 @@
             </div>
         </div>
     </div>
-    
+
+    <div class="row"><div class="col-sm-12"><div o-table-page-info></div></div></div>
+
     <div class="alert alert-info" ng-show="ctrl.loading">
         <strong>{{ctrl.lang.loading}}</strong>
     </div>
@@ -26,12 +28,12 @@
     <div ng-transclude></div>
 
     <div class="row" ng-show="ctrl.data.length">
-        <div class="span6 pull-left">
+        <div class="col-sm-6">
             <div o-table-page-info></div>
         </div>
-
-        <div class="span6 pull-right">
-            <div class="dataTables_paginate paging_bootstrap">
+        
+        <div class="col-sm-6">
+            <div class="dataTables_paginate paging_bootstrap pull-right">
                 <div o-table-pagination></div>
             </div>
         </div>
