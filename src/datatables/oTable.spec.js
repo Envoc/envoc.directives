@@ -25,7 +25,7 @@
       var customRoute = '/my/custom/route',
         config;
 
-      beforeEach(module('envoc.directives.datatables', function(oTableConfigProvider) {
+      beforeEach(module('envoc', function(oTableConfigProvider) {
         oTableConfigProvider.config.templates.oTableLinesPerPageUrl = customRoute;
       }));
 
@@ -41,7 +41,7 @@
     });
 
     describe('Configuration:', function() {
-      beforeEach(module('envoc.directives.datatables'));
+      beforeEach(module('envoc'));
 
       beforeEach(inject(function($injector) {
         $rootScope = $injector.get('$rootScope');
@@ -187,7 +187,7 @@
     describe('Remote Data:', function() {
       var html;
 
-      beforeEach(module('envoc.directives.datatables', function(oTableConfigProvider) {
+      beforeEach(module('envoc', function(oTableConfigProvider) {
         oTableConfigProvider.addLangConfig('fr', {
           show: 'Le Show',
           entries: 'Le entries',

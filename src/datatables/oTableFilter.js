@@ -1,4 +1,4 @@
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
     .directive('oTableFilter', function() {
         return {
             restrict: 'A',

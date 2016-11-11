@@ -1,3 +1,15 @@
+## 0.12.0 (2016-08-24)
+
+
+#### Features
+
+* move everything into oDirectives.js, remove individual directive files. ([5c7e9f9a](https://github.com/Envoc/envoc.directives/commit/5c7e9f9aff464d3fbda7f8a41440a231c78d7cec))
+* remove old validators, update validation example to use new validator ([39b8b8eb](https://github.com/Envoc/envoc.directives/commit/39b8b8eb0e308948fadd3d01f4d0bd8cafb5b578))
+* added envoc module with validation message directive ([d5ac628b](https://github.com/Envoc/envoc.directives/commit/d5ac628b5dc4fbc47d863f5e75e53ed023858645))
+* **language:** add ability to add translations in rub block ([02e6cc98](https://github.com/Envoc/envoc.directives/commit/02e6cc982da752e84574a8fc426068a098dfd9fd))
+* **languages:** set default language to new translation being added and when swapping language ([d9933709](https://github.com/Envoc/envoc.directives/commit/d993370953c0e147bc2805536cc1175e74c3cc05))
+
+
 ## 0.11.0 (2015-01-29)
 
 

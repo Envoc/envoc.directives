@@ -1,15 +1,18 @@
 /*
- * envoc.directives 0.11.2
+ * envoc.directives 0.12.0
  * Author: Envoc
  * Repository: https://github.com/Envoc/envoc.directives
  */
 (function() {
     'use strict';
 
-    angular.module('envoc.directives', [
-        'envoc.directives.validation',
-        'envoc.directives.datatables'
-    ]);
+    angular.module('envoc', ['ui.bootstrap.pagination'])
+    	.value('defaultNamespace', 'root')
+        .value('namespacePropName', '__namespace')
+        .config(['$httpProvider', function ($httpProvider) {
+            $httpProvider.interceptors.push('errorNamespacingHttpInterceptor');
+            $httpProvider.interceptors.push('noCacheInterceptor');
+        }]);
 })();
 angular.module('ui.bootstrap.pagination', [])
 
@@ -228,9 +231,9 @@ angular.module('ui.bootstrap.pagination', [])
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTableDefault.tmpl.html',
@@ -279,9 +282,9 @@ module.run(['$templateCache', function($templateCache) {
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTableLinesPerPage.tmpl.html',
@@ -296,9 +299,9 @@ module.run(['$templateCache', function($templateCache) {
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTablePageInfo.tmpl.html',
@@ -315,9 +318,9 @@ module.run(['$templateCache', function($templateCache) {
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/oTemplates/datatables/oTablePagination.tmpl.html',
@@ -334,9 +337,9 @@ module.run(['$templateCache', function($templateCache) {
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/pagination/pager.html',
@@ -349,9 +352,9 @@ module.run(['$templateCache', function($templateCache) {
 
 (function(module) {
 try {
-  module = angular.module('envoc.directives.partials');
+  module = angular.module('envoc');
 } catch (e) {
-  module = angular.module('envoc.directives.partials', []);
+  module = angular.module('envoc', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/pagination/pagination.html',
@@ -365,11 +368,7 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
-angular.module('envoc.directives.datatables', [
-    'envoc.directives.partials',
-    'ui.bootstrap.pagination'
-]);
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .filter('startFrom', function() {
       return function(input, start) {
           if (input === undefined) {
@@ -379,7 +378,7 @@ angular.module('envoc.directives.datatables')
           }
       };
   });
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .provider('oTableConfig', function() {
     var config = {
       templates: {
@@ -884,7 +883,7 @@ angular.module('envoc.directives.datatables')
     };
   });
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
     .directive('oTableDefault', function() {
         return {
             templateUrl: '/oTemplates/datatables/oTableDefault.tmpl.html',
@@ -914,7 +913,7 @@ angular.module('envoc.directives.datatables')
             }
         };
     });
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
     .directive('oTableFilter', function() {
         return {
             restrict: 'A',
@@ -955,7 +954,7 @@ angular.module('envoc.directives.datatables')
         };
     });
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .directive('oTableLinesPerPage', ["oTableConfig", function(oTableConfig) {
     return {
       restrict: 'A',
@@ -969,7 +968,7 @@ angular.module('envoc.directives.datatables')
     };
   }]);
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .directive('oTablePageInfo', ["oTableConfig", function(oTableConfig) {
     return {
       restrict: 'A',
@@ -983,7 +982,7 @@ angular.module('envoc.directives.datatables')
     };
   }]);
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .directive('oTablePagination', ["oTableConfig", function(oTableConfig) {
     return {
       restrict: 'A',
@@ -1009,7 +1008,7 @@ angular.module('envoc.directives.datatables')
  * params: (attribute field): this is the case-sensative key to sort on.
  */
 
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
     .directive('oTableSort', function() {
         return {
             restrict: 'A',
@@ -1052,216 +1051,194 @@ angular.module('envoc.directives.datatables')
             }
         };
     });
-(function(module) {
-try {
-  module = angular.module('envoc.directives.partials');
-} catch (e) {
-  module = angular.module('envoc.directives.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('/oTemplates/validation/oValidationMessageFor.tmpl.html',
-    '﻿<div>\n' +
-    '    <!-- This is where the content of the tag gets replaced -->\n' +
-    '    <div ng-transclude></div>\n' +
-    '\n' +
-    '    <!-- Errors here -->\n' +
-    '    <ul class="list-unstyled" ng-show="matches.length" ng-class="{\'alert alert-danger\': matches.length}">\n' +
-    '        <li ng-repeat="error in matches">\n' +
-    '            <span class="field-validation-error">{{error.errorMessage}}</span>\n' +
-    '        </li>\n' +
-    '    </ul>\n' +
-    '</div>');
-}]);
+(function () {
+    'use strict';
+    angular
+        .module('envoc')
+        .service('apiClient', ['$http', 'errorService', 'defaultNamespace', 'namespacePropName',
+            function ($http, errorService, defaultNamespace, namespacePropName) {
+                var constructorFn = apiClient;
+
+                function apiClient(nameSpace, _http) {
+                    var service = this;
+                    var http = _http;
+
+                    var idempotentMethods = ['get', 'head', 'delete', 'jsonp'];
+                    //these take an optional data param that needs to be handled separately
+                    var nonIdempotentMethods = ['post', 'put', 'patch'];
+
+                    service.nameSpace = nameSpace;
+
+                    service.bindNamespace = function (ns) {
+                        return new constructorFn(ns, http);
+                    };
+
+                    /**decorate calls to $http by modifying the parameters*/
+                    idempotentMethods.forEach(function (method) {
+                        service[method] = function (url, config) {
+                            return $http[method].call($http, url, decorateConfig(config));
+                        };
+                    });
+
+                    nonIdempotentMethods.forEach(function (method) {
+                        service[method] = function (url, data, config) {
+                            return $http[method].call($http, url, data, decorateConfig(config));
+                        };
+                    });
+
+                    function decorateConfig(config) {
+                        var _config = typeof config !== 'undefined' ? config : {};
+                        _config[namespacePropName] = service.nameSpace;
+                        return _config;
+                    }
+                }
+
+                return new apiClient(defaultNamespace, $http);
+            }
+        ]);
 })();
-
-(function(module) {
-try {
-  module = angular.module('envoc.directives.partials');
-} catch (e) {
-  module = angular.module('envoc.directives.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('/oTemplates/validation/oValidationMessageForModelstate.tmpl.html',
-    '<div>\n' +
-    '    <!-- This is where the content of the tag gets replaced -->\n' +
-    '    <div ng-transclude></div>\n' +
-    '\n' +
-    '    <!-- Errors here -->\n' +
-    '    <ul class="list-unstyled" ng-show="matches.errors.length" ng-class="{\'alert alert-danger\': matches.errors.length}">\n' +
-    '        <li ng-repeat="error in matches.errors">\n' +
-    '            <span class="field-validation-error">{{error.errorMessage}}</span>\n' +
-    '        </li>\n' +
-    '    </ul>\n' +
-    '</div>');
-}]);
+(function () {
+    'use strict';
+    angular
+        .module('envoc')
+        .factory('errorNamespacingHttpInterceptor', ['$q', 'errorService', 'namespacePropName', function ($q, errorService, namespacePropName) {
+            return {
+                request: function (request) {
+                    if (typeof request[namespacePropName] !== 'undefined') {
+                        errorService.clearNamespace(request[namespacePropName]);
+                    }
+                    return request;
+                },
+                response: function (response) {
+                    return response;
+                },
+                responseError: function (rejection) {
+                    var requestNamespace = rejection.config[namespacePropName];
+                    if (typeof requestNamespace !== 'undefined') {
+                        errorService.addErrors(requestNamespace, rejection.data.errors);
+                    }
+                    return $q.reject(rejection);
+                }
+            };
+        }]);
 })();
+(function () {
+    'use strict';
+    angular
+        .module('envoc')
+        .service('errorService', ['$timeout', function errorService($timeout) {
+            function service() {
+                var srvc = this;
+                srvc.errors = {};
 
-(function(module) {
-try {
-  module = angular.module('envoc.directives.partials');
-} catch (e) {
-  module = angular.module('envoc.directives.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('/oTemplates/validation/oValidationSummary.tmpl.html',
-    '﻿<div ng-show="errors.length" ng-class="{\'alert alert-danger alert-block\': errors.length}">\n' +
-    '    <strong>Please fix the error{{ errors.length > 1 ? \'s\' : \'\'}} listed below and try again</strong>\n' +
-    '    <ul style="padding-left:30px">\n' +
-    '        <li ng-repeat="error in errors">\n' +
-    '            {{error.errorMessage}}\n' +
-    '        </li>\n' +
-    '    </ul>\n' +
-    '</div>\n' +
-    '');
-}]);
+                srvc.clear = function () {
+                    srvc.errors = {};
+                };
+
+                srvc.clearNamespace = function (namespace) {
+                    srvc.errors[namespace] = [];
+                };
+
+                srvc.addErrors = function (namespace, errors) {
+                    $timeout(function () {
+                        srvc.clearNamespace(namespace);
+                        srvc.errors[namespace] = errors;
+                    });
+                };
+            }
+            return new service();
+        }]);
 })();
+(function () {
+    'use strict';
+    angular
+        .module('envoc')
+        .factory('noCacheInterceptor', [function () {
+            return {
+                request: function (config) {
+                    if (config.method == 'GET' && config.url.indexOf(".html") == -1) {
+                        var separator = config.url.indexOf('?') === -1 ? '?' : '&';
+                        config.url = config.url + separator + 'c=' + new Date().getTime();
+                    }
+                    return config;
+                }
+            };
+        }]);
+})();
+(function () {
+    'use strict';
 
-(function() {
-  'use strict';
+    angular
+        .module('envoc')
+        .directive('validationClassFor', ['errorService', 'defaultNamespace', function (errorService, defaultNamespace) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr){
+                var namespace = attr.namespace || defaultNamespace;
+                scope.$watch(watchErrors, updateMatches, true);
 
-  angular.module('envoc.directives.validation', ['envoc.directives.partials'])
-    .provider('oValidateConfig', function() {
-      var config = {
-        templates: {
-          oValidationMessageFor: '/oTemplates/validation/oValidationMessageFor.tmpl.html',
-          oValidationMessageForModelstate: '/oTemplates/validation/oValidationMessageForModelstate.tmpl.html',
-          oValidationSummary: '/oTemplates/validation/oValidationSummary.tmpl.html'
+                function updateMatches(errors) {
+                    //if (attr.spotterValidationClassIf.length && !scope.$eval(attr.spotterValidationClassIf)) {
+                    //    element.removeClass('has-error');
+                    //    return;
+                    //}
+
+                    var namespaceErrors = errors[namespace] || {};
+
+                    _.some(namespaceErrors, propertyIsMatch)
+                        ? element.addClass('has-error')
+                        : element.removeClass('has-error');
+                }
+
+                function propertyIsMatch(error) {
+                    //This allows for watching multiple properties
+                    var propertyNames = attr.validationClassFor.toLowerCase().split(' ');
+
+                    return _.some(propertyNames, function(prop) {
+                        return error.propertyName.toLowerCase() == prop.toLowerCase();
+                    });
+                }
+
+                function watchErrors() {
+                    return errorService.errors;
+                }
+            }
         }
-      };
-      return {
-        config: config,
-        $get: function() {
-          return config;
-        }
-      }
-    });
+    }]);
 })();
 
-﻿(function() {
+(function () {
     'use strict';
-
     angular
-        .module('envoc.directives.validation')
-        .directive('oValidateWith', [
-            function() {
-                var noop = function() {};
-                var nullFormCtrl = {
-                    $addControl: noop,
-                    $removeControl: noop,
-                    $setValidity: noop,
-                    $setDirty: noop,
-                    $setPristine: noop
-                };
+       .module('envoc')
+       .directive('validationMessage', ['errorService', function (errorService) {
+           return {
+               restrict: 'E',
+               scope: { 'for': '@', 'namespace': '@' },
+               template: '<div ng-repeat="error in matches" class="help-block">{{error.errorMessage}}</div>\n',
+               bindToController: true,
+               controllerAs: 'validateCtrl',
+               controller: ['$scope', 'defaultNamespace', function ($scope, defaultNamespace) {
+                   var vm = this;
+                   vm.namespace = vm.namespace || defaultNamespace;
+                   $scope.$watch(watchErrors, updateMatches, true);
 
-                return {
-                    restrict: 'EA',
-                    controller: ["$element", function($element) {
-                        this.parentForm = $element.inheritedData('$formController') || nullFormCtrl;
-                    }],
-                    link: function(scope, element, attrs, ctrl) {
-                        scope.$watch(function() {
-                            return scope.$eval(attrs.errors);
-                        }, function(current, previous) {
-                            if (current) {
-                                ctrl.errors = current;
-                            }
-                        });
-                    }
-                };
-            }
-        ]);
-})();
+                   function updateMatches(errors) {
+                       var namespaceErrors = errors[vm.namespace] || {};
+                       $scope.matches = _.filter(namespaceErrors, propertyIsMatch);
+                   }
 
-﻿(function() {
-    'use strict';
+                   function propertyIsMatch(error) {
+                       if (typeof vm.for !== 'undefined') {
+                           return error.propertyName.toLowerCase() == vm.for.toLowerCase();
+                       }
+                       return true;
+                   }
 
-    angular
-        .module('envoc.directives.validation')
-        .directive('oValidationMessageFor', ['oValidateConfig',
-            function(oValidateConfig) {
-                return {
-                    restrict: 'EA',
-                    require: '^oValidateWith',
-                    templateUrl: oValidateConfig.templates.oValidationMessageFor,
-                    transclude: true,
-                    scope: true,
-                    link: function(scope, element, attr, oValidateWithCtrl) {
-                        var key = attr.oValidationMessageFor.toLowerCase();
-                        var altMessageName = attr.altMessageName;
-                        var propertyName = attr.altPropertyName || 'propertyName';
-
-                        scope.$watch(getErrors, function(current, previous) {
-                            if (current) {
-                                scope.matches = current.filter(function(error) {
-                                    error.propertyName = error[propertyName];
-                                    return angular.isDefined(error[propertyName]) && error[propertyName].toLowerCase() == key;
-                                });
-
-                                if(altMessageName){
-                                    scope.matches = scope.matches.map(function(obj, idx){
-                                        obj[altMessageName] && (obj.errorMessage = obj[altMessageName]);
-                                        return obj;
-                                    });
-                                }
-                            }
-                        });
-
-                        function getErrors() { return oValidateWithCtrl.errors; }
-                    }
-                };
-            }
-        ]);
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('envoc.directives.validation')
-        .directive('oValidationMessageForModelstate', ['oValidateConfig',
-            function(oValidateConfig) {
-                return {
-                    restrict: 'EA',
-                    require: '^oValidateWith',
-                    templateUrl: oValidateConfig.templates.oValidationMessageForModelstate,
-                    transclude: true,
-                    scope: true,
-                    link: function(scope, element, attr, oValidateWithCtrl) {
-                        var key = attr.oValidationMessageForModelstate;
-
-                        scope.$watch(getErrors, function(current, previous) {
-                            if (current) {
-                                scope.matches = current[key];
-                            }
-                        });
-
-                        function getErrors() { return oValidateWithCtrl.errors; }
-                    }
-                };
-            }
-        ]);
-})();
-﻿(function() {
-    'use strict';
-
-    angular
-        .module('envoc.directives.validation')
-        .directive('oValidationSummary', ['oValidateConfig',
-            function(oValidateConfig) {
-                return {
-                    restrict: 'EA',
-                    require: '^oValidateWith',
-                    templateUrl: oValidateConfig.templates.oValidationSummary,
-                    transclude: true,
-                    scope: true,
-                    link: function(scope, element, attr, oValidateWithCtrl) {
-
-                        scope.$watch(getErrors, function(current, previous) {
-                            scope.errors = current;
-                        });
-
-                        function getErrors() { return oValidateWithCtrl.errors; }
-                    }
-                };
-            }
-        ]);
+                   function watchErrors() {
+                       return errorService.errors;
+                   }
+               }]
+           };
+       }]);
 })();

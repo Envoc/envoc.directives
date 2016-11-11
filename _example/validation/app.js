@@ -1,45 +1,41 @@
-﻿var app = angular.module('example.validation', ['envoc.directives.validation']);
+﻿var app = angular.module('example.validation', ['envoc']);
 
-// comment me out to see default template
-app.config(['oValidateConfigProvider', config]);
-
-function config(oValidateConfigProvider) {
-   oValidateConfigProvider.config.templates.oValidationMessageFor = 'oValidationMessageFor.override.html';
-}
-
-app.controller('MainCtrl', function($timeout) {
+app.controller('MainCtrl',[ '$timeout', 'apiClient', 'errorService',  function($timeout, apiClient, errorService) {
     var viewModel = this;
 
     // fake gettings errors back from an api in this format
     viewModel.submit = function() {
         viewModel.action = 'Submitting...';
 
+        //apiClient.get('url').then(function(response){
+            //At this point the errors are already set in the errorService by the error-namespacing http interceptor
+        //});
+
+        errorService.clear()
+
         $timeout(function() {
-            viewModel.errors = [
+            var errors = [
                 {
                     propertyName: '',
-                    type: 'length',
                     errorMessage: 'This is global'
                 }, {
                     propertyName: '',
-                    type: 'length',
                     errorMessage: 'This is global also'
                 }, {
                     propertyName: 'firstName',
-                    type: 'required',
                     errorMessage: 'First Name is required'
                 }, {
                     propertyName: 'firstName',
-                    type: 'length',
                     errorMessage: 'First Name must be between 2 and 256 characters'
                 }, {
-                    key: 'lastName',
-                    message: 'I hate you'
+                    propertyName: 'lastName',
+                    errorMessage: 'I hate you'
                 }, {
-                    key: 'lastName',
-                    message: 'No, but really'
-                }
-            ];
+                    propertyName: 'lastName',
+                    errorMessage: 'No, but really'
+                }];
+
+            errorService.addErrors('root', errors);
 
             viewModel.action = 'Submit';
 
@@ -90,4 +86,4 @@ app.controller('MainCtrl', function($timeout) {
     function init() {
         viewModel.action = 'Submit';
     }
-});
+}]);

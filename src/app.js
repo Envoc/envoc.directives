@@ -1,8 +1,11 @@
 (function() {
     'use strict';
 
-    angular.module('envoc.directives', [
-        'envoc.directives.validation',
-        'envoc.directives.datatables'
-    ]);
+    angular.module('envoc', ['ui.bootstrap.pagination'])
+    	.value('defaultNamespace', 'root')
+        .value('namespacePropName', '__namespace')
+        .config(['$httpProvider', function ($httpProvider) {
+            $httpProvider.interceptors.push('errorNamespacingHttpInterceptor');
+            $httpProvider.interceptors.push('noCacheInterceptor');
+        }]);
 })();

@@ -1,4 +1,4 @@
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
   .provider('oTableConfig', function() {
     var config = {
       templates: {

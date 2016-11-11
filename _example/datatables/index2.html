@@ -7,7 +7,7 @@
     <link href="../bootstrap.min.css" rel="stylesheet" />
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" />
     <script src="http://cdnjs.cloudflare.com/ajax/libs/Faker/0.7.0/MinFaker.js"></script>
-    <script src="../../src/_vendor/angular/angular.min.js"></script>
+    <script src="../../src/_vendor/angular/angular.js"></script>
     <script src="../../src/_vendor/lodash/dist/lodash.js"></script>
     <script src="../../dist/oDirectives.min.js"></script>
     <style>
@@ -187,8 +187,9 @@
                         <hr ng-repeat-end>
                     </div>
 
-                    <pager ng-model="ctrl.state.currentPage" total-items="ctrl.state.iTotalDisplayRecords"
-                        items-per-page="ctrl.state.linesPerPage" o-table-controller></pager>
+                    <pager  ng-model="ctrl.state.currentPage"
+                            total-items="ctrl.state.iTotalDisplayRecords"
+                            items-per-page="ctrl.state.linesPerPage" o-table-controller></pager>
                 </div>
 
                 <!-- <div o-table-pagination></div> -->

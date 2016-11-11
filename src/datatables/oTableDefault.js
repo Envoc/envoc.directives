@@ -1,4 +1,4 @@
-angular.module('envoc.directives.datatables')
+angular.module('envoc')
     .directive('oTableDefault', function() {
         return {
             templateUrl: '/oTemplates/datatables/oTableDefault.tmpl.html',

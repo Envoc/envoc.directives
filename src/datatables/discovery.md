@@ -1,4 +1,4 @@
-envoc.directives.datatables
+envoc
 ====
 
 Goal
