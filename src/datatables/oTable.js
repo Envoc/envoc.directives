@@ -167,12 +167,11 @@ angular.module('envoc')
     };
 
     function columnFilter(searchTerm, propertyName) {
-      var propertyIndex = config.propertyMap[propertyName];
+      if (!config.propertyMap || !config.propertyMap[propertyName]) return;
       self.state.searchObj[propertyName] = searchTerm;
       if (!searchTerm) {
         delete self.state.searchObj[propertyName];
       }
-      $rootScope.$broadcast('oTable::filtering');
     };
 
     function getSortingPropertyInfo(propertyName) {
@@ -321,7 +320,7 @@ angular.module('envoc')
     }
 
     function transposeDataSet(response) {
-      config.propertyMap = {};
+      config.propertyMap = config.propertyMap || {};
 
       var columnArray = response.sColumns.split(',');
       var transposed = response.aaData.map(convertArrayToObject);

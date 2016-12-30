@@ -28,11 +28,17 @@ angular.module('envoc')
             link: function postLink(scope, iElement, iAttrs, controller) {
                 var propertyName = iAttrs.field;
 
-                iElement.on('keyup change', setAllSearch)
-                
-                function setAllSearch(){
-                    scope.$evalAsync(function(){
-                        controller.columnFilter(iElement.val(), propertyName);
+                !iAttrs.value && scope.$watch(iAttrs.ngModel, function (value) {
+                    setColumnFilter(value);
+                }); 
+
+                iElement.on('keyup change', function() {
+                    setColumnFilter(iElement.val());
+                });
+
+                function setColumnFilter(value) {
+                    scope.$evalAsync(function () {
+                        controller.columnFilter(value, propertyName);
                     });
                 }
             }
